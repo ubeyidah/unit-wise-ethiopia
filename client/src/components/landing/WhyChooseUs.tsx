@@ -10,7 +10,7 @@ const WhyChooseUs = () => {
             Ethiopia?
           </h2>
           {whyChooseUs.map((becuse) => (
-            <div className="flex gap-3 items-start mb-5">
+            <div key={becuse.title} className="flex gap-3 items-start mb-5">
               <div>
                 <GiCheckMark className="text-green-600 mt-2" />
               </div>

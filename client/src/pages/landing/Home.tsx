@@ -1,4 +1,5 @@
 import AboutSection from "@/components/landing/AboutSection";
+import Accordion from "@/components/landing/Accordion";
 import CTA from "@/components/landing/CTA";
 import Fetures from "@/components/landing/Fetures";
 import Footer from "@/components/landing/Footer";
@@ -19,6 +20,7 @@ const Home = () => {
       <Pricing />
       <Testimonial />
       <CTA />
+      <Accordion />
       <Footer />
     </main>
   );
