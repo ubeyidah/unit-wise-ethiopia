@@ -75,3 +75,16 @@ export const whyChooseUs = [
     desc: "Our platform designed both light and dark mode. you can use your preference theme, and our platform can ditect you system theme",
   },
 ];
+
+export const pricingAccess = [
+  "Access to all study materials and resources",
+  "Full use of task and schedule management tools",
+  "Progress tracking and dashboard insights",
+  "Interactive quizzes and assessments",
+  "Community interaction and post-sharing features",
+  "Free updates and new features",
+];
+export const pricing = {
+  price: 200,
+  discount: 101,
+};

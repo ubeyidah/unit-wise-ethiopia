@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const AboutSection = () => {
   return (
-    <section className="container px-4 max-md:px-2 grid grid-cols-1 md:grid-cols-2 gap-4 max-sm:my-10 md:my-32">
+    <section className="container px-4 max-md:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 max-sm:my-10 md:my-32">
       <div className="relative ms-4 md:h-[60vh] ">
         <img
           className="w-full rounded-md h-full object-cover object-center"
@@ -13,7 +13,7 @@ const AboutSection = () => {
       </div>
       <div className="max-md:mt-8">
         <h2 className="mb-4 font-bold max-sm:text-2xl md:text-3xl ">
-          <span className="text-green-600">About</span> Unit Wise Ethiopia
+          <span className="text-orange-600">About</span> Unit Wise Ethiopia
         </h2>
         <p className="mb-4 dark:text-slate-300 text-slate-800">
           Unit Wise Ethiopia is a student-created platform designed to
