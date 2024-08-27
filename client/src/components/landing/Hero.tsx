@@ -37,7 +37,7 @@ function heroButtons() {
 
 const Hero = () => {
   return (
-    <section className="container px-3 md:px-5 grid gap-8 grid-cols-1 md:grid-cols-2 md:mt-5 md:items-center max-md:py-9 max-sm:gap-5">
+    <section className="container px-3 md:px-5 grid gap-8 grid-cols-1 md:grid-cols-2 md:mt-8 md:items-center max-md:py-9 max-sm:gap-5 h-full">
       <div>
         <h1
           className="text-5xl leading-tight font-semibold  text-slate-600 mb-7 max-lg:text-4xl max-md:text-center max-sm:text-3xl dark:text-slate-300 max-sm:text-left
