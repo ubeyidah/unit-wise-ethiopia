@@ -3,6 +3,7 @@ import Fetures from "@/components/landing/Fetures";
 import Footer from "@/components/landing/Footer";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
+import WhyChooseUs from "@/components/landing/WhyChooseUs";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <Hero />
       <AboutSection />
       <Fetures />
+      <WhyChooseUs />
       <Footer />
     </main>
   );

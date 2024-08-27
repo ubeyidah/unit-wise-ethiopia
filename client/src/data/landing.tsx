@@ -52,3 +52,26 @@ export const futures = [
     icon: <RiCalendarScheduleFill />,
   },
 ];
+
+export const whyChooseUs = [
+  {
+    title: "Unique First",
+    desc: "Unit Wise Ethiopia is the first web app of its kind in Ethiopia, specifically designed to address the needs of students preparing for entrance exams.",
+  },
+  {
+    title: "Student-Centric",
+    desc: "Created by a student for students, our platform understands and addresses the real challenges you face during your exam preparation.",
+  },
+  {
+    title: "User-Friendly Design",
+    desc: "Enjoy a seamless user experience with our intuitive UI design that makes studying and tracking your progress easier and more engaging.",
+  },
+  {
+    title: "Modern Design",
+    desc: "Our beautifully designed dashboard offers a comprehensive view of your study progress and tasks, helping you stay organized and motivated.",
+  },
+  {
+    title: "Dark/Light Mode Design",
+    desc: "Our platform designed both light and dark mode. you can use your preference theme, and our platform can ditect you system theme",
+  },
+];
