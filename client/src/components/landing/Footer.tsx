@@ -43,10 +43,13 @@ const Footer = () => {
                   <p className="text-sm my-2">Follow us</p>
 
                   <div className="flex items-center gap-4">
-                    <a href="" target="_blank">
+                    <a href="https://www.github.com/ubeyidah" target="_blank">
                       <FaGithub className="size-5" />
                     </a>
-                    <a href="" target="_blank">
+                    <a
+                      href="https://www.youtube.com/channel/UCNz48Kv8nkR-7wsv6R34s6g"
+                      target="_blank"
+                    >
                       <BiLogoYoutube className="text-red-800  size-6" />
                     </a>
                   </div>

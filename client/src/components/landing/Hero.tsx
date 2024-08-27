@@ -7,9 +7,11 @@ function heroButtons() {
         your achievement.
       </p>
       <div className="flex items-center gap-6 max-md:justify-center max-sm:justify-start">
-        <button className="inline-flex py-3 px-7  items-center justify-center rounded-full bg-slate-600/20 font-medium text-neutral-900  hover:bg-slate-600/30 active:bg-slate-600/20 max-sm:text-sm dark:text-slate-300">
-          Learn More
-        </button>
+        <a href="#about">
+          <button className="inline-flex py-3 px-7  items-center justify-center rounded-full bg-slate-600/20 font-medium text-neutral-900  hover:bg-slate-600/30 active:bg-slate-600/20 max-sm:text-sm dark:text-slate-300">
+            Learn More
+          </button>
+        </a>
         <button className="group relative inline-flex h-[calc(40px+8px)] items-center justify-center rounded-full max-sm:text-sm bg-green-600 py-1 pl-6 pr-14 font-medium text-neutral-50">
           <span className="z-10 pr-2">GET STARTED</span>
           <div className="absolute right-1 inline-flex h-10 w-10 items-center justify-end rounded-full bg-neutral-700/40 transition-[width] group-hover:w-[calc(100%-8px)]">
