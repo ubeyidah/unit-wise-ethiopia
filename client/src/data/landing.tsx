@@ -88,3 +88,24 @@ export const pricing = {
   price: 200,
   discount: 101,
 };
+
+export const testimonials = [
+  {
+    name: "Abebe Alemu",
+    school: "Addis Ababa High School",
+    feedback: "Unit Wise Ethiopia has been a game-changer for my exam preparation. The dashboard is intuitive and helps me track my progress easily.",
+    photoUrl: "https://randomuser.me/api/portraits/men/31.jpg"
+  },
+  {
+    name: "Sara Bekele",
+    school: "Hawassa Secondary School",
+    feedback: "I love how everything is organized by units and topics. It made my study sessions much more focused and productive.",
+    photoUrl: "https://randomuser.me/api/portraits/women/44.jpg"
+  },
+  {
+    name: "Mulugeta Tesfaye",
+    school: "Bahir Dar Academy",
+    feedback: "This app is exactly what I needed to manage my study schedule. The lifetime access is a great value for all the features provided.",
+    photoUrl: "https://randomuser.me/api/portraits/men/75.jpg"
+  }
+];

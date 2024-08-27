@@ -4,6 +4,7 @@ import Footer from "@/components/landing/Footer";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import Pricing from "@/components/landing/Pricing";
+import Testimonial from "@/components/landing/Testimonial";
 import WhyChooseUs from "@/components/landing/WhyChooseUs";
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
       <Fetures />
       <WhyChooseUs />
       <Pricing />
+      <Testimonial />
       <Footer />
     </main>
   );
