@@ -12,7 +12,7 @@ const Header = () => {
     "border-b-2 border-green-500 py-[19px] text-green-500 px-4 transition-all duration-100";
 
   return (
-    <header className="sticky top-0 z-10 bg-white  backdrop-filter backdrop-blur-md bg-opacity-30 border-b border-gray-200 dark:border-gray-900">
+    <header className="sticky top-0 z-10 bg-white  backdrop-filter backdrop-blur-md bg-opacity-30 border-b border-gray-200 dark:bg-dark dark:bg-opacity-20 dark:border-gray-900">
       <div className="container px-4 flex items-center justify-between  h-[64px]">
         <Link to="/">
           <img src="/logo.png" alt="logo" className="h-12" />
@@ -28,6 +28,7 @@ const Header = () => {
               {link.label}
             </NavLink>
           ))}
+          <div className="ml-4"></div>
           <ThemeSwitcher />
           <Separator orientation="vertical" className="mx-4 h-5" />
           <Link to="/signin">
