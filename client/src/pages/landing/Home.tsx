@@ -1,5 +1,11 @@
+import Header from "@/components/landing/Header";
+
 const Home = () => {
-  return <section className="bg-slate-300 h-full">Home</section>;
+  return (
+    <main>
+      <Header />
+    </main>
+  );
 };
 
 export default Home;

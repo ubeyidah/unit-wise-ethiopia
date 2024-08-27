@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import plugin from "tailwindcss/plugin";
+export default {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -76,5 +77,22 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ addVariant, e, postcss }) {
+      addVariant("firefox", ({ container, separator }) => {
+        const isFirefoxRule = postcss.atRule({
+          name: "-moz-document",
+          params: "url-prefix()",
+        });
+        isFirefoxRule.append(container.nodes);
+        container.append(isFirefoxRule);
+        isFirefoxRule.walkRules((rule) => {
+          rule.selector = `.${e(
+            `firefox${separator}${rule.selector.slice(1)}`
+          )}`;
+        });
+      });
+    }),
+  ],
 };

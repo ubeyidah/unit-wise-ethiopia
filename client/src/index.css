@@ -97,3 +97,9 @@ html,
 body {
   height: 100vh;
 }
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto;
+  }
+}
