@@ -4,6 +4,7 @@ import { AiOutlineMoon } from "react-icons/ai";
 import { Separator } from "../ui/separator";
 import IconButton from "../IconButton";
 import { Button } from "../ui/button";
+import MobileNav from "./MobileNav";
 
 const Header = () => {
   const linkClass: string =
@@ -13,11 +14,12 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-10 bg-white  backdrop-filter backdrop-blur-md bg-opacity-30 border-b border-gray-200">
-      <div className="container px-4 flex items-center justify-between">
+      <div className="container px-4 flex items-center justify-between  h-[64px]">
         <Link to="/">
           <img src="/logo.png" alt="logo" className="h-12" />
         </Link>
-        <nav className="flex items-center h-full">
+        {/* only for desktop */}
+        <nav className="flex items-center h-full max-sm:hidden">
           {headerLinks.map((link) => (
             <NavLink
               key={link.label}
@@ -38,6 +40,10 @@ const Header = () => {
             </Button>
           </Link>
         </nav>
+        <div className="sm:hidden flex gap-3 items-center">
+          <IconButton icon={<AiOutlineMoon />} />
+          <MobileNav />
+        </div>
       </div>
     </header>
   );
