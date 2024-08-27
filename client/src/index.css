@@ -105,7 +105,7 @@ body {
 }
 
 .cta {
-  background: url("../public/cta.jpg");
+  background: url("/cta.jpg");
   background-position: center;
   background-size: cover;
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const AboutSection = () => {
   return (
     <section className="container px-4 max-md:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 max-sm:my-10 md:my-32">
-      <div className="relative ms-4 md:h-[60vh] ">
+      <div id="about" className="relative ms-4 md:h-[60vh] ">
         <img
           className="w-full rounded-md h-full object-cover object-center"
           src="https://media.istockphoto.com/id/123496227/photo/graduation-caps-thrown-in-the-air.webp?b=1&s=612x612&w=0&k=20&c=JM_w_TWXJK3kkCm4M6DYQfSjWOgNygWSPXQayEpWE1o="
@@ -29,7 +29,7 @@ const AboutSection = () => {
           tracking their progress, and accessing valuable resources.
         </p>
         <Link to="/about">
-          <button className="inline-flex py-3 px-7  items-center justify-center rounded-full bg-slate-600/20 font-medium text-neutral-900  hover:bg-slate-600/30 active:bg-slate-600/20 max-sm:text-sm dark:text-slate-300">
+          <button className="inline-flex py-3 px-7 md:mt-7 items-center justify-center rounded-full bg-slate-600/20 font-medium text-neutral-900  hover:bg-slate-600/30 active:bg-slate-600/20 max-sm:text-sm dark:text-slate-300">
             Learn More
           </button>
         </Link>

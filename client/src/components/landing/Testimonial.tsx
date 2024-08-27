@@ -12,15 +12,15 @@ import { FaQuoteLeft } from "react-icons/fa";
 const Testimonial = () => {
   return (
     <section className="container px-3">
-      <h1 className="text-3xl max-sm:text-xl mb-4 ">
-        What Our <span className="text-orange-400">Students Say</span>{" "}
-      </h1>
       <div className="max-w-xl mx-auto">
+        <h1 className="text-3xl max-sm:text-xl mb-4 ">
+          What Our <span className="text-orange-400">Students Say</span>{" "}
+        </h1>
         <Carousel>
           <CarouselContent>
             {testimonials.map((testimonial) => (
               <CarouselItem key={testimonial.photoUrl}>
-                <div className="p-0">
+                <div className="p-0 md:p-5">
                   <div className="relative">
                     <h3 className="text-xl mb-4 dar:text-gray-400 font-serif italic text-gray-600 dark:text-slate-300">
                       "{testimonial.feedback}"

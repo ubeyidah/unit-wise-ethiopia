@@ -16,8 +16,12 @@ const Accordion = () => {
         <Acc type="single" collapsible className="w-full !text-xl">
           {faqs.map((faq) => (
             <AccordionItem value={faq.title} key={faq.id}>
-              <AccordionTrigger>{faq.title}</AccordionTrigger>
-              <AccordionContent>{faq.answer}</AccordionContent>
+              <AccordionTrigger className="text-[17px]">
+                {faq.title}
+              </AccordionTrigger>
+              <AccordionContent className="text-[17px]">
+                {faq.answer}
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Acc>

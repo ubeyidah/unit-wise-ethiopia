@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 
 const MobileNav = () => {
   const linkClass: string =
-    "border-b-2 border-slate-500 py-4 text-slate-500 px-4 transition-all duration-100 hover:text-green-400";
+    "border-b-2 dark:border-slate-700 border-slate-400 py-4 text-slate-500 px-4 transition-all duration-100 hover:text-green-400";
   const activeLink: string =
     "border-b-2 border-green-500 py-4 text-green-500 px-4 transition-all duration-100 bg-green-50/70 dark:bg-green-300/10";
 

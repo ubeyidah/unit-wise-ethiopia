@@ -15,8 +15,8 @@ const WhyChooseUs = () => {
                 <GiCheckMark className="text-green-600 mt-2" />
               </div>
               <div>
-                <h2 className="font-bold">{becuse.title}</h2>
-                <p className="dark:text-gray-300 text-gray-700 text-sm">
+                <h2 className="font-bold text-lg">{becuse.title}</h2>
+                <p className="dark:text-gray-300 text-gray-700 text-md">
                   {becuse.desc}
                 </p>
               </div>
