@@ -1,10 +1,9 @@
 import { headerLinks } from "@/data/landing";
 import { Link, NavLink } from "react-router-dom";
-import { AiOutlineMoon } from "react-icons/ai";
 import { Separator } from "../ui/separator";
-import IconButton from "../IconButton";
 import { Button } from "../ui/button";
 import MobileNav from "./MobileNav";
+import { ThemeSwitcher } from "../ThemeSwitcher";
 
 const Header = () => {
   const linkClass: string =
@@ -13,7 +12,7 @@ const Header = () => {
     "border-b-2 border-green-500 py-[19px] text-green-500 px-4 transition-all duration-100";
 
   return (
-    <header className="sticky top-0 z-10 bg-white  backdrop-filter backdrop-blur-md bg-opacity-30 border-b border-gray-200">
+    <header className="sticky top-0 z-10 bg-white  backdrop-filter backdrop-blur-md bg-opacity-30 border-b border-gray-200 dark:border-gray-900">
       <div className="container px-4 flex items-center justify-between  h-[64px]">
         <Link to="/">
           <img src="/logo.png" alt="logo" className="h-12" />
@@ -29,19 +28,20 @@ const Header = () => {
               {link.label}
             </NavLink>
           ))}
-          <IconButton icon={<AiOutlineMoon />} />
+          <ThemeSwitcher />
           <Separator orientation="vertical" className="mx-4 h-5" />
           <Link to="/signin">
             <Button
               variant="ghost"
-              className=" bg-green-400/10 hover:bg-green-400/50"
+              className=" bg-green-400/10 hover:bg-green-400/50 dark:bg-green-300/20 dark:hover:bg-green-400/50 "
             >
               Sign In
             </Button>
           </Link>
         </nav>
+        {/* only for mobile */}
         <div className="sm:hidden flex gap-3 items-center">
-          <IconButton icon={<AiOutlineMoon />} />
+          <ThemeSwitcher />
           <MobileNav />
         </div>
       </div>
