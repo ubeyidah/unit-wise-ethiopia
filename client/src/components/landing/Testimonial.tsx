@@ -11,18 +11,21 @@ import { FaQuoteLeft } from "react-icons/fa";
 
 const Testimonial = () => {
   return (
-    <section className="container px-4">
-      <div className="max-w-lg mx-auto">
+    <section className="container px-3">
+      <h1 className="text-3xl max-sm:text-xl mb-4 ">
+        What Our <span className="text-orange-400">Students Say</span>{" "}
+      </h1>
+      <div className="max-w-xl mx-auto">
         <Carousel>
           <CarouselContent>
             {testimonials.map((testimonial) => (
               <CarouselItem key={testimonial.photoUrl}>
-                <div>
+                <div className="p-0">
                   <div className="relative">
-                    <h3 className="text-xl mb-4 text-gray-400 font-serif italic">
+                    <h3 className="text-xl mb-4 dar:text-gray-400 font-serif italic text-gray-600 dark:text-slate-300">
                       "{testimonial.feedback}"
                     </h3>
-                    <FaQuoteLeft className="absolute top-0 size-16 text-slate-400/30 -z-10 " />
+                    <FaQuoteLeft className="absolute -top-2 -left-2 size-16 text-slate-400/30 -z-10 dark:text-slate-400/20" />
                   </div>
                   <div className="flex gap-4">
                     <Avatar>
@@ -38,9 +41,8 @@ const Testimonial = () => {
                     <div>
                       <h4>{testimonial.name}</h4>
 
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm dark:text-slate-400 text-slate-700">
                         from {testimonial.school}
-                        {testimonial.school.includes("school") && "school"}
                       </p>
                     </div>
                   </div>
@@ -48,8 +50,10 @@ const Testimonial = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <div className="max-md:hidden">
+            <CarouselPrevious />
+            <CarouselNext />
+          </div>
         </Carousel>
       </div>
     </section>

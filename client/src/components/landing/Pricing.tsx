@@ -57,7 +57,9 @@ const Pricing = () => {
                   <span className="font-semibold text-primary">
                     <GiCheckMark className="text-green-600 mt-2" />
                   </span>
-                  <span className="max-sm:text-sm">{list}</span>
+                  <span className="max-sm:text-sm text-wrap max-sm:max-w-[300px]">
+                    {list}
+                  </span>
                 </li>
               ))}
             </ul>

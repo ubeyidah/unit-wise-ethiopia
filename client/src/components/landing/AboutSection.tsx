@@ -6,7 +6,7 @@ const AboutSection = () => {
       <div className="relative ms-4 md:h-[60vh] ">
         <img
           className="w-full rounded-md h-full object-cover object-center"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUyU8ctpHEDJCzQRs63sPHoNyfjtCyJ_rZA&s"
+          src="https://media.istockphoto.com/id/123496227/photo/graduation-caps-thrown-in-the-air.webp?b=1&s=612x612&w=0&k=20&c=JM_w_TWXJK3kkCm4M6DYQfSjWOgNygWSPXQayEpWE1o="
           alt="Hero Image"
         />
         <div className="absolute inset-0 -z-[1] bg-gradient-to-tr from-gray-200 via-white/0 to-white/0 size-full rounded-md mt-4 -mb-4 me-4 -ms-4 lg:mt-6 lg:-mb-6 lg:me-6 lg:-ms-6 dark:from-neutral-800 dark:via-neutral-900/0 dark:to-neutral-900/0"></div>

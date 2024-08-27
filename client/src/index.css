@@ -103,3 +103,9 @@ body {
     @apply max-w-7xl mx-auto;
   }
 }
+
+.cta {
+  background: url("../public/cta.jpg");
+  background-position: center;
+  background-size: cover;
+}

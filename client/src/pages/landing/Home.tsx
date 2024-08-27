@@ -1,4 +1,5 @@
 import AboutSection from "@/components/landing/AboutSection";
+import CTA from "@/components/landing/CTA";
 import Fetures from "@/components/landing/Fetures";
 import Footer from "@/components/landing/Footer";
 import Header from "@/components/landing/Header";
@@ -17,6 +18,7 @@ const Home = () => {
       <WhyChooseUs />
       <Pricing />
       <Testimonial />
+      <CTA />
       <Footer />
     </main>
   );

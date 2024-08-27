@@ -91,21 +91,44 @@ export const pricing = {
 
 export const testimonials = [
   {
-    name: "Abebe Alemu",
-    school: "Addis Ababa High School",
-    feedback: "Unit Wise Ethiopia has been a game-changer for my exam preparation. The dashboard is intuitive and helps me track my progress easily.",
-    photoUrl: "https://randomuser.me/api/portraits/men/31.jpg"
+    name: "Ubeyid Oumer",
+    school: "Milinium secondayr and preparatory school",
+    feedback:
+      "This app is exactly what I needed to manage my study schedule. The lifetime access is a great value for all the features provided.",
+    photoUrl:
+      "https://yt3.ggpht.com/5uKpxh2YUHCIlkYephS74ALIhYAQXNP94fYlMEHmKU2caU9dyg6HL1lhhOvUp7U-fQ9bO1Eo6A=s88-c-k-c0x00ffffff-no-rj",
+  },
+];
+
+export const faqs = [
+  {
+    id: 1,
+    title: "How does the lifetime access work?",
+    answer:
+      "Once you make a one-time payment, you gain lifetime access to all features, resources, and future updates on Unit Wise Ethiopia. There are no recurring fees or hidden costs.",
   },
   {
-    name: "Sara Bekele",
-    school: "Hawassa Secondary School",
-    feedback: "I love how everything is organized by units and topics. It made my study sessions much more focused and productive.",
-    photoUrl: "https://randomuser.me/api/portraits/women/44.jpg"
+    id: 2,
+    title: "What study materials are included?",
+    answer:
+      "The app includes a comprehensive set of study materials for grades 9-12, covering both the old and new curriculums. These include textbooks, notes, quizzes, and other resources tailored to help you prepare effectively for your exams.",
   },
   {
-    name: "Mulugeta Tesfaye",
-    school: "Bahir Dar Academy",
-    feedback: "This app is exactly what I needed to manage my study schedule. The lifetime access is a great value for all the features provided.",
-    photoUrl: "https://randomuser.me/api/portraits/men/75.jpg"
-  }
+    id: 3,
+    title: "Can I switch between natural and social study types?",
+    answer:
+      "No, once you select your study type (natural or social) during the initial setup, it cannot be changed. This ensures a focused and tailored study experience. But if you want relly change you can contact us at `unitwiseethiopia@gmail.com`",
+  },
+  {
+    id: 4,
+    title: "How does progress tracking work?",
+    answer:
+      "The dashboard provides real-time tracking of your study progress, including completed topics, remaining topics, and overall readiness for your exams. This feature helps you stay on track and identify areas that need more focus.",
+  },
+  {
+    id: 5,
+    title: "What if I need support or have questions?",
+    answer:
+      "We offer dedicated support through email(unitwiseethiopia@gmail.com). If you have any questions or need assistance, you can reach out to us anytime, and we'll be happy to help.",
+  },
 ];
