@@ -13,7 +13,7 @@ const MobileNav = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <button className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-300 bg-transparent transition-colors hover:bg-neutral-200 dark:border-neutral-400/80 dark:hover:bg-neutral-200/10">
+        <button className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-300 bg-transparent transition-colors hover:bg-neutral-200 dark:border-neutral-400/30 dark:hover:bg-neutral-200/10">
           <SlMenu />
         </button>
       </SheetTrigger>

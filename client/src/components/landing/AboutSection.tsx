@@ -15,14 +15,14 @@ const AboutSection = () => {
         <h2 className="mb-4 font-bold max-sm:text-2xl md:text-3xl ">
           <span className="text-green-600">About</span> Unit Wise Ethiopia
         </h2>
-        <p className="mb-4 text-slate-300">
+        <p className="mb-4 dark:text-slate-300 text-slate-800">
           Unit Wise Ethiopia is a student-created platform designed to
           streamline exam preparation for students across Ethiopia. Born out of
           a personal need for better study tools, our app provides a
           comprehensive curriculum structure, progress tracking, and interactive
           features to help students excel.
         </p>
-        <p className="mb-4 text-slate-300">
+        <p className="mb-4 dark:text-slate-300 text-slate-800">
           As a grade 12 student myself, I understand the challenges and
           pressures of preparing for entrance exams. That’s why I’ve developed
           this app to support students in managing their study schedules,
