@@ -1,5 +1,11 @@
 import { SlMenu } from "react-icons/sl";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import { headerLinks } from "@/data/landing";
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
@@ -13,11 +19,12 @@ const MobileNav = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <button className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-300 bg-transparent transition-colors hover:bg-neutral-200 dark:border-neutral-400/30 dark:hover:bg-neutral-200/10">
+        <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-300 bg-transparent transition-colors hover:bg-neutral-200 dark:border-neutral-400/30 dark:hover:bg-neutral-200/10">
           <SlMenu />
-        </button>
+        </span>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent aria-describedby="nav menu" aria-description="menu">
+        <SheetTitle></SheetTitle>
         <nav className="flex flex-col mt-4">
           {headerLinks.map((link) => (
             <NavLink
@@ -37,6 +44,7 @@ const MobileNav = () => {
             </Button>
           </Link>
         </nav>
+        <SheetDescription></SheetDescription>
       </SheetContent>
     </Sheet>
   );

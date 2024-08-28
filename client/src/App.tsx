@@ -10,8 +10,8 @@ import Privacy from "./components/policys/Privacy";
 
 const App = () => {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider>
         <Routes>
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy-policy" element={<Privacy />} />
@@ -22,8 +22,8 @@ const App = () => {
             <Route path="/signin" element={<Signin />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
 
