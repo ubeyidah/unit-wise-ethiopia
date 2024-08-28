@@ -59,6 +59,18 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    status: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      enum: ["teacher", "student", ""],
+      default: "",
+    },
+    paymentImage: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     isPaid: {
       type: Boolean,
       default: false,

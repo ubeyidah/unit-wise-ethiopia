@@ -10,7 +10,8 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: process.env.CLIENT_URL + "/signin",
+    failureRedirect:
+      process.env.CLIENT_URL + "/signin?message=Unexpected error. Try again",
   }),
   (req, res) => {
     res.redirect(process.env.CLIENT_URL + "/dashboard");

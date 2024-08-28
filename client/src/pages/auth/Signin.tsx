@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
-import { useAuthContext } from "@/context/AuthProvider";
 import { useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
 
@@ -11,8 +10,8 @@ const Signin = () => {
     setLoading(true);
     window.open("/api/auth/google", "_self");
   };
-  const auth = useAuthContext();
-  console.log(auth);
+  const [searchParams] = useSearchParams();
+  const message = searchParams.get("message");
 
   return (
     <section className="container px-4 py-7">
@@ -29,7 +28,9 @@ const Signin = () => {
                     alt="tailus logo"
                   />
                 </div>
-
+                {message && (
+                  <p className="text-md text-center text-red-600">{message}</p>
+                )}
                 <h2 className="mb-8 text-2xl font-bold text-center text-gray-800 dark:text-white">
                   Sign Up for UnitWise Ethiopia
                 </h2>

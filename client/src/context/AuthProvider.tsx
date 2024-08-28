@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { toast } from "sonner";
 export interface User {
+  _id: string;
   userName: string;
   fullName: string;
   email: string;
@@ -18,6 +19,7 @@ export interface User {
   followers: string[];
   following: string[];
   phoneNumber: string;
+  paymentImage: string;
   isPaid: boolean;
   isBlock: boolean;
   isAdmin: boolean;
