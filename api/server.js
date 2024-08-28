@@ -3,10 +3,23 @@ import { config } from "dotenv";
 import contactRoutes from "./routes/contact.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import connectDb from "./config/db.js";
+import passport from "./passport/google.js";
+import session from "express-session";
 
 config();
 const app = express();
 app.use(express.json());
+
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
 app.use("/api/auth", authRoutes);

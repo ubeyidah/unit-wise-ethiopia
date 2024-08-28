@@ -30,14 +30,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       lowercase: true,
-      enum: ["social", "natural"],
+      enum: ["social", "natural", ""],
       default: "",
     },
     gender: {
       type: String,
       trim: true,
       lowercase: true,
-      enum: ["male", "female"],
+      enum: ["male", "female", ""],
+      default: "",
     },
     school: {
       type: String,

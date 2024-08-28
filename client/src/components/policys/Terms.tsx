@@ -47,7 +47,7 @@ const Terms = () => {
             </h2>
             <p>
               All materials on Unit Wise Ethiopia, including but not limited to
-              text, graphics, and code, are owned by [Your Name] or its
+              text, graphics, and code, are owned by unitwise ethiopia or its
               licensors and are protected by copyright and other intellectual
               property laws. You may not copy, distribute, or create derivative
               works from any content on this site without explicit permission.
