@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/AuthProvider";
+import { useState } from "react";
+import { TbLoader2 } from "react-icons/tb";
 
 const Signin = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const signinWithGoogle = () => {
+    setLoading(true);
     window.open("/api/auth/google", "_self");
   };
   const auth = useAuthContext();
@@ -42,9 +46,19 @@ const Signin = () => {
                   className="rounded-full dark:text-white text-black flex items-center justify-center gap-4"
                   variant="outline"
                   onClick={signinWithGoogle}
+                  disabled={loading}
                 >
-                  <FcGoogle className="size-6" />
-                  Sign in with your Google account
+                  {loading ? (
+                    <>
+                      {" "}
+                      <TbLoader2 className="animate-spin mr-3" /> Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <FcGoogle className="size-6" />
+                      Sign in with your Google account
+                    </>
+                  )}
                 </Button>
               </div>
 
