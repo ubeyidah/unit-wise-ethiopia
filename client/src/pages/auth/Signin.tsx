@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/context/AuthProvider";
 
 const Signin = () => {
   const signinWithGoogle = () => {
     window.open("/api/auth/google", "_self");
   };
+  const auth = useAuthContext();
+  console.log(auth);
+
   return (
     <section className="container px-4 py-7">
       <div className="container relative m-auto px-2 text-gray-500 md:px-12 xl:px-40">

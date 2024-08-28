@@ -8,8 +8,14 @@ import Signin from "./pages/auth/Signin";
 import Terms from "./components/policys/Terms";
 import Privacy from "./components/policys/Privacy";
 import { Toaster } from "@/components/ui/sonner";
+import { useAuthContext } from "./context/AuthProvider";
+import Loading from "./components/loading";
 
 const App = () => {
+  const auth = useAuthContext();
+  if (auth?.loading) {
+    return <Loading />;
+  }
   return (
     <BrowserRouter>
       <ThemeProvider>
