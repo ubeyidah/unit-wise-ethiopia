@@ -1,3 +1,5 @@
+import { Separator } from "@/components/ui/separator";
+
 const Contact = () => {
   return (
     <section className="py-8 container px-4">
@@ -12,7 +14,7 @@ const Contact = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16">
-          <div className="md:order-2 border-b border-neutral-800 pb-4 mb-1 md:border-b-0 md:pb-0 md:mb-0">
+          <div className="md:order-2 pb-4 mb-1 md:pb-0 md:mb-0">
             <form className="flex flex-col gap-5">
               <div className="relative">
                 <input
@@ -135,6 +137,7 @@ const Contact = () => {
                   </svg>
                 </button>
               </div>
+              <Separator className="w-full md:hidden" />
             </form>
           </div>
 
