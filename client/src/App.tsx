@@ -7,11 +7,13 @@ import Contact from "./pages/landing/Contact";
 import Signin from "./pages/auth/Signin";
 import Terms from "./components/policys/Terms";
 import Privacy from "./components/policys/Privacy";
+import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider>
+        <Toaster />
         <Routes>
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy-policy" element={<Privacy />} />

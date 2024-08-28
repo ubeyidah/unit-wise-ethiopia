@@ -1,3 +1,4 @@
+import { webEmail } from "@/data/landing";
 const About = () => {
   return (
     <section className="container px-4 py-11">
@@ -94,11 +95,11 @@ const About = () => {
           Have questions or want to learn more about Unit Wise Ethiopia? We’d
           love to hear from you! Feel free to
           <a
-            href="mailto:unitwiseethiopia@gmail.com"
+            href={`mailto:${webEmail}`}
             target="_blank"
             className="text-blue-700 cursor-pointer mx-2"
           >
-            contact us (unitwiseethiopia@gmail.com)
+            contact us ({webEmail})
           </a>
           and let’s discuss how we can support your academic journey.
         </p>

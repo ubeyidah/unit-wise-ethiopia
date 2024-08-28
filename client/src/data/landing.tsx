@@ -19,7 +19,7 @@ export const headerLinks = [
     href: "/contact",
   },
 ];
-
+export const webEmail = "uwe.ethiopia@gmail.com";
 export const futures = [
   {
     title: "Comprehensive Curriculum Structure",
@@ -116,8 +116,7 @@ export const faqs = [
   {
     id: 3,
     title: "Can I switch between natural and social study types?",
-    answer:
-      "No, once you select your study type (natural or social) during the initial setup, it cannot be changed. This ensures a focused and tailored study experience. But if you want relly change you can contact us at `unitwiseethiopia@gmail.com`",
+    answer: `No, once you select your study type (natural or social) during the initial setup, it cannot be changed. This ensures a focused and tailored study experience. But if you want relly change you can contact us at ${webEmail}`,
   },
   {
     id: 4,
@@ -128,7 +127,6 @@ export const faqs = [
   {
     id: 5,
     title: "What if I need support or have questions?",
-    answer:
-      "We offer dedicated support through email(unitwiseethiopia@gmail.com). If you have any questions or need assistance, you can reach out to us anytime, and we'll be happy to help.",
+    answer: `We offer dedicated support through email(${webEmail}). If you have any questions or need assistance, you can reach out to us anytime, and we'll be happy to help.`,
   },
 ];

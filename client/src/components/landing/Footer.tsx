@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { BiLogoYoutube } from "react-icons/bi";
 import { FaGithub } from "react-icons/fa";
+import { webEmail } from "@/data/landing";
 
 const Footer = () => {
   return (
@@ -36,7 +37,7 @@ const Footer = () => {
                   <h3 className="text-lg font-semibold text-green-500">
                     Unit Wise Ethiopia (UWE)
                   </h3>
-                  <p>unitwiseethiopia@gmail.com</p>
+                  <p>{webEmail}</p>
                 </div>
 
                 <div className="flex flex-col">

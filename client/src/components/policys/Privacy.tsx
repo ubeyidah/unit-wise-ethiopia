@@ -1,3 +1,4 @@
+import { webEmail } from "@/data/landing";
 const Privacy = () => {
   return (
     <div className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 md:p-12">
@@ -85,10 +86,10 @@ const Privacy = () => {
             information at any time. You can manage your account settings or
             contact us directly at{" "}
             <a
-              href="mailto:unitwiseethiopia@gmail.com"
+              href={`mailto:${webEmail}`}
               className="text-blue-600 dark:text-blue-400 underline"
             >
-              unitwiseethiopia@gmail.com
+              {webEmail}
             </a>{" "}
             for assistance.
           </p>
@@ -111,10 +112,10 @@ const Privacy = () => {
             If you have any questions about this Privacy and Cookie Statement,
             please contact us at{" "}
             <a
-              href="mailto:unitwiseethiopia@gmail.com"
+              href={`mailto:${webEmail}`}
               className="text-blue-600 dark:text-blue-400 underline"
             >
-              unitwiseethiopia@gmail.com
+              {webEmail}
             </a>
             .
           </p>

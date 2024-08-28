@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { webEmail } from "@/data/landing";
 
 const Terms = () => {
   return (
@@ -106,10 +107,10 @@ const Terms = () => {
               If you have any questions or concerns about these Terms of Use,
               please contact us at{" "}
               <a
-                href="mailto:unitwiseethiopia@gmail.com"
+                href={`mailto:${webEmail}`}
                 className="text-blue-600 dark:text-blue-400 underline"
               >
-                unitwiseethiopia@gmail.com
+                {webEmail}
               </a>
               .
             </p>

@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { TbLoader2 } from "react-icons/tb";
 import {
   Form,
   FormControl,
@@ -14,6 +15,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { BsSend } from "react-icons/bs";
+import { sendEmail } from "@/apis/contact/contact.api.tsx";
+import { toast } from "sonner";
+import { webEmail } from "@/data/landing";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -35,9 +39,14 @@ const Contact = () => {
       message: "",
     },
   });
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
+
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    try {
+      await sendEmail(data);
+    } catch (error) {
+      return toast.success("somting went wrong. try again later.");
+    }
+  };
   return (
     <section className="py-8 container px-4">
       <div>
@@ -113,8 +122,17 @@ const Contact = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">
-                  Send <BsSend className="ml-2 h-4 w-4" />
+                <Button type="submit" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? (
+                    <>
+                      {" "}
+                      <TbLoader2 className="animate-spin mr-3" /> Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send <BsSend className="ml-2 h-4 w-4" />
+                    </>
+                  )}
                 </Button>
               </form>
               <Separator className="md:hidden my-4 " />
@@ -150,10 +168,10 @@ const Contact = () => {
 
                 <a
                   className="mt-1 text-neutral-400 text-sm hover:text-neutral-200 focus:outline-none focus:text-neutral-200"
-                  href="#mailto:unitwiseethiopia@gmail.com"
+                  href={`mailto:${webEmail}`}
                   target="_blank"
                 >
-                  unitwiseethiopia@gamil.com
+                  {webEmail}
                 </a>
               </div>
             </div>
