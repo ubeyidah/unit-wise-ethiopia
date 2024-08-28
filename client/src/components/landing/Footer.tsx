@@ -36,6 +36,7 @@ const Footer = () => {
                   <h3 className="text-lg font-semibold text-green-500">
                     Unit Wise Ethiopia (UWE)
                   </h3>
+                  <p>unitwiseethiopia@gmail.com</p>
                 </div>
 
                 <div className="flex flex-col">
@@ -93,14 +94,22 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-between max-sm:flex-col max-sm:text-center max-sm:gap-3 border-t border-gray-100 dark:border-gray-800 py-4 pb-8 md:pl-16">
+              <div className="flex justify-between max-sm:flex-col max-sm:text-center max-sm:gap-3 border-t border-gray-100 dark:border-gray-800 py-4 pb-8 md:pl-16 flex-wrap">
                 <span>
                   &copy; UnitWise Ethiopia {new Date().getFullYear()} - All
                   right reserved
                 </span>
-                <Link to="/term" className="text-sm hover:underline">
-                  Terms & Condition
-                </Link>
+                <div>
+                  <Link to="/terms" className="text-sm hover:underline">
+                    Terms & Condition
+                  </Link>
+                  <Link
+                    to="/privacy-policy"
+                    className="text-sm hover:underline"
+                  >
+                    Privacy & Cookie Satement
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
