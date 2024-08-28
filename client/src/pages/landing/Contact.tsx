@@ -66,7 +66,7 @@ const Contact = () => {
                       <FormControl>
                         <Input placeholder="your name" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="dark:text-red-400" />
                     </FormItem>
                   )}
                 />
@@ -79,7 +79,7 @@ const Contact = () => {
                       <FormControl>
                         <Input placeholder="your school" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="dark:text-red-400" />
                     </FormItem>
                   )}
                 />
@@ -92,7 +92,7 @@ const Contact = () => {
                       <FormControl>
                         <Input placeholder="yor email" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="dark:text-red-400" />
                     </FormItem>
                   )}
                 />
@@ -109,7 +109,7 @@ const Contact = () => {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="dark:text-red-400" />
                     </FormItem>
                   )}
                 />

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "unit wise ethiopia",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node api/server.js",
     "dev": "nodemon api/server.js"
@@ -11,8 +12,8 @@
     "education",
     "ethiopia",
     "entrance",
-    "grade",
-    "12"
+    "grade12",
+    "student"
   ],
   "author": "ubeyid oumer",
   "license": "ISC",
