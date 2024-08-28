@@ -12,18 +12,18 @@ const About = () => {
         <p className="mb-3">
           Unit Wise Ethiopia began with a vision sparked by a student's personal
           experience. As a dedicated student facing the complexities of exam
-          preparation, Ubeyid Oumer noticed a significant gap in the available
-          tools and resources. The existing solutions were either too generic or
-          didn't cater specifically to the needs of Ethiopian students,
-          especially when dealing with both the old and new curriculums.
+          preparation, I noticed a significant gap in the available tools and
+          resources. The existing solutions were either too generic or didn't
+          cater specifically to the needs of Ethiopian students, especially when
+          dealing with both the old and new curriculums.
         </p>
         <p className="mb-3">
-          Driven by a desire to improve this situation, Ubeyid Oumer embarked on
-          a mission to create a platform that would make exam preparation more
-          structured and effective. The idea was simple but ambitious: to
-          develop a comprehensive web application that organizes study
-          materials, tracks progress, and provides valuable insights tailored to
-          the Ethiopian educational system.
+          Driven by a desire to improve this situation, I embarked on a mission
+          to create a platform that would make exam preparation more structured
+          and effective. The idea was simple but ambitious: to develop a
+          comprehensive web application that organizes study materials, tracks
+          progress, and provides valuable insights tailored to the Ethiopian
+          educational system.
         </p>
         <p className="mb-3">
           Starting from scratch, the journey involved extensive research,
@@ -78,11 +78,11 @@ const About = () => {
           Developer of Unit Wise Ethiopia(UWE)
         </h3>
         <p className="mb-7">
-          A dedicated student and passionate coder, Ubeyid Oumer launched Unit
-          Wise Ethiopia to tackle the real challenges faced by students in
-          preparing for exams. With a deep understanding of these challenges,
-          Ubeyid Oumer is committed to making study preparation more accessible
-          and effective for all.
+          A dedicated student and passionate coder, Ubeyid launched Unit Wise
+          Ethiopia to tackle the real challenges faced by students in preparing
+          for exams. With a deep understanding of these challenges, Ubeyid is
+          committed to making study preparation more accessible and effective
+          for all.
         </p>
       </div>
       <div>
