@@ -120,6 +120,7 @@ const Payment = ({
   const finishPayment = async () => {
     try {
       setcanValidate(true);
+      if (progress) return;
       const hasError = validateForm();
       if (hasError) {
         toast.error("Please enter a valid information", {
@@ -373,6 +374,7 @@ const Payment = ({
         <Button
           variant="secondary"
           onClick={() => {
+            if (progress) return;
             addInfo(paymentInfo);
             setSection("profile");
           }}
