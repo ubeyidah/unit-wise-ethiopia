@@ -26,9 +26,10 @@ const useUploadImage = (): hookReturnType => {
         const prog = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setProgress(prog);
       },
-      (error) => {
-        toast.error("Unable to upload check your internet connection", {
-          description: error.message,
+      () => {
+        setProgress(0);
+        toast.error("Unable to upload", {
+          description: "Please check your internet connection and try agin",
           action: {
             label: <IoClose className="size-5" />,
             onClick: () => null,
@@ -39,6 +40,13 @@ const useUploadImage = (): hookReturnType => {
         try {
           const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
           setUrl(imageUrl);
+          setProgress(0);
+          toast.success("Uploaded successfully.", {
+            action: {
+              label: <IoClose className="size-5" />,
+              onClick: () => null,
+            },
+          });
         } catch (error) {
           console.log(error);
         }

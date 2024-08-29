@@ -14,7 +14,7 @@ export interface ProfileType {
   phoneNumber: string;
   paymentImage: string | undefined;
   status: string;
-  isAccepted: boolean | undefined;
+  isAccept: boolean | undefined;
   source: string | undefined;
 }
 const MoreInfo = () => {
@@ -31,7 +31,7 @@ const MoreInfo = () => {
     phoneNumber: user?.phoneNumber || "",
     paymentImage: user?.paymentImage || "",
     status: user?.status || "",
-    isAccepted: false,
+    isAccept: false,
     source: "",
   });
 

@@ -20,7 +20,20 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ProfileType } from "@/pages/MoreInfo";
 import { toast } from "sonner";
 import { IoClose } from "react-icons/io5";
+import { AiOutlineLoading } from "react-icons/ai";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useUploadImage from "@/hooks/useUploadImage";
+
+type PaymentType = {
+  paymentImage: string;
+  source: string;
+  isAccept: string;
+};
 
 const Payment = ({
   profile,
@@ -32,18 +45,18 @@ const Payment = ({
   setSection: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [paymentInfo, setPaymentInfo] = useState({
-    paymentImage: "",
-    source: "",
-    isAccept: false,
+    paymentImage: profile.paymentImage || "",
+    source: profile.source || "",
+    isAccept: !!profile.isAccept,
   });
   const [canValidate, setcanValidate] = useState(false);
-  const [error, setError] = useState({
-    paymentImage: profile.paymentImage,
+  const [error, setError] = useState<PaymentType>({
+    paymentImage: "",
     source: "",
     isAccept: "",
   });
 
-  const { progress, url, uploadImage } = useUploadImage();
+  let { progress, url, uploadImage } = useUploadImage();
 
   const validateForm = () => {
     let hasError = false;
@@ -58,13 +71,13 @@ const Payment = ({
         ...prev,
         paymentImage: "",
       }));
-      hasError = false;
     }
     if (!paymentInfo.source || paymentInfo.source == "") {
       setError((prev) => ({
         ...prev,
         source: "Please tell us where did you hear about us",
       }));
+      hasError = true;
     } else {
       setError((prev) => ({
         ...prev,
@@ -87,10 +100,17 @@ const Payment = ({
   };
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
+    e.target.disabled = true;
     const image = e.target.files[0];
     if (!image) return;
     uploadImage(image, "payment");
+    e.target.disabled = false;
   };
+  useEffect(() => {
+    if (url) {
+      setPaymentInfo((prev) => ({ ...prev, paymentImage: url || "" }));
+    }
+  }, [url]);
   useEffect(() => {
     if (canValidate) {
       validateForm();
@@ -101,20 +121,34 @@ const Payment = ({
     try {
       setcanValidate(true);
       const hasError = validateForm();
-      if (hasError)
-        return toast.error("Please enter a valid information", {
+      if (hasError) {
+        toast.error("Please enter a valid information", {
           description: "Provide us with correct information to complete",
           action: {
             label: <IoClose className="size-5" />,
             onClick: () => null,
           },
         });
-      console.log(paymentInfo);
+        return;
+      }
+      console.log(profile);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log({ progress, url });
+  const imageRemover = () => {
+    setPaymentInfo((prev) => ({ ...prev, paymentImage: "" }));
+    url = "";
+  };
+
+  type AddInfo = {
+    paymentImage: string;
+    isAccept: boolean;
+    source: string;
+  };
+  const addInfo = ({ paymentImage, isAccept, source }: AddInfo) => {
+    setProfile((prev) => ({ ...prev, paymentImage, isAccept, source }));
+  };
   return (
     <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-5xl py-20 max-md:py-10 my-20  bg-slate-200/20">
       <div className="flex items-center gap-5 mb-8">
@@ -131,23 +165,37 @@ const Payment = ({
             <h4 className="text-lg font-semibold text-green-400 mb-2">
               Upload Your Payment Confirmation
             </h4>
-            <label
-              htmlFor="screenshot"
-              className={`flex justify-center items-center flex-col p-4 border-dashed border rounded-sm bg-green-500/5 text-green-400 aspect-video gap-4 ${
-                !!error.paymentImage
-                  ? "border-red-500/60"
-                  : "border-green-500/60"
-              }`}
-            >
-              <BsCloudUpload className="size-10" />
-              <p className="text-sm text-center">
-                Upload Payment Screenshot/Receipt
-              </p>
-            </label>
+            {!paymentInfo.paymentImage ? (
+              <UploadTemplate error={error} progress={progress} />
+            ) : (
+              <div className="aspect-video relative">
+                <img
+                  src={paymentInfo.paymentImage || ""}
+                  alt="payment confirm screenshot "
+                  className="size-full rounded-md object-cover object-center"
+                />
+
+                <TooltipProvider>
+                  <Tooltip delayDuration={100}>
+                    <TooltipTrigger asChild>
+                      <button
+                        className="absolute top-2 right-2 bg-slate-700/90 p-1 rounded-full border hover:bg-slate-700/80"
+                        onClick={imageRemover}
+                      >
+                        <IoClose className="size-5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>remove image</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            )}
             {error.paymentImage ? (
               <p className="text-red-600 text-sm mt-2">{error.paymentImage}</p>
             ) : (
-              <p className="text-xs mt-2 dark:text-slate-300">
+              <p className="text-xs mt-3 dark:text-slate-300">
                 please upload your payment confirmation screenshot or receipt
                 below. This is required to verify your payment.
               </p>
@@ -157,10 +205,12 @@ const Payment = ({
               id="screenshot"
               accept="image/*"
               onChange={handleImage}
+              disabled={!!progress || !!paymentInfo.paymentImage}
+              className="disable:opacity-40"
               hidden
             />
           </div>
-          <div className="my-4">
+          <div className="my-6">
             <h3
               className={`text-sm mb-1 ${!!error.source ? "text-red-600" : ""}`}
             >
@@ -323,6 +373,7 @@ const Payment = ({
         <Button
           variant="secondary"
           onClick={() => {
+            addInfo(paymentInfo);
             setSection("profile");
           }}
         >
@@ -335,3 +386,35 @@ const Payment = ({
 };
 
 export default Payment;
+
+function UploadTemplate({
+  error,
+  progress,
+}: {
+  error: PaymentType;
+  progress: number;
+}) {
+  return (
+    <label
+      htmlFor="screenshot"
+      className={`flex justify-center items-center flex-col p-4 border-dashed border rounded-sm bg-green-500/5 text-green-400 aspect-video gap-4 relative ${
+        !!error.paymentImage ? "border-red-500/60" : "border-green-500/60"
+      }`}
+    >
+      {progress ? (
+        <>
+          <AiOutlineLoading className="size-16 animate-spin text-green-400" />
+          <span className="text-xl absolute">{progress.toFixed(0)}%</span>
+        </>
+      ) : (
+        <>
+          {" "}
+          <BsCloudUpload className="size-10" />
+          <p className="text-sm text-center">
+            Upload Payment Screenshot/Receipt
+          </p>
+        </>
+      )}
+    </label>
+  );
+}
