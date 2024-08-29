@@ -18,6 +18,10 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ProfileType } from "@/pages/MoreInfo";
+import { toast } from "sonner";
+import { IoClose } from "react-icons/io5";
+import useUploadImage from "@/hooks/useUploadImage";
+
 const Payment = ({
   profile,
   setProfile,
@@ -38,6 +42,9 @@ const Payment = ({
     source: "",
     isAccept: "",
   });
+
+  const { progress, url, uploadImage } = useUploadImage();
+
   const validateForm = () => {
     let hasError = false;
     if (!paymentInfo.paymentImage) {
@@ -80,7 +87,9 @@ const Payment = ({
   };
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    console.log(e.target.files[0]);
+    const image = e.target.files[0];
+    if (!image) return;
+    uploadImage(image, "payment");
   };
   useEffect(() => {
     if (canValidate) {
@@ -92,13 +101,20 @@ const Payment = ({
     try {
       setcanValidate(true);
       const hasError = validateForm();
-      console.log(error);
-      if (hasError) return;
+      if (hasError)
+        return toast.error("Please enter a valid information", {
+          description: "Provide us with correct information to complete",
+          action: {
+            label: <IoClose className="size-5" />,
+            onClick: () => null,
+          },
+        });
       console.log(paymentInfo);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log({ progress, url });
   return (
     <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-5xl py-20 max-md:py-10 my-20  bg-slate-200/20">
       <div className="flex items-center gap-5 mb-8">
