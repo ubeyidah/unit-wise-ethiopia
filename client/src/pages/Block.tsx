@@ -21,9 +21,9 @@ const Block = () => {
           support team.
         </p>
 
-        <div className="flex items-center justify-end text-sm text-blue-400">
+        <div className="flex items-center justify-end text-sm text-blue-400 mt-4">
           <div className="flex gap-4">
-            <Link to="/home" className="hover:underline">
+            <Link to="/" className="hover:underline">
               Home
             </Link>
             <Link to="/contact" className="hover:underline">
