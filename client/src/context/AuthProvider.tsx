@@ -32,6 +32,7 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  error: boolean;
   login: (userData: User) => void;
   logout: () => void;
 }
@@ -49,6 +50,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
 
   const login = (userData: User) => {
     setUser(userData);
@@ -63,7 +65,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       const { user } = await checkAuth();
       login(user);
     } catch (error) {
-      toast.error("No internet");
+      setError(true);
+      toast.error("No internet connection");
     } finally {
       setLoading(false);
     }
@@ -76,7 +79,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, error, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

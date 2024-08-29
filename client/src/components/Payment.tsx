@@ -28,6 +28,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useUploadImage from "@/hooks/useUploadImage";
+import AccountSwitcher from "./AccountSwitcher";
 
 type PaymentType = {
   paymentImage: string;
@@ -151,19 +152,22 @@ const Payment = ({
     setProfile((prev) => ({ ...prev, paymentImage, isAccept, source }));
   };
   return (
-    <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-5xl py-20 max-md:py-10 my-20  bg-slate-200/20">
+    <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-5xl py-20 max-md:py-10 my-20 bg-slate-200/20 relative">
+      <div className="absolute top-3 right-4">
+        <AccountSwitcher />
+      </div>
       <div className="flex items-center gap-5 mb-8">
-        <div className=" p-3 box-content bg-green-300/10 rounded-full">
-          <FaMoneyCheck className="size-8 text-green-500" />
+        <div className=" p-3 box-content bg-green-300/10 rounded-full ">
+          <FaMoneyCheck className="size-8 max-sm:size-5 text-green-500" />
         </div>
-        <h1 className="text-2xl md:text-3xl max-md:text-center">
+        <h1 className="text-2xl md:text-3xl max-md:text-center max-sm:text-lg">
           <span className="text-green-400 ">Complete</span> Your Payment
         </h1>
       </div>
       <div className="flex flex-col w-full md:flex-row max-md:flex-col-reverse">
         <div className="md:w-2/5 md:p-4 w-full">
           <div>
-            <h4 className="text-lg font-semibold text-green-400 mb-2">
+            <h4 className="text-lg font-semibold max-sm:text-sm text-green-400 mb-2">
               Upload Your Payment Confirmation
             </h4>
             {!paymentInfo.paymentImage ? (
@@ -183,11 +187,11 @@ const Payment = ({
                         className="absolute top-2 right-2 bg-slate-700/90 p-1 rounded-full border hover:bg-slate-700/80"
                         onClick={imageRemover}
                       >
-                        <IoClose className="size-5" />
+                        <IoClose className="size-5 text-white" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>remove image</p>
+                      <p>remove</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -245,8 +249,8 @@ const Payment = ({
             bank.
           </p>
 
-          <div className="mb-4">
-            <Accordion type="single" collapsible defaultValue="option-1">
+          <div className="mb-4 py-4">
+            <Accordion type="single" collapsible>
               <AccordionItem value="option-1">
                 <AccordionTrigger>
                   <h3 className="text-lg font-semibold text-green-600">
@@ -363,8 +367,10 @@ const Payment = ({
             htmlFor="terms1"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Accept terms and conditions
-            <p className="text-sm text-muted-foreground">
+            <span className={error.isAccept ? "text-red-600" : ""}>
+              Accept terms and conditions
+            </span>
+            <p className="text-sm max-sm:text-xs text-muted-foreground">
               You agree to our Terms of Service and Privacy Policy.
             </p>
           </label>
@@ -374,7 +380,13 @@ const Payment = ({
         <Button
           variant="secondary"
           onClick={() => {
-            if (progress) return;
+            if (progress)
+              return toast.info("Please give a time to complete the upload.", {
+                action: {
+                  label: <IoClose className="size-5" />,
+                  onClick: () => null,
+                },
+              });
             addInfo(paymentInfo);
             setSection("profile");
           }}

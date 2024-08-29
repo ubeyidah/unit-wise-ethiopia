@@ -15,11 +15,15 @@ import PaymentVerify from "./pages/PaymentVerify";
 import MoreInfo from "./pages/MoreInfo";
 import Dashboard from "./pages/app/Dashboard";
 import VerifyRoute from "./components/layouts/VerifyRoute";
+import ErrorPage from "./components/ErrorPage";
 
 const App = () => {
   const auth = useAuthContext();
   if (auth?.loading) {
     return <Loading />;
+  }
+  if (auth?.error) {
+    return <ErrorPage />;
   }
   return (
     <BrowserRouter>

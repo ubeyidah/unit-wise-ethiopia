@@ -4,7 +4,7 @@ const Loading = () => {
       <img
         src="/logo.png"
         alt="loading"
-        className="w-[26%] md:w-[15%] animate-bounce"
+        className="w-[20%] md:w-[13%] animate-bounce"
       />
     </section>
   );

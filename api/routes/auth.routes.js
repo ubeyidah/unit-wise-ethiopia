@@ -19,13 +19,24 @@ router.get(
 );
 
 router.get("/logout", (req, res) => {
-  req.session.distroy((error) => {
-    if (error)
-      return res
-        .status(400)
-        .json({ message: "unable to logout please try agin later." });
-    res.status(200).json({ message: "Logout successfully completed" });
-  });
+  try {
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Failed to log out." });
+      }
+      req.session.destroy((err) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: "Failed to destroy session." });
+        }
+        res.clearCookie("connect.sid"); // clear session cookie
+        return res.status(200).json({ success: true });
+      });
+    });
+  } catch (error) {
+    console.log("error while logout", error.message);
+  }
 });
 
 router.get("/check", (req, res) => {
