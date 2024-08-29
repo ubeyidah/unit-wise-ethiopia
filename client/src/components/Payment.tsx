@@ -1,4 +1,4 @@
-import { pricing, sources } from "@/data/landing";
+import { pricing, sources, paymentInfo as payment } from "@/data/landing";
 import { FaMoneyCheck } from "react-icons/fa";
 import { BsCloudUpload } from "react-icons/bs";
 import {
@@ -16,25 +16,25 @@ import {
 } from "./ui/select";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import { User } from "@/context/AuthProvider";
 import { ChangeEvent, useEffect, useState } from "react";
+import { ProfileType } from "@/pages/MoreInfo";
 const Payment = ({
   profile,
   setProfile,
   setSection,
 }: {
-  profile: Partial<User>;
-  setProfile: React.Dispatch<React.SetStateAction<{}>>;
-  setSection: any;
+  profile: ProfileType;
+  setProfile: React.Dispatch<React.SetStateAction<ProfileType>>;
+  setSection: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const [image, setImage] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState({
     paymentImage: "",
     source: "",
     isAccept: false,
   });
+  const [canValidate, setcanValidate] = useState(false);
   const [error, setError] = useState({
-    paymentImage: "",
+    paymentImage: profile.paymentImage,
     source: "",
     isAccept: "",
   });
@@ -83,11 +83,14 @@ const Payment = ({
     console.log(e.target.files[0]);
   };
   useEffect(() => {
-    validateForm();
+    if (canValidate) {
+      validateForm();
+    }
   }, [paymentInfo]);
 
   const finishPayment = async () => {
     try {
+      setcanValidate(true);
       const hasError = validateForm();
       console.log(error);
       if (hasError) return;
@@ -197,13 +200,13 @@ const Payment = ({
                       <li>
                         Bank Account Number:{" "}
                         <span className=" border-green-500 border-b-2">
-                          {paymentInfo.accountNumber}
+                          {payment.accountNumber}
                         </span>
                       </li>
                       <li>
                         Account Name:{" "}
                         <span className=" border-green-500 border-b-2">
-                          {paymentInfo.accountName}
+                          {payment.accountName}
                         </span>
                       </li>
                       <li>
@@ -242,13 +245,13 @@ const Payment = ({
                       <li>
                         Bank Account Number:{" "}
                         <span className=" border-green-500 border-b-2">
-                          {paymentInfo.accountNumber}
+                          {payment.accountNumber}
                         </span>
                       </li>
                       <li>
                         Account Name:{" "}
                         <span className=" border-green-500 border-b-2">
-                          {paymentInfo.accountName}
+                          {payment.accountName}
                         </span>
                       </li>
                       <li>
@@ -301,7 +304,12 @@ const Payment = ({
         </div>
       </div>
       <div className="flex items-center justify-between mt-5">
-        <Button variant="secondary" onClick={() => setSection("profile")}>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setSection("profile");
+          }}
+        >
           Back
         </Button>
         <Button onClick={finishPayment}>Finish</Button>

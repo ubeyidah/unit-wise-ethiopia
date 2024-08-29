@@ -1,4 +1,3 @@
-import { User } from "@/context/AuthProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -23,7 +22,17 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-
+import { ProfileType } from "@/pages/MoreInfo";
+type User = {
+  userName: string;
+  fullName: string;
+  gender: string;
+  phoneNumber: string;
+  school: string;
+  status: string;
+  studyType: string;
+  profileImage: string;
+};
 const formSchema = z.object({
   userName: z.string().min(3, {
     message: "Username must be at least 3 characters.",
@@ -47,37 +56,50 @@ const CustemizeProfile = ({
   setProfile,
   setSection,
 }: {
-  profile: Partial<User>;
-  setProfile: React.Dispatch<React.SetStateAction<{}>>;
-  setSection: any;
+  profile: ProfileType;
+  setProfile: React.Dispatch<React.SetStateAction<ProfileType>>;
+  setSection: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: profile?.userName,
-      fullName: profile?.fullName,
-      gender: profile?.gender,
-      phoneNumber: profile?.phoneNumber,
-      school: profile?.school,
-      status: profile?.status,
-      studyType: profile?.studyType,
-      profileImage: profile?.profileImage,
+      userName: profile?.userName || "",
+      fullName: profile?.fullName || "",
+      gender: profile?.gender || "",
+      phoneNumber: profile?.phoneNumber || "",
+      school: profile?.school || "",
+      status: profile?.status || "",
+      studyType: profile?.studyType || "",
+      profileImage: profile?.profileImage || "",
     },
   });
 
+  const saveToState = ({
+    userName,
+    fullName,
+    gender,
+    phoneNumber,
+    school,
+    status,
+    studyType,
+    profileImage,
+  }: User) => {
+    setProfile((prev: any) => ({
+      ...prev,
+      userName,
+      fullName,
+      gender,
+      phoneNumber,
+      school,
+      status,
+      studyType,
+      profileImage,
+    }));
+  };
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      setProfile((prev) => ({
-        ...prev,
-        userName: profile?.userName,
-        fullName: data?.fullName,
-        gender: data?.gender,
-        phoneNumber: data?.phoneNumber,
-        school: data?.school,
-        status: data?.status,
-        studyType: data?.studyType,
-        profileImage: data?.profileImage,
-      }));
+      saveToState(data);
       setSection("payment");
     } catch (error) {
       return toast.success("somting went wrong. try again later.");
