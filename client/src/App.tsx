@@ -42,9 +42,9 @@ const App = () => {
 
         {/* verify routes */}
         <Route element={<VerifyRoute />}>
+          <Route path="/info" element={<MoreInfo />} />
           <Route path="/block" element={<Block />} />
           <Route path="/payment-verify" element={<PaymentVerify />} />
-          <Route path="/info" element={<MoreInfo />} />
         </Route>
       </Routes>
     </BrowserRouter>

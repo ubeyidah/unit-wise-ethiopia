@@ -130,3 +130,21 @@ export const faqs = [
     answer: `We offer dedicated support through email(${webEmail}). If you have any questions or need assistance, you can reach out to us anytime, and we'll be happy to help.`,
   },
 ];
+
+export const paymentInfo = {
+  accountName: "unit wise ethiopia",
+  accountNumber: "000000000000",
+};
+
+export const sources = [
+  { value: "youtube", label: "YouTube" },
+  { value: "social media", label: "Social Media" },
+  { value: "friend", label: "Friend" },
+  { value: "family", label: "Family" },
+  { value: "teacher", label: "Teacher" },
+  { value: "school", label: "School" },
+  { value: "news articles", label: "News Articles" },
+  { value: "search engines", label: "Search Engines" },
+  { value: "others", label: "Others" },
+  { value: "dont know", label: "I Don't Know" },
+];

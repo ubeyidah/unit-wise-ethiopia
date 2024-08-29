@@ -43,6 +43,7 @@ const Contact = () => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       await sendEmail(data);
+      form.reset();
     } catch (error) {
       return toast.success("somting went wrong. try again later.");
     }

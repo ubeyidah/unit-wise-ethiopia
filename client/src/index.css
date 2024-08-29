@@ -109,3 +109,7 @@ body {
   background-position: center;
   background-size: cover;
 }
+
+.profile-editor:hover .profile-icon {
+  display: block;
+}

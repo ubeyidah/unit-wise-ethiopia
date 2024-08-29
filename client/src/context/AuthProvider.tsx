@@ -20,6 +20,7 @@ export interface User {
   following: string[];
   phoneNumber: string;
   paymentImage: string;
+  status: string;
   isPaid: boolean;
   isBlock: boolean;
   isAdmin: boolean;
@@ -56,20 +57,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   const logout = () => {
     setUser(null);
   };
+  const loadAuth = async () => {
+    setLoading(true);
+    try {
+      const { user } = await checkAuth();
+      login(user);
+    } catch (error) {
+      toast.error("No internet");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadAuth = async () => {
-      setLoading(true);
-      try {
-        const { user } = await checkAuth();
-        login(user);
-      } catch (error) {
-        toast.error("No connection to internet please try again");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadAuth();
+    if (!user) {
+      loadAuth();
+    }
   }, []);
 
   return (
