@@ -95,7 +95,7 @@
 :root,
 html,
 body {
-  height: 100vh;
+  height: 100%;
 }
 
 @layer components {
@@ -112,4 +112,24 @@ body {
 
 .profile-editor:hover .profile-icon {
   display: block;
+}
+
+/* The entire scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+/* The scrollbar track */
+::-webkit-scrollbar-track {
+  @apply bg-muted/40 /* Color of the scrollbar track */;
+}
+
+/* The scrollbar handle */
+::-webkit-scrollbar-thumb {
+  @apply dark:bg-slate-600 bg-slate-400 rounded-md;
+}
+
+/* The scrollbar handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker color on hover */
 }

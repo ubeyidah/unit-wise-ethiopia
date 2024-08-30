@@ -27,6 +27,7 @@ import {
   requireTakeMoreInfo,
 } from "./lib/auth";
 import PublicLayout from "./components/layouts/PublicLayout";
+import DashoardLayout from "./components/layouts/DashoardLayout";
 
 const App = () => {
   const auth = useAuthContext();
@@ -77,6 +78,7 @@ const App = () => {
             requireAuth(auth?.user);
             return null;
           }}
+          element={<DashoardLayout />}
         >
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

@@ -41,7 +41,7 @@ export const takeInfo = async (req, res) => {
         status,
         paymentImage,
       }),
-      await Source({ userId, source }),
+      await Source({ userId, source }).save(),
     ]);
 
     const userToSend = await User.findById(userId);
