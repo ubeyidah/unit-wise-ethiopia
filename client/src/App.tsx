@@ -1,6 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 import Home from "./pages/landing/Home";
-import PublicRoute from "./components/layouts/PublicRoute";
 import About from "./pages/landing/About";
 import Contact from "./pages/landing/Contact";
 import Signin from "./pages/auth/Signin";
@@ -9,13 +13,20 @@ import Privacy from "./components/policys/Privacy";
 import { Toaster } from "@/components/ui/sonner";
 import { useAuthContext } from "./context/AuthProvider";
 import Loading from "./components/loading";
-import PrivateRoute from "./components/layouts/PrivateRoute";
 import Block from "./pages/Block";
 import PaymentVerify from "./pages/PaymentVerify";
 import MoreInfo from "./pages/MoreInfo";
 import Dashboard from "./pages/app/Dashboard";
-import VerifyRoute from "./components/layouts/VerifyRoute";
 import ErrorPage from "./components/ErrorPage";
+import {
+  requireAuth,
+  requireBlockRoute,
+  requirePaymentVerify,
+  requirePublicRoute,
+  requireSignInRoute,
+  requireTakeMoreInfo,
+} from "./lib/auth";
+import PublicLayout from "./components/layouts/PublicLayout";
 
 const App = () => {
   const auth = useAuthContext();
@@ -25,33 +36,75 @@ const App = () => {
   if (auth?.error) {
     return <ErrorPage />;
   }
-  return (
-    <BrowserRouter>
-      <Toaster />
-      <Routes>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        {/* public route */}
+
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy-policy" element={<Privacy />} />
-        {/* public routes */}
-        <Route path="/" element={<PublicRoute />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="signin" element={<Signin />} />
+
+        {/* only not logged in user can hit */}
+
+        <Route
+          loader={() => {
+            requirePublicRoute(auth?.user);
+            return null;
+          }}
+          element={<PublicLayout />}
+        >
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
 
-        {/* protected routes */}
-        <Route path="/dashboard" element={<PrivateRoute />}>
-          <Route index element={<Dashboard />} />
+        {/* auth route */}
+        <Route element={<PublicLayout />}>
+          <Route
+            path="/signin"
+            element={<Signin />}
+            loader={() => {
+              requireSignInRoute(auth?.user);
+              return null;
+            }}
+          />
         </Route>
 
-        {/* verify routes */}
-        <Route element={<VerifyRoute />}>
-          <Route path="/info" element={<MoreInfo />} />
-          <Route path="/block" element={<Block />} />
-          <Route path="/payment-verify" element={<PaymentVerify />} />
+        {/* protected route */}
+
+        <Route
+          loader={() => {
+            requireAuth(auth?.user);
+            return null;
+          }}
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-      </Routes>
-    </BrowserRouter>
+
+        {/* verification routes */}
+        <Route
+          path="/take-info"
+          element={<MoreInfo />}
+          loader={() => requireTakeMoreInfo(auth?.user)}
+        />
+        <Route
+          path="/block"
+          element={<Block />}
+          loader={() => requireBlockRoute(auth?.user)}
+        />
+        <Route
+          path="/payment-verify"
+          element={<PaymentVerify />}
+          loader={() => requirePaymentVerify(auth?.user)}
+        />
+      </>
+    )
+  );
+  return (
+    <>
+      <Toaster />
+      <RouterProvider router={router} />
+    </>
   );
 };
 

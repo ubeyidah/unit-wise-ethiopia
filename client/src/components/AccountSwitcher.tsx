@@ -2,7 +2,6 @@ import { IoPowerSharp } from "react-icons/io5";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { PiUserSwitch } from "react-icons/pi";
 import { useAuthContext } from "@/context/AuthProvider";
-import { useNavigate } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { logoutUser } from "@/apis/auth/auth.api";
 import { toast } from "sonner";
@@ -10,7 +9,6 @@ import { useState } from "react";
 import { ImSpinner8 } from "react-icons/im";
 
 const AccountSwitcher = () => {
-  const navigate = useNavigate();
   const auth = useAuthContext();
   const [loading, setLoading] = useState(false);
   const handleLogout = async () => {
@@ -18,7 +16,6 @@ const AccountSwitcher = () => {
       setLoading(true);
       await logoutUser();
       auth?.logout();
-      navigate("/signin");
     } catch (error) {
       toast.error("Coudn't signout please try agin later.");
     } finally {
