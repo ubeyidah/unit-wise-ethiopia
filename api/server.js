@@ -1,10 +1,12 @@
 import express from "express";
-import { config } from "dotenv";
-import contactRoutes from "./routes/contact.routes.js";
-import authRoutes from "./routes/auth.routes.js";
-import connectDb from "./config/db.js";
-import passport from "./passport/google.js";
 import session from "express-session";
+import { config } from "dotenv";
+import passport from "./passport/google.js";
+import connectDb from "./config/db.js";
+
+import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
 
 config();
 const app = express();
@@ -26,6 +28,7 @@ app.use(passport.session());
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/contact", contactRoutes);
 
 const port = process.env.PORT || 8080;
