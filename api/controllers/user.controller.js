@@ -1,3 +1,4 @@
+import Source from "../models/source.model.js";
 import User from "../models/user.model.js";
 import { takeInfoSchema } from "../schemas/auth.schema.js";
 
@@ -30,15 +31,18 @@ export const takeInfo = async (req, res) => {
         .status(401)
         .json({ message: "Unauthorized. You must be logged in first." });
     const userId = req.user._id;
-    await User.findByIdAndUpdate(userId, {
-      studyType,
-      gender,
-      school,
-      phoneNumber,
-      status,
-      paymentImage,
-    });
-    // todo save the source to db
+
+    Promise.all([
+      await User.findByIdAndUpdate(userId, {
+        studyType,
+        gender,
+        school,
+        phoneNumber,
+        status,
+        paymentImage,
+      }),
+      await Source({ userId, source }),
+    ]);
 
     const userToSend = await User.findById(userId);
     if (!userToSend) return res.status(404).json({ message: "user not found" });
