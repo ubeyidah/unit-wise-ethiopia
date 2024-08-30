@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DNA } from "react-loader-spinner";
 
 const Dashboard = () => {
   return (
@@ -13,6 +14,14 @@ const Dashboard = () => {
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.
           </p>
           <Button className="mt-4">start</Button>
+          <DNA
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+          />
         </div>
       </div>
     </div>

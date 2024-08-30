@@ -20,7 +20,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ProfileType } from "@/pages/MoreInfo";
 import { toast } from "sonner";
 import { IoClose } from "react-icons/io5";
-import { AiOutlineLoading } from "react-icons/ai";
 import {
   Tooltip,
   TooltipContent,
@@ -31,6 +30,8 @@ import useUploadImage from "@/hooks/useUploadImage";
 import AccountSwitcher from "./AccountSwitcher";
 import { takeInfoToServer } from "@/apis/user/user.api";
 import { useAuthContext } from "@/context/AuthProvider";
+import { Oval } from "react-loader-spinner";
+import { ImSpinner8 } from "react-icons/im";
 
 type PaymentErrorType = {
   paymentImage: string;
@@ -395,8 +396,12 @@ const Payment = ({
         >
           Back
         </Button>
-        <Button onClick={finishPayment} disabled={loading}>
-          {loading ? "Finishing..." : "Finish"}
+        <Button
+          onClick={finishPayment}
+          disabled={loading}
+          className="flex items-center justify-center"
+        >
+          {loading ? <ImSpinner8 className="animate-spin" /> : "Finish"}
         </Button>
       </div>
     </div>
@@ -421,7 +426,15 @@ function UploadTemplate({
     >
       {progress ? (
         <>
-          <AiOutlineLoading className="size-16 animate-spin text-green-400" />
+          <Oval
+            visible={true}
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="oval-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
           <span className="text-xl absolute">{progress.toFixed(0)}%</span>
         </>
       ) : (
