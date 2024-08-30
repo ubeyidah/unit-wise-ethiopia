@@ -22,7 +22,7 @@ import {
 } from "../ui/dropdown-menu";
 import { useAuthContext } from "@/context/AuthProvider";
 import { sideLinks } from "@/data/dashboard";
-import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import {
   CommandDialog,
@@ -36,6 +36,7 @@ import { PiSignOutLight } from "react-icons/pi";
 import { logoutUser } from "@/apis/auth/auth.api";
 import { toast } from "sonner";
 import { ImSpinner8 } from "react-icons/im";
+import Notification from "../Notification";
 
 const DashoardHeader = () => {
   const auth = useAuthContext();
@@ -139,14 +140,7 @@ const DashoardHeader = () => {
         <BiSearch className="h-4 w-4" />
         <span className="sr-only">Toggle search</span>
       </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        className="ml-auto h-9 w-9 rounded-full"
-      >
-        <IoNotificationsOutline className="h-4 w-4" />
-        <span className="sr-only">Toggle notifications</span>
-      </Button>
+      <Notification />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
