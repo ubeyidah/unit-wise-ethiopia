@@ -21,8 +21,12 @@ const Block = () => {
           support team.
         </p>
 
-        <div className="flex items-center justify-end text-sm text-blue-400 mt-4">
-          <div className="flex gap-4">
+        <div className="flex items-center justify-between text-sm text-blue-400 mt-4">
+          <div className="flex items-center gap-2 text-black dark:text-white max-sm:text-xs">
+            <img src="/logo.png" alt="logo" className="size-4" />
+            <p>Unit Wise Ethiopia</p>
+          </div>
+          <div className="flex gap-4 max-sm:text-xs">
             <Link to="/" className="hover:underline">
               Home
             </Link>

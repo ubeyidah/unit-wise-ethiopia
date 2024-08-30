@@ -1,3 +1,4 @@
+import AccountSwitcher from "@/components/AccountSwitcher";
 import { Button } from "@/components/ui/button";
 import { MdVerifiedUser } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -5,7 +6,10 @@ import { Link } from "react-router-dom";
 const PaymentVerify = () => {
   return (
     <section className="container px-4 flex items-center justify-center h-screen">
-      <div className="flex-1 max-w-xl p-4 rounded-lg dark:bg-green-400/10 bg-green-500/5 border-slate-300 border dark:border-green-400/30">
+      <div className="flex-1 max-w-xl p-4 rounded-lg dark:bg-green-400/10 bg-green-500/5 border-slate-300 border dark:border-green-400/30 relative">
+        <div className="absolute top-3 right-3">
+          <AccountSwitcher />
+        </div>
         <div className="p-6 bg-green-500/20 mx-auto -mt-16 w-fit rounded-full">
           <MdVerifiedUser className="text-6xl text-green-600" />
         </div>
@@ -28,8 +32,12 @@ const PaymentVerify = () => {
             </Button>
           </a>
         </div>
-        <div className="flex items-center justify-end text-sm text-blue-400">
-          <div className="flex gap-4">
+        <div className="flex items-center justify-between text-sm text-blue-400">
+          <div className="flex items-center gap-2 text-black dark:text-white max-sm:text-xs">
+            <img src="/logo.png" alt="logo" className="size-4" />
+            <p>Unit Wise Ethiopia</p>
+          </div>
+          <div className="flex gap-4 max-sm:text-xs">
             <Link to="/" className="hover:underline">
               Home
             </Link>
