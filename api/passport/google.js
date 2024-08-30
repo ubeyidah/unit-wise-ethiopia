@@ -3,6 +3,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import User from "../models/user.model.js";
 import { config } from "dotenv";
 import { nanoid } from "nanoid";
+import { signinSchema } from "../schemas/auth.schema.js";
 
 config();
 passport.use(
@@ -18,6 +19,15 @@ passport.use(
         const email = profile.emails[0].value;
         const profileImage = profile.photos[0].value;
         const userName = await extractUserName(email);
+        const { error } = signinSchema.validate({
+          fullName,
+          userName,
+          email,
+          profileImage,
+        });
+        if (error) {
+          done(error, null);
+        }
         let user = await User.findOne({ email });
         if (!user) {
           user = new User({

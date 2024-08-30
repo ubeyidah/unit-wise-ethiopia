@@ -71,6 +71,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    price: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     isPaid: {
       type: Boolean,
       default: false,
