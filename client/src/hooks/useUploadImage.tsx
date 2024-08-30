@@ -18,6 +18,12 @@ const useUploadImage = (): hookReturnType => {
 
   const uploadImage = async (image: File, path: Path) => {
     if (!image) return;
+    toast.info("Upload starting...", {
+      action: {
+        label: <IoClose className="size-5" />,
+        onClick: () => null,
+      },
+    });
     const storageRef = ref(storage, `${path}/${image.name + nanoid()}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
     uploadTask.on(

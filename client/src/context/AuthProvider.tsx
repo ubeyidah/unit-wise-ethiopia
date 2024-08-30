@@ -35,6 +35,7 @@ interface AuthContextType {
   error: boolean;
   login: (userData: User) => void;
   logout: () => void;
+  reloadUser: () => void;
 }
 
 interface AuthProviderProps {
@@ -71,6 +72,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       setLoading(false);
     }
   };
+  const reloadUser = () => {
+    loadAuth();
+  };
 
   useEffect(() => {
     if (!user) {
@@ -79,7 +83,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, error, login, logout, reloadUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

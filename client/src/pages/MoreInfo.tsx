@@ -4,8 +4,6 @@ import { useAuthContext } from "@/context/AuthProvider";
 import { useState } from "react";
 
 export interface ProfileType {
-  _id: string | undefined;
-  profileImage: string;
   studyType: string;
   gender: "male" | "female" | "";
   school: string;
@@ -19,8 +17,6 @@ const MoreInfo = () => {
   const auth = useAuthContext();
   const user = auth?.user;
   const [userProfile, setUserProfile] = useState<ProfileType>({
-    _id: user?._id || "",
-    profileImage: user?.profileImage || "",
     studyType: user?.studyType || "",
     gender: user?.gender || "",
     school: user?.school || "",

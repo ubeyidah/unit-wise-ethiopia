@@ -29,8 +29,10 @@ import {
 } from "@/components/ui/tooltip";
 import useUploadImage from "@/hooks/useUploadImage";
 import AccountSwitcher from "./AccountSwitcher";
+import { takeInfoToServer } from "@/apis/user/user.api";
+import { useAuthContext } from "@/context/AuthProvider";
 
-type PaymentType = {
+type PaymentErrorType = {
   paymentImage: string;
   source: string;
   isAccept: string;
@@ -45,23 +47,20 @@ const Payment = ({
   setProfile: React.Dispatch<React.SetStateAction<ProfileType>>;
   setSection: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const [paymentInfo, setPaymentInfo] = useState({
-    paymentImage: profile.paymentImage || "",
-    source: profile.source || "",
-    isAccept: !!profile.isAccept,
-  });
   const [canValidate, setcanValidate] = useState(false);
-  const [error, setError] = useState<PaymentType>({
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<PaymentErrorType>({
     paymentImage: "",
     source: "",
     isAccept: "",
   });
 
   let { progress, url, uploadImage } = useUploadImage();
+  const auth = useAuthContext();
 
   const validateForm = () => {
     let hasError = false;
-    if (!paymentInfo.paymentImage) {
+    if (!profile.paymentImage) {
       setError((prev) => ({
         ...prev,
         paymentImage: "Please upload your Payment confirmation screenshot",
@@ -73,7 +72,7 @@ const Payment = ({
         paymentImage: "",
       }));
     }
-    if (!paymentInfo.source || paymentInfo.source == "") {
+    if (!profile.source || profile.source == "") {
       setError((prev) => ({
         ...prev,
         source: "Please tell us where did you hear about us",
@@ -85,7 +84,7 @@ const Payment = ({
         source: "",
       }));
     }
-    if (!paymentInfo.isAccept) {
+    if (!profile.isAccept) {
       setError((prev) => ({
         ...prev,
         isAccept: "Accept terms and conditions",
@@ -99,6 +98,7 @@ const Payment = ({
     }
     return hasError;
   };
+
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     e.target.disabled = true;
@@ -109,19 +109,25 @@ const Payment = ({
   };
   useEffect(() => {
     if (url) {
-      setPaymentInfo((prev) => ({ ...prev, paymentImage: url || "" }));
+      setProfile((prev) => ({ ...prev, paymentImage: url || "" }));
     }
   }, [url]);
   useEffect(() => {
     if (canValidate) {
       validateForm();
     }
-  }, [paymentInfo]);
+  }, [profile]);
 
   const finishPayment = async () => {
     try {
       setcanValidate(true);
-      if (progress) return;
+      if (progress)
+        return toast.info("Please give a time to complete the upload.", {
+          action: {
+            label: <IoClose className="size-5" />,
+            onClick: () => null,
+          },
+        });
       const hasError = validateForm();
       if (hasError) {
         toast.error("Please enter a valid information", {
@@ -133,24 +139,21 @@ const Payment = ({
         });
         return;
       }
-      console.log(profile);
+      if (auth?.login) {
+        setLoading(true);
+        await takeInfoToServer(profile, auth?.login);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const imageRemover = () => {
-    setPaymentInfo((prev) => ({ ...prev, paymentImage: "" }));
+    setProfile((prev) => ({ ...prev, paymentImage: "" }));
     url = "";
   };
 
-  type AddInfo = {
-    paymentImage: string;
-    isAccept: boolean;
-    source: string;
-  };
-  const addInfo = ({ paymentImage, isAccept, source }: AddInfo) => {
-    setProfile((prev) => ({ ...prev, paymentImage, isAccept, source }));
-  };
   return (
     <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-5xl py-20 max-md:py-10 my-20 bg-slate-200/20 relative">
       <div className="absolute top-3 right-4">
@@ -170,12 +173,12 @@ const Payment = ({
             <h4 className="text-lg font-semibold max-sm:text-sm text-green-400 mb-2">
               Upload Your Payment Confirmation
             </h4>
-            {!paymentInfo.paymentImage ? (
+            {!profile.paymentImage ? (
               <UploadTemplate error={error} progress={progress} />
             ) : (
               <div className="aspect-video relative">
                 <img
-                  src={paymentInfo.paymentImage || ""}
+                  src={profile.paymentImage || ""}
                   alt="payment confirm screenshot "
                   className="size-full rounded-md object-cover object-center"
                 />
@@ -210,7 +213,7 @@ const Payment = ({
               id="screenshot"
               accept="image/*"
               onChange={handleImage}
-              disabled={!!progress || !!paymentInfo.paymentImage}
+              disabled={!!profile.paymentImage}
               className="disable:opacity-40"
               hidden
             />
@@ -224,9 +227,9 @@ const Payment = ({
             <Select
               name="source"
               onValueChange={(source) =>
-                setPaymentInfo((prev) => ({ ...prev, source }))
+                setProfile((prev) => ({ ...prev, source }))
               }
-              defaultValue={paymentInfo.source}
+              defaultValue={profile.source}
             >
               <SelectTrigger className={!!error.source ? "border-red-500" : ""}>
                 <SelectValue placeholder="tell us where did you hear about us" />
@@ -354,12 +357,12 @@ const Payment = ({
         <Checkbox
           id="terms1"
           onCheckedChange={(isAccept) =>
-            setPaymentInfo((prev) => ({
+            setProfile((prev) => ({
               ...prev,
               isAccept: Boolean(isAccept),
             }))
           }
-          checked={paymentInfo.isAccept}
+          checked={profile.isAccept}
           className={error.isAccept ? "border-red-500" : ""}
         />
         <div className="grid gap-1.5 leading-none">
@@ -387,13 +390,14 @@ const Payment = ({
                   onClick: () => null,
                 },
               });
-            addInfo(paymentInfo);
             setSection("profile");
           }}
         >
           Back
         </Button>
-        <Button onClick={finishPayment}>Finish</Button>
+        <Button onClick={finishPayment} disabled={loading}>
+          {loading ? "Finishing..." : "Finish"}
+        </Button>
       </div>
     </div>
   );
@@ -405,7 +409,7 @@ function UploadTemplate({
   error,
   progress,
 }: {
-  error: PaymentType;
+  error: PaymentErrorType;
   progress: number;
 }) {
   return (

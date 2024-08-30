@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import {
   Form,
@@ -80,13 +79,9 @@ const TakeInfo = ({
     }));
   };
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    try {
-      saveToState(data);
-      setSection("payment");
-    } catch (error) {
-      return toast.success("somting went wrong. try again later.");
-    }
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    saveToState(data);
+    setSection("payment");
   };
 
   return (
