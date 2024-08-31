@@ -16,7 +16,7 @@ export const sendEmail = async (sendData: ContactType) => {
   });
   const result = await res.json();
   if (!res.ok) {
-    return toast.error(result.message, {
+    toast.error(result.message, {
       className: "border border-slate-400",
       description: "Please try agian",
       action: {
@@ -24,8 +24,12 @@ export const sendEmail = async (sendData: ContactType) => {
         onClick: () => null,
       },
     });
+    throw {
+      message: result.message,
+      hidden: true,
+    };
   }
-  return toast.success(result.message, {
+  toast.success(result.message, {
     className: "border border-slate-400",
     description:
       "Thank you for your message! Your feedback is important to us.",
@@ -34,4 +38,5 @@ export const sendEmail = async (sendData: ContactType) => {
       onClick: () => null,
     },
   });
+  return result;
 };

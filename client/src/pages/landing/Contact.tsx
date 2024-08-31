@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { BsSend } from "react-icons/bs";
 import { sendEmail } from "@/apis/contact/contact.api.tsx";
-import { toast } from "sonner";
 import { webEmail } from "@/data/landing";
 
 const FormSchema = z.object({
@@ -44,8 +43,10 @@ const Contact = () => {
     try {
       await sendEmail(data);
       form.reset();
-    } catch (error) {
-      return toast.success("somting went wrong. try again later.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error?.message);
+      }
     }
   };
   return (

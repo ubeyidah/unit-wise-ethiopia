@@ -53,10 +53,11 @@ const App = () => {
             return null;
           }}
           element={<PublicLayout />}
+          path="/"
         >
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
         </Route>
 
         {/* auth route */}
@@ -79,8 +80,9 @@ const App = () => {
             return null;
           }}
           element={<DashoardLayout />}
+          path="/dashboard"
         >
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
         </Route>
 
         {/* verification routes */}

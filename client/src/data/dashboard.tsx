@@ -43,3 +43,12 @@ export const sideLinks = [
     icon: <LiaBookSolid />,
   },
 ];
+
+export const announcement = [
+  {
+    id: "1",
+    message:
+      "The Ministry of Education has announced that the Grade 12 national exams for 2017 will take place from Sené 17 to Sené 27, 2017. Best of luck to all of us.",
+    date: "Sené 27, 2017",
+  },
+];

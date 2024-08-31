@@ -32,7 +32,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
 }
 
@@ -132,4 +132,31 @@ body {
 /* The scrollbar handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* Darker color on hover */
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* add custem css for calender */
+.cla div.rdp {
+  width: 100% !important;
+}
+.cla thead.rdp-head tr.flex th.text-muted-foreground {
+  flex: 1 !important;
+}
+
+.cla tbody.rdp-tbody tr.flex td {
+  flex: 1 !important;
+}
+.--rdp-day-width {
+  width: 100% !important;
+}
+
+.cla div.rdp-caption_start {
+  width: 100% !important;
+}
+
+.cla button.rdp-button {
+  pointer-events: none;
 }

@@ -74,7 +74,7 @@ const DashoardHeader = () => {
   const activeClass =
     "mx-[-0.65rem] flex items-center text-sm gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground";
   return (
-    <header className="flex sticky top-0 h-14 items-center gap-3 border-b bg-muted/40 backdrop-blur-lg px-4 lg:h-[60px] lg:px-6 ">
+    <header className="flex sticky top-0 h-14 items-center gap-3 border-b dark:bg-muted/40 dark:backdrop-blur-lg backdrop-blur-xl bg-muted/50 px-4 lg:h-[60px] lg:px-6 z-50">
       {/* mobile only menu links */}
       <Sheet>
         <SheetTrigger asChild>
@@ -201,7 +201,7 @@ const DashoardHeader = () => {
       </DropdownMenu>
       {/* command */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput placeholder="Search..." />
         <CommandList className="mx-4">
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
