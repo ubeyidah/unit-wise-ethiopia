@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const userSubjectSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     subjectName: {
       type: String,
       required: true,

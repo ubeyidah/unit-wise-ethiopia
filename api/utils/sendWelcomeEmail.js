@@ -106,7 +106,7 @@ export const sendWelcomeEmail = async ({ email, res, name }) => {
         <!-- Content Section -->
         <div class="content">
             <h2>Your Account is Verified!</h2>
-            <p>Dear ${name},</p>
+            <p>👋 Hi ${name},</p>
             <p>We're excited to welcome you to <strong>Unit Wise Ethiopia</strong>. Your account has been successfully verified, and your payment is confirmed. You can now access all the features of our platform.</p>
             <p>To get started, simply click the button below to visit your dashboard.</p>
             
