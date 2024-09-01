@@ -1,9 +1,13 @@
 import express from "express";
-import { verifyUser } from "../controllers/adminVerify.controller.js";
+import {
+  blockUser,
+  verifyUser,
+} from "../controllers/adminVerify.controller.js";
 import protectRoute from "../middleware/protectRoute.js";
 import adminRoutes from "../middleware/adminRoute.js";
 const router = express.Router();
 
 router.put("/verify-user/:id", protectRoute, adminRoutes, verifyUser);
+router.put("/block-user/:id", blockUser);
 
 export default router;

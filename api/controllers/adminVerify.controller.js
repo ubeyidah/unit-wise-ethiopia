@@ -29,3 +29,24 @@ export const verifyUser = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const blockUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    await User.findByIdAndUpdate(id, { isBlock: !user.isBlock });
+    return res
+      .status(200)
+      .json({
+        message: `${user.userName} ${
+          user.isBlock ? "unblocked" : "blocked"
+        } successfully.`,
+      });
+  } catch (error) {
+    console.log("Error: verify users: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
