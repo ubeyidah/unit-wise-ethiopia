@@ -1,13 +1,4 @@
-import {
-  math,
-  physics,
-  biology,
-  chemistry,
-  history,
-  geography,
-  economics,
-  english,
-} from "../data/subjects.js";
+import { naturalSubjects, socialSubjects } from "../data/subjects.js";
 import UserSubjects from "../models/userSubjects.model.js";
 
 export const enrollSubjects = async (studyType, id, res) => {
@@ -15,19 +6,19 @@ export const enrollSubjects = async (studyType, id, res) => {
     if (!studyType)
       return res.status(400).json({ message: "studyType not identified" });
     if (studyType == "natural") {
-      const mathSetup = math.map((ma) => {
+      const mathSetup = naturalSubjects.math.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const physicsSetup = physics.map((ma) => {
+      const physicsSetup = naturalSubjects.physics.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const biologySetup = biology.map((ma) => {
+      const biologySetup = naturalSubjects.biology.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const englishSetup = english.map((ma) => {
+      const englishSetup = naturalSubjects.english.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const chemistrySetup = chemistry.map((ma) => {
+      const chemistrySetup = naturalSubjects.chemistry.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
       Promise.all([
@@ -58,19 +49,19 @@ export const enrollSubjects = async (studyType, id, res) => {
         }).save(),
       ]);
     } else if (studyType == "social") {
-      const mathSetup = math.map((ma) => {
+      const mathSetup = socialSubjects.math.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const historySetup = history.map((ma) => {
+      const historySetup = socialSubjects.history.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const economicsSetup = economics.map((ma) => {
+      const economicsSetup = socialSubjects.economics.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const englishSetup = english.map((ma) => {
+      const englishSetup = socialSubjects.english.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
-      const geographySetup = geography.map((ma) => {
+      const geographySetup = socialSubjects.geography.map((ma) => {
         return { chapter: ma.chapter, isComplete: false };
       });
       Promise.all([
