@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import { sendWelcomeEmail } from "../utils/sendWelcomeEmail.js";
 import { enrollSubjects } from "../utils/enrollSubjects.js";
+import UserSubjects from "../models/userSubjects.model.js";
 
 export const verifyUser = async (req, res) => {
   try {
@@ -8,7 +9,10 @@ export const verifyUser = async (req, res) => {
     const unverify = req.query.unverify ? true : false;
     const { id } = req.params;
     if (unverify) {
-      await User.findByIdAndUpdate(id, { isPaid: false, price: 0 });
+      Promise.all([
+        await User.findByIdAndUpdate(id, { isPaid: false, price: 0 }),
+        await UserSubjects.deleteMany({ userId: id }),
+      ]);
       return res.status(200).json({ message: "User disverify successfully" });
     }
 
@@ -38,13 +42,11 @@ export const blockUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     await User.findByIdAndUpdate(id, { isBlock: !user.isBlock });
-    return res
-      .status(200)
-      .json({
-        message: `${user.userName} ${
-          user.isBlock ? "unblocked" : "blocked"
-        } successfully.`,
-      });
+    return res.status(200).json({
+      message: `${user.userName} ${
+        user.isBlock ? "unblocked" : "blocked"
+      } successfully.`,
+    });
   } catch (error) {
     console.log("Error: verify users: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });

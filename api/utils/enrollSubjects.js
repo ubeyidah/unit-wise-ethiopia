@@ -31,61 +31,31 @@ export const enrollSubjects = async (studyType, id, res) => {
         return { chapter: ma.chapter, isComplete: false };
       });
       Promise.all([
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "math",
-              subjectProgress: mathSetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "biology",
-              subjectProgress: biologySetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "english",
-              subjectProgress: englishSetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "physics",
-              subjectProgress: physicsSetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "chemistry",
-              subjectProgress: chemistrySetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
+        await UserSubjects({
+          userId: id,
+          subjectName: "math",
+          subjectProgress: mathSetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "physics",
+          subjectProgress: physicsSetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "biology",
+          subjectProgress: biologySetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "english",
+          subjectProgress: englishSetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "chemistry",
+          subjectProgress: chemistrySetup,
+        }).save(),
       ]);
     } else if (studyType == "social") {
       const mathSetup = math.map((ma) => {
@@ -104,65 +74,35 @@ export const enrollSubjects = async (studyType, id, res) => {
         return { chapter: ma.chapter, isComplete: false };
       });
       Promise.all([
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "math",
-              subjectProgress: mathSetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "history",
-              subjectProgress: historySetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "economics",
-              subjectProgress: economicsSetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "english",
-              subjectProgress: englishSetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
-        await UserSubjects.findOneAndUpdate(
-          { userId: id },
-          {
-            $set: {
-              userId: id,
-              subjectName: "geography",
-              subjectProgress: geographySetup,
-            },
-          },
-          { new: true, upsert: true }
-        ),
+        await UserSubjects({
+          userId: id,
+          subjectName: "math",
+          subjectProgress: mathSetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "history",
+          subjectProgress: historySetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "economics",
+          subjectProgress: economicsSetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "english",
+          subjectProgress: englishSetup,
+        }).save(),
+        await UserSubjects({
+          userId: id,
+          subjectName: "geography",
+          subjectProgress: geographySetup,
+        }).save(),
       ]);
     }
   } catch (error) {
     console.log("faild to enroll subjects", error.message);
-    return res.status(400).json({ message: "faild to enroll subjects" });
+    res.status(400).json({ message: "faild to enroll subjects" });
   }
 };

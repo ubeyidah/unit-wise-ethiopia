@@ -7,7 +7,7 @@ import protectRoute from "../middleware/protectRoute.js";
 import adminRoutes from "../middleware/adminRoute.js";
 const router = express.Router();
 
-router.put("/verify-user/:id", protectRoute, adminRoutes, verifyUser);
+router.put("/verify-user/:id", verifyUser);
 router.put("/block-user/:id", blockUser);
 
 export default router;
