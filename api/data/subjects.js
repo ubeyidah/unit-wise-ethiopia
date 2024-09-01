@@ -836,3 +836,14 @@ const english = [
     ],
   },
 ];
+
+export {
+  math,
+  physics,
+  biology,
+  chemistry,
+  history,
+  geography,
+  economics,
+  english,
+};
