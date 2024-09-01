@@ -7,6 +7,7 @@ import connectDb from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
+import adminVerifyRoutes from "./routes/adminVerify.routes.js";
 
 config();
 const app = express();
@@ -31,6 +32,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/contact", contactRoutes);
 
+// admin only routes
+app.use("/api/admin", adminVerifyRoutes);
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   connectDb();

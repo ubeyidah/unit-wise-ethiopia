@@ -72,7 +72,7 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     price: {
-      type: String,
+      type: Number,
       trim: true,
       default: "",
     },

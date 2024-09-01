@@ -8,6 +8,7 @@ const protectRoute = (req, res, next) => {
     return next();
   }
   res.redirect(process.env.CLIENT_URL + "signin");
+  // res.json({ m: "login first" });
 };
 
 export default protectRoute;
