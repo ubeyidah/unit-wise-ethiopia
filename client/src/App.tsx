@@ -28,7 +28,7 @@ import {
 } from "./lib/auth";
 import PublicLayout from "./components/layouts/PublicLayout";
 import DashoardLayout from "./components/layouts/DashoardLayout";
-import Subjects from "./pages/app/Subjects";
+import Subjects, { loader as subjectLoader } from "./pages/app/Subjects";
 
 const App = () => {
   const auth = useAuthContext();
@@ -84,7 +84,11 @@ const App = () => {
           path="/dashboard"
         >
           <Route index element={<Dashboard />} />
-          <Route path="subjects" element={<Subjects />} />
+          <Route
+            path="subjects"
+            element={<Subjects />}
+            loader={subjectLoader}
+          />
         </Route>
 
         {/* verification routes */}

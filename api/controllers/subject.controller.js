@@ -14,6 +14,7 @@ export const getSubjects = async (req, res) => {
       return {
         _id: sub._id,
         subjectName: sub.subjectName,
+        total: total,
         percent: (completed / total) * 100,
       };
     });
