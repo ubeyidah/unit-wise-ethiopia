@@ -7,6 +7,22 @@ import { TfiAnnouncement } from "react-icons/tfi";
 import { CiCalendarDate } from "react-icons/ci";
 import { Card } from "@/components/ui/card";
 import { announcement } from "@/data/dashboard";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { MdOutlineTaskAlt } from "react-icons/md";
+import { GiProgression } from "react-icons/gi";
+
+const chartConfig = {
+  desktop: {
+    label: "progress",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
 
 const Dashboard = () => {
   const ethioDate = `${ethDateTime.month}/${ethDateTime.date}/${ethDateTime.year}`;
@@ -20,10 +36,16 @@ const Dashboard = () => {
       display.textContent = ethDateTime.toDateString();
     }
   });
-
+  const chartData = [
+    { subjects: "Math", progress: 99 },
+    { subjects: "Physics", progress: 77 },
+    { subjects: "Chemistry", progress: 34 },
+    { subjects: "Biology", progress: 44 },
+    { subjects: "English", progress: 74 },
+  ];
   return (
-    <section className="h-full flex max-md:flex-col">
-      <div className="w-full lg:w-[70%]">graphs</div>
+    <section className="min-h-full flex max-md:flex-col">
+      <div className="w-full lg:w-[70%]"></div>
       <div className="w-full lg:w-[30%]">
         <div>
           <div className="flex justify-between items-center py-1 px-1">
@@ -58,6 +80,48 @@ const Dashboard = () => {
             </Card>
           ))}
         </div>
+        <div>
+          <div className="flex justify-between items-center py-1 px-1">
+            <h3>Your progress</h3>
+            <GiProgression />
+          </div>
+          <Separator className="mb-3" />
+        </div>
+        <ChartContainer config={chartConfig} className="w-full">
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              top: 20,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="subjects"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar
+              dataKey="progress"
+              fill="var(--color-desktop)"
+              className="max-w-6"
+              radius={8}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+          </BarChart>
+        </ChartContainer>
       </div>
     </section>
   );

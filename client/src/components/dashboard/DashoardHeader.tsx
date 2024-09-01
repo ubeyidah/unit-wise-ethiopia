@@ -72,7 +72,7 @@ const DashoardHeader = () => {
   const linkClass =
     "mx-[-0.65rem] flex items-center text-sm gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground";
   const activeClass =
-    "mx-[-0.65rem] flex items-center text-sm gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground";
+    "mx-[-0.65rem] flex items-center text-sm gap-4 rounded-xl bg-muted px-3 py-2 text-primary hover:text-primary";
   return (
     <header className="flex sticky top-0 h-14 items-center gap-3 border-b dark:bg-muted/40 dark:backdrop-blur-lg backdrop-blur-xl bg-muted/50 px-4 lg:h-[60px] lg:px-6 z-50">
       {/* mobile only menu links */}
@@ -100,10 +100,11 @@ const DashoardHeader = () => {
               </Link>
             </SheetTitle>
             <SheetDescription></SheetDescription>
-            {sideLinks.map((link) => (
+            {sideLinks.map((link, i) => (
               <NavLink
                 key={link.href}
                 to={link.href}
+                end={i === 0}
                 className={({ isActive }) =>
                   isActive ? activeClass : linkClass
                 }
@@ -142,14 +143,11 @@ const DashoardHeader = () => {
       </Button>
       <Notification />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <img
-              src={auth?.user?.profileImage}
-              className="size-8 rounded-full object-cover object-center"
-            />
-            <span className="sr-only">Toggle user menu</span>
-          </Button>
+        <DropdownMenuTrigger asChild className="rounded-full cursor-pointer">
+          <img
+            src={auth?.user?.profileImage}
+            className="size-9 rounded-full object-cover object-center"
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="mt-3">
           <DropdownMenuLabel className="flex items-center gap-2">

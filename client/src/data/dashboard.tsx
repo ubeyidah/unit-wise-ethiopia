@@ -14,32 +14,32 @@ export const sideLinks = [
   },
   {
     label: "Subjects",
-    href: "/subjects",
+    href: "/dashboard/subjects",
     icon: <PiBooks />,
   },
   {
     label: "Study Hub",
-    href: "/study-hub",
+    href: "/dashboard/study-hub",
     icon: <IoReaderOutline />,
   },
   {
     label: "Tasks",
-    href: "/tasks",
+    href: "/dashboard/tasks",
     icon: <MdOutlineTaskAlt />,
   },
   {
     label: "Short Notes",
-    href: "/notes",
+    href: "/dashboard/notes",
     icon: <FaRegNoteSticky />,
   },
   {
     label: "schedule",
-    href: "/schedule",
+    href: "/dashboard/schedule",
     icon: <LuCalendarDays />,
   },
   {
     label: "Books",
-    href: "/books",
+    href: "/dashboard/books",
     icon: <LiaBookSolid />,
   },
 ];
@@ -49,6 +49,6 @@ export const announcement = [
     id: "1",
     message:
       "The Ministry of Education has announced that the Grade 12 national exams for 2017 will take place from Sené 17 to Sené 27, 2017. Best of luck to all of us.",
-    date: "Sené 27, 2017",
+    date: "Sené 17, 2017",
   },
 ];

@@ -37,7 +37,7 @@ export const futures = [
     icon: <LuListTodo />,
   },
   {
-    title: "Post Creation and Sharing",
+    title: "Study hub",
     desc: "Share your learning progress, shrare what you know with short post and insights with the community through posts and updates.",
     icon: <MdPostAdd />,
   },
