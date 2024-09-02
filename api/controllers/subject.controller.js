@@ -9,13 +9,13 @@ export const getSubjects = async (req, res) => {
       let completed = 0;
       const total = sub.subjectProgress.length;
       sub.subjectProgress.forEach((progress) => {
-        if (progress.isCompleted) completed++;
+        if (progress.isComplete) completed++;
       });
       return {
         _id: sub._id,
         subjectName: sub.subjectName,
         total: total,
-        percent: (completed / total) * 100,
+        percent: Math.round((completed / total) * 100),
       };
     });
     res.status(200).json(subjectsToSend);

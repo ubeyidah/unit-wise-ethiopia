@@ -14,7 +14,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { MdOutlineTaskAlt } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 
 const chartConfig = {

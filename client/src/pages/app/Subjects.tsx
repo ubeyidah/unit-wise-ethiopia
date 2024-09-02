@@ -26,7 +26,7 @@ const Subjects = () => {
             subject.subjectName.toLowerCase() as keyof typeof subjectIcons;
           return (
             <Link to={subject.subjectName} key={subject._id}>
-              <Card className="rounded-md shadow-none p-4 hover:opacity-70 flex items-center w-full gap-4">
+              <Card className="rounded-md shadow-none p-4 hover:border-green-500/60 transition-all duration-300 flex items-center w-full gap-4">
                 <div className="bg-green-500/30 p-4 rounded-full">
                   {subjectIcons[name]}
                 </div>

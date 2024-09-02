@@ -29,6 +29,9 @@ import {
 import PublicLayout from "./components/layouts/PublicLayout";
 import DashoardLayout from "./components/layouts/DashoardLayout";
 import Subjects, { loader as subjectLoader } from "./pages/app/Subjects";
+import SubjectDetail, {
+  loader as subjectDetailLoader,
+} from "./pages/app/SubjectDetail";
 
 const App = () => {
   const auth = useAuthContext();
@@ -88,6 +91,11 @@ const App = () => {
             path="subjects"
             element={<Subjects />}
             loader={subjectLoader}
+          />
+          <Route
+            path="subjects/:subject"
+            element={<SubjectDetail />}
+            loader={subjectDetailLoader}
           />
         </Route>
 
