@@ -3,6 +3,7 @@ import {
   getSubject,
   SubjectDetailType,
   SubTopicType,
+  markSubject,
 } from "@/apis/dashboard/subjects.api";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,23 +14,34 @@ import { IoIosArrowDown } from "react-icons/io";
 import { LoaderFunction, useLoaderData, Link } from "react-router-dom";
 import { GoArrowLeft } from "react-icons/go";
 import { IoCheckmarkOutline } from "react-icons/io5";
+import { ImSpinner8 } from "react-icons/im";
+import { IoIosClose } from "react-icons/io";
+import { toast } from "sonner";
 
+type LoaderType = {
+  subjectData: SubjectDetailType[];
+  subjectName: string;
+};
 export const loader: LoaderFunction = async ({
   params,
-}): Promise<SubjectDetailType[]> => {
+}): Promise<LoaderType> => {
   const { subject } = params;
-  return await getSubject(subject || "");
+  return {
+    subjectData: await getSubject(subject || ""),
+    subjectName: subject || "",
+  };
 };
 const SubjectDetail = () => {
-  const data = useLoaderData() as SubjectDetailType[];
-  const toggleAttached = data.map((ta) => {
+  const data = useLoaderData() as LoaderType;
+  const toggleAttached = data.subjectData.map((ta) => {
     return {
       ...ta,
       isOpen: false,
+      progress: ta.progress.isComplete,
     };
   });
   const [subject, setSubject] = useState(toggleAttached);
-
+  const [loadingId, setLoadingId] = useState<string>("");
   const toggle = (id: string) => {
     setSubject((prev) => {
       return prev.map((subject) => {
@@ -44,6 +56,48 @@ const SubjectDetail = () => {
       });
     });
   };
+  const toggleProgressInClient = (chapter: string, value: boolean) => {
+    setSubject((prev) => {
+      return prev.map((subj) => {
+        if (subj.chapter == chapter) {
+          return {
+            ...subj,
+            progress: value,
+          };
+        } else {
+          return subj;
+        }
+      });
+    });
+  };
+
+  const toggleProgress = async (chapter: string, value: boolean) => {
+    try {
+      const message = value ? "👍 It's okay!" : "👏 Great job!";
+      const des = value
+        ? "Take your time to study again. You've got this!"
+        : "You're making amazing progress and taking one step closer to your matric exam.";
+      setLoadingId(chapter);
+      console.log({ chapter, value: !value, subjectName: data.subjectName });
+      await markSubject(data.subjectName, {
+        chapter,
+        value: !value,
+      });
+      toggleProgressInClient(chapter, !value);
+      toast.success(message, {
+        description: des,
+        className: "border",
+        action: {
+          label: <IoIosClose className="size-6 dark:text-white" />,
+          onClick: () => null,
+        },
+      });
+    } catch (error) {
+      toast.error("Opps! No internet connection");
+    } finally {
+      setLoadingId("");
+    }
+  };
 
   return (
     <section className="min-h-full">
@@ -57,7 +111,7 @@ const SubjectDetail = () => {
                 </Button>
               </Link>
             </div>
-            asd
+            {data.subjectName}
           </Card>
         </div>
         <div className="p-3">
@@ -65,9 +119,7 @@ const SubjectDetail = () => {
             {subject.map((item) => (
               <Card
                 className={`rounded-md shadow-none ${
-                  item.progress.isComplete
-                    ? "border-green-500/40 bg-green-500/10"
-                    : ""
+                  item.progress ? "border-green-500/40 bg-green-500/10" : ""
                 }`}
                 key={item.chapter}
               >
@@ -78,11 +130,7 @@ const SubjectDetail = () => {
                   {/* left */}
                   <div className="flex items-center gap-3">
                     <h3 className="size-6 flex w-6 items-center justify-center rounded-full bg-green-600 text-white">
-                      {item.progress.isComplete ? (
-                        <IoCheckmarkOutline />
-                      ) : (
-                        item.chapter
-                      )}
+                      {item.progress ? <IoCheckmarkOutline /> : item.chapter}
                     </h3>
                     <p className="text-start flex-1">{item.title}</p>
                   </div>
@@ -98,16 +146,27 @@ const SubjectDetail = () => {
                 {item.isOpen && (
                   <div>
                     <Separator />
-                    <label
-                      htmlFor={item.chapter}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center p-3 px-4 gap-4 select-none max-sm:text-xs"
-                    >
-                      <Checkbox
-                        checked={item.progress.isComplete}
-                        id={item.chapter}
-                      />
-                      I Understand this topic
-                    </label>
+                    {loadingId == item.chapter ? (
+                      <div className="text-sm flex items-center p-3 px-4 gap-4 bg-slate-400/10 text-white w-full justify-center">
+                        <ImSpinner8 className="animate-spin" />
+                      </div>
+                    ) : (
+                      <label
+                        htmlFor={item.chapter}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center p-3 px-4 gap-4 select-none max-sm:text-xs"
+                      >
+                        <Checkbox
+                          checked={item.progress}
+                          id={item.chapter}
+                          onCheckedChange={() =>
+                            toggleProgress(item.chapter, item.progress)
+                          }
+                        />
+                        {item.progress
+                          ? "Chapter understood! Well done!"
+                          : "Got it! I understand this chapter."}
+                      </label>
+                    )}
                     {(item.from && item?.from.length > 0) ||
                     (item.subTopics && item?.subTopics.length > 0) ? (
                       <FromTemp from={item.from} subTopics={item.subTopics} />
@@ -140,14 +199,17 @@ function FromTemp({
 
       <div className="p-3 flex flex-wrap gap-3">
         {from &&
-          from.map((it) => (
-            <div className="p-1 text-sm max-sm:text-xs rounded-full dark:border-green-500/20 border px-4 border-green-500/40">
+          from.map((it, i) => (
+            <div
+              key={i}
+              className="p-1 text-sm max-sm:text-xs rounded-full dark:border-green-500/20 border px-4 border-green-500/40"
+            >
               Grade {it.grade} at unit {it.unit}
             </div>
           ))}
         {subTopics &&
-          subTopics.map((topic) => (
-            <div>
+          subTopics.map((topic, i) => (
+            <div key={i + "uniqe"}>
               {topic.name && <h3 className="mb-2"># {topic.name}</h3>}
               <div className="flex gap-3 flex-wrap items-center">
                 {topic.child &&

@@ -39,3 +39,26 @@ export const getSubject = async (
   const subjects = await res.json();
   return subjects;
 };
+export type MarkSubjectType = {
+  chapter: string;
+  value: boolean;
+};
+export const markSubject = async (
+  subject: string,
+  markData: MarkSubjectType
+): Promise<{ message: string }> => {
+  const res = await fetch(`/api/subject/${subject}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(markData),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw {
+      message: data.message,
+    };
+  }
+  return data;
+};
