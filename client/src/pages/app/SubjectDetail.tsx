@@ -91,7 +91,6 @@ const SubjectDetail = () => {
         ? "Take your time to study again. You've got this!"
         : "You're making amazing progress and taking one step closer to your matric exam.";
       setLoading((prev) => [...prev, chapter]);
-      console.log({ chapter, value: !value, subjectName: data.subjectName });
       await markSubject(data.subjectName, {
         chapter,
         value: !value,

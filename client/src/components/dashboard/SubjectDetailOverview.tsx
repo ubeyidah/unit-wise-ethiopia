@@ -12,6 +12,8 @@ import Picker from "@emoji-mart/react";
 import { useAuthContext } from "@/context/AuthProvider";
 import { FormEvent, useState } from "react";
 import { LoaderType } from "@/pages/app/SubjectDetail";
+import { createSubjectComment } from "@/apis/dashboard/subjects.api";
+import { ImSpinner8 } from "react-icons/im";
 
 type PropType = {
   data: LoaderType;
@@ -20,14 +22,20 @@ type PropType = {
 const SubjectDetailOverview = ({ data, progress }: PropType) => {
   const auth = useAuthContext();
   const [commentText, setCommentText] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const totalCha = 200;
   const submitComment = async (e: FormEvent) => {
     try {
       e.preventDefault();
+      setLoading(true);
       if (commentText.trim() === "" || commentText.length < 8) return;
-      console.log(commentText);
+      const res = await createSubjectComment(data.subjectName, commentText);
+      setCommentText("");
+      console.log(res);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -90,11 +98,15 @@ const SubjectDetailOverview = ({ data, progress }: PropType) => {
           </Popover>
           <Button
             variant="outline"
-            disabled={commentText.length > 8 ? false : true}
+            disabled={commentText.length > 8 ? false : true || loading}
             className="rounded-full"
             type="submit"
           >
-            Comment
+            {!loading ? (
+              "Comment"
+            ) : (
+              <ImSpinner8 className="animate-spin px-4 box-content" />
+            )}
           </Button>
         </div>
       </form>
