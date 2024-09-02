@@ -54,6 +54,7 @@ export const takeInfo = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
 export const subjectComment = async (req, res) => {
   try {
     const { subject, comment } = req.body;
@@ -65,10 +66,27 @@ export const subjectComment = async (req, res) => {
       authorId,
       message: comment,
       subject,
-    });
+    }).save();
     res.status(200).json(subjectCom);
   } catch (error) {
     console.log("Error: subject comment: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const getSubjectComments = async (req, res) => {
+  try {
+    const { subject } = req.params;
+    const subjectComments = await SubjectComment.find({ subject })
+      .populate("authorId", ["_id", "userName", "profileImage"])
+      .populate("replies.userId", ["_id", "userName", "profileImage"]);
+    if (subjectComments.length <= 0)
+      return res
+        .status(400)
+        .json({ message: "incorrect subject name or no comments found" });
+    res.status(200).json(subjectComments);
+  } catch (error) {
+    console.log("Error: get subject comments: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };

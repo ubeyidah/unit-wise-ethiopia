@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 const repliesSchema = new mongoose.Schema({
-  userId: mongoose.Types.ObjectId,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   replie: String,
 });
 
