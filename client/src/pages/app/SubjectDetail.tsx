@@ -69,6 +69,7 @@ const SubjectDetail = () => {
         }
       });
     });
+    toggle(chapter);
   };
 
   const toggleProgress = async (chapter: string, value: boolean) => {
@@ -124,7 +125,7 @@ const SubjectDetail = () => {
                 key={item.chapter}
               >
                 <button
-                  className="outline-none flex justify-between w-full p-4 gap-1 max-sm:text-xs"
+                  className="outline-none flex justify-between w-full p-4 gap-1 max-sm:text-sm"
                   onClick={() => toggle(item.chapter)}
                 >
                   {/* left */}

@@ -2,7 +2,12 @@ import { Link, NavLink } from "react-router-dom";
 import { sideLinks } from "@/data/dashboard";
 import { CiCircleQuestion } from "react-icons/ci";
 
-const DashboardSidebar = () => {
+type PropType = {
+  side: boolean;
+  toggle: () => void;
+};
+
+const DashboardSidebar = ({ side, toggle }: PropType) => {
   const activeClass =
     "flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary";
   const linkClass =
@@ -10,13 +15,21 @@ const DashboardSidebar = () => {
   return (
     <aside className="hidden border-r bg-muted/40 md:block ">
       <div className="sticky top-0 flex h-full max-h-screen flex-col gap-2">
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+        <button
+          className="absolute -right-[5px] hover:-right-[7px] w-2 h-9 dark:bg-green-400/30 bg-green-500/50 dark:hover:bg-green-500/80 hover:bg-green-400/60 hover:w-3 transition-all duration-150 rounded-md top-1/2"
+          onClick={toggle}
+        ></button>
+        <div
+          className={`flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 ${
+            side ? "" : "lg:px-0 justify-center"
+          }`}
+        >
           <Link
             to="/dashboard"
             className="flex items-center gap-2 font-semibold"
           >
             <img src="/logo.png" className="h-8 w-8" />
-            <span className="">UnitWise Ethiopia</span>
+            <span className={side ? "" : "hidden"}>UnitWise Ethiopia</span>
           </Link>
         </div>
         <div className="flex-1">
@@ -30,16 +43,18 @@ const DashboardSidebar = () => {
                   isActive ? activeClass : linkClass
                 }
               >
-                <div className="h-4 w-4">{link.icon}</div>
-                {link.label}
+                <div className={`text-md ${side ? "" : "text-[17px] my-1"}`}>
+                  {link.icon}
+                </div>
+                <span className={side ? "" : "hidden"}>{link.label}</span>
               </NavLink>
             ))}
           </nav>
         </div>
         <div className="mt-auto mb-2 text-sm">
           <Link to="/help-support" className={linkClass}>
-            <CiCircleQuestion className="size-5" />
-            Help & Support
+            <CiCircleQuestion className={`size-5 ${side ? " " : " mx-auto"}`} />
+            <span className={side ? "" : "hidden"}>Help & Support</span>
           </Link>
         </div>
       </div>
