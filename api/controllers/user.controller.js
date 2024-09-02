@@ -1,6 +1,8 @@
 import Source from "../models/source.model.js";
+import SubjectComment from "../models/subjectComment.model.js";
 import User from "../models/user.model.js";
 import { takeInfoSchema } from "../schemas/auth.schema.js";
+import { subjectsCommentSchema } from "../schemas/subject.schema.js";
 
 export const takeInfo = async (req, res) => {
   try {
@@ -54,6 +56,17 @@ export const takeInfo = async (req, res) => {
 };
 export const subjectComment = async (req, res) => {
   try {
+    const { subject, comment } = req.body;
+    const { error } = subjectsCommentSchema.validate({ subject, comment });
+    const authorId = req.user._id;
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
+    const subjectCom = await SubjectComment({
+      authorId,
+      message: comment,
+      subject,
+    });
+    res.status(200).json(subjectCom);
   } catch (error) {
     console.log("Error: subject comment: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });

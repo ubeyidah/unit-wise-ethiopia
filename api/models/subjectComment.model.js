@@ -1,4 +1,3 @@
-import { required, string } from "joi";
 import mongoose from "mongoose";
 const repliesSchema = new mongoose.Schema({
   userId: mongoose.Types.ObjectId,
