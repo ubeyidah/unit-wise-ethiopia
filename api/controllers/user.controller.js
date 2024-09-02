@@ -52,3 +52,10 @@ export const takeInfo = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+export const subjectComment = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log("Error: subject comment: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
