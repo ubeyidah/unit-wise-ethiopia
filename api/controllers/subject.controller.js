@@ -1,5 +1,6 @@
 import UserSubjects from "../models/userSubjects.model.js";
 import { naturalSubjects, socialSubjects } from "../data/subjects.js";
+import { subjectMarkSchema } from "../schemas/subject.schema.js";
 
 export const getSubjects = async (req, res) => {
   try {
@@ -24,6 +25,7 @@ export const getSubjects = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
 export const getSubject = async (req, res) => {
   try {
     const { subject } = req.params;
@@ -78,6 +80,36 @@ export const getSubject = async (req, res) => {
     }
   } catch (error) {
     console.log("Error: get subjects : ", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const makeCompleteChapters = async (req, res) => {
+  try {
+    const { subject } = req.params;
+    const { _id } = req.user;
+    const { chapter, value } = req.body;
+    const { error } = subjectMarkSchema.validate({ chapter, value });
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
+
+    const subjectDoc = await UserSubjects.findOne({
+      userId: _id,
+      subjectName: subject,
+    });
+
+    subjectDoc.subjectProgress = subjectDoc.subjectProgress.map((subj) => {
+      if (subj.chapter == chapter) {
+        return { ...subj, isComplete: value };
+      } else {
+        return subj;
+      }
+    });
+    await subjectDoc.save();
+
+    res.status(200).json({ message: "greate progress" });
+  } catch (error) {
+    console.log("Error: mark subjects : ", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
