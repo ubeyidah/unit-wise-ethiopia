@@ -16,8 +16,9 @@ const DashboardSidebar = ({ side, toggle }: PropType) => {
     <aside className="hidden border-r bg-muted/40 md:block ">
       <div className="sticky top-0 flex h-full max-h-screen flex-col gap-2">
         <button
-          className="absolute -right-[5px] hover:-right-[7px] w-2 h-9 dark:bg-green-400/30 bg-green-500/50 dark:hover:bg-green-500/80 hover:bg-green-400/60 hover:w-3 transition-all duration-150 rounded-md top-1/2"
+          className="absolute -right-[5px] hover:-right-[7px] w-2 h-9 dark:bg-green-400/30 bg-green-500/50 hover:bg-green-500/80 dark:hover:bg-green-400/60 hover:w-3 transition-all duration-150 rounded-md top-1/2"
           onClick={toggle}
+          title="toggle"
         ></button>
         <div
           className={`flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 ${

@@ -11,7 +11,7 @@ export const loader: LoaderFunction = async (): Promise<SubjectsType[]> => {
 const Subjects = () => {
   const subjects = useLoaderData() as SubjectsType[];
   return (
-    <section className="min-h-full pb-9">
+    <section className="min-h-full pb-14">
       <h1 className="text-xl md:text-3xl mt-2 text-green-500">
         Explore Your Subjects and Start Learning Today
       </h1>

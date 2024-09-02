@@ -4,7 +4,7 @@ import DashoardHeader from "../dashboard/DashoardHeader";
 import { useState } from "react";
 
 const DashoardLayout = () => {
-  const [isSideOpen, setIsSideOpen] = useState<boolean>(false);
+  const [isSideOpen, setIsSideOpen] = useState<boolean>(true);
   const toggleSidebar = () => {
     setIsSideOpen((prev) => !prev);
   };

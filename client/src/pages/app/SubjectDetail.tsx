@@ -5,20 +5,19 @@ import {
   SubTopicType,
   markSubject,
 } from "@/apis/dashboard/subjects.api";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { LoaderFunction, useLoaderData, Link } from "react-router-dom";
-import { GoArrowLeft } from "react-icons/go";
+import { LoaderFunction, useLoaderData } from "react-router-dom";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { ImSpinner8 } from "react-icons/im";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "sonner";
+import SubjectDetailOverview from "@/components/dashboard/SubjectDetailOverview";
 
-type LoaderType = {
+export type LoaderType = {
   subjectData: SubjectDetailType[];
   subjectName: string;
 };
@@ -42,6 +41,20 @@ const SubjectDetail = () => {
   });
   const [subject, setSubject] = useState(toggleAttached);
   const [loading, setLoading] = useState<string[]>([]);
+  const [progress, setProgress] = useState({
+    completed: 0,
+    total: 0,
+    percent: 0,
+  });
+  useEffect(() => {
+    const total = subject.length;
+    let completed = 0;
+    subject.forEach((subj) => {
+      if (subj.progress) completed++;
+    });
+    const percent = Math.round((completed / total) * 100);
+    setProgress({ completed, total, percent });
+  }, [subject]);
   const toggle = (id: string) => {
     setSubject((prev) => {
       return prev.map((subject) => {
@@ -71,7 +84,6 @@ const SubjectDetail = () => {
     });
     toggle(chapter);
   };
-
   const toggleProgress = async (chapter: string, value: boolean) => {
     try {
       const message = value ? "👍 It's okay!" : "👏 Great job!";
@@ -104,16 +116,9 @@ const SubjectDetail = () => {
     <section className="min-h-full">
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="p-3">
-          <Card className="md:sticky md:top-[80px] md:left-0 rounded-md shadow-none max-h-72 h-full p-3">
-            <div className="flex items-center justify-between gap-3">
-              <Link to="/dashboard/subjects">
-                <Button variant="outline">
-                  <GoArrowLeft />
-                </Button>
-              </Link>
-              <h3 className="uppercase">{data.subjectName}</h3>
-            </div>
-          </Card>
+          <div className="md:sticky md:top-[80px] md:left-0 ">
+            <SubjectDetailOverview data={data} progress={progress} />
+          </div>
         </div>
         <div className="p-3">
           <div className="flex flex-col gap-3">
@@ -202,7 +207,7 @@ function FromTemp({
         {from &&
           from.map((it, i) => (
             <div
-              key={i}
+              key={i + "rand"}
               className="p-1 text-sm max-sm:text-xs rounded-full dark:border-green-500/20 border px-4 border-green-500/40"
             >
               Grade {it.grade} at unit {it.unit}
@@ -215,7 +220,10 @@ function FromTemp({
               <div className="flex gap-3 flex-wrap items-center">
                 {topic.child &&
                   topic.child.map((chi) => (
-                    <div className="p-1 text-sm max-sm:text-xs rounded-full border-green-500/20 border px-4">
+                    <div
+                      key={chi}
+                      className="p-1 text-sm max-sm:text-xs rounded-full border-green-500/20 border px-4"
+                    >
                       {chi}
                     </div>
                   ))}
