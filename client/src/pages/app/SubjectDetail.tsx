@@ -41,7 +41,7 @@ const SubjectDetail = () => {
     };
   });
   const [subject, setSubject] = useState(toggleAttached);
-  const [loadingId, setLoadingId] = useState<string>("");
+  const [loading, setLoading] = useState<string[]>([]);
   const toggle = (id: string) => {
     setSubject((prev) => {
       return prev.map((subject) => {
@@ -77,7 +77,7 @@ const SubjectDetail = () => {
       const des = value
         ? "Take your time to study again. You've got this!"
         : "You're making amazing progress and taking one step closer to your matric exam.";
-      setLoadingId(chapter);
+      setLoading((prev) => [...prev, chapter]);
       console.log({ chapter, value: !value, subjectName: data.subjectName });
       await markSubject(data.subjectName, {
         chapter,
@@ -95,7 +95,7 @@ const SubjectDetail = () => {
     } catch (error) {
       toast.error("Opps! No internet connection");
     } finally {
-      setLoadingId("");
+      setLoading((prev) => prev.filter((id) => id !== chapter));
     }
   };
 
@@ -104,14 +104,14 @@ const SubjectDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="p-3">
           <Card className="md:sticky md:top-[80px] md:left-0 rounded-md shadow-none max-h-72 h-full p-3">
-            <div>
+            <div className="flex items-center justify-between gap-3">
               <Link to="/dashboard/subjects">
                 <Button variant="outline">
                   <GoArrowLeft />
                 </Button>
               </Link>
+              <h3 className="uppercase">{data.subjectName}</h3>
             </div>
-            {data.subjectName}
           </Card>
         </div>
         <div className="p-3">
@@ -146,8 +146,8 @@ const SubjectDetail = () => {
                 {item.isOpen && (
                   <div>
                     <Separator />
-                    {loadingId == item.chapter ? (
-                      <div className="text-sm flex items-center p-3 px-4 gap-4 bg-slate-400/10 text-white w-full justify-center">
+                    {loading.includes(item.chapter) ? (
+                      <div className="text-sm flex items-center p-3 px-4 gap-4 bg-slate-400/10 dark:text-white text-black w-full justify-center">
                         <ImSpinner8 className="animate-spin" />
                       </div>
                     ) : (
