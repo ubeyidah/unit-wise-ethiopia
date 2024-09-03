@@ -115,8 +115,8 @@ export type SubjectComType = {
   authorId: SubjectMessageType;
   message: string;
   subject: string;
-  likes: string[] | [];
-  replies: SubjectCommentReplieType[] | [];
+  likes: string[];
+  replies: SubjectCommentReplieType[];
   createdAt: Date;
 };
 
