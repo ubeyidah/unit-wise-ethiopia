@@ -2,6 +2,7 @@ import {
   SubjectComType,
   likeSubjectComment,
   loadMoreSubjectComments,
+  replySubjectComment,
 } from "@/apis/dashboard/subjects.api";
 import TimeAgo from "javascript-time-ago";
 import { Card } from "../ui/card";
@@ -9,7 +10,7 @@ import en from "javascript-time-ago/locale/en";
 import { Separator } from "../ui/separator";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ImSpinner8 } from "react-icons/im";
 import { LoaderType } from "@/pages/app/SubjectDetail";
@@ -64,7 +65,12 @@ const SubjectComment = ({ data, progress }: PropType) => {
         canLoadMore: loadedComments.currentPage < loadedComments.totalPages,
       });
     } catch (error) {
-      toast.error("Opps! No internet connection");
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -98,9 +104,58 @@ const SubjectComment = ({ data, progress }: PropType) => {
         prev.map((comment) => (comment._id === commentId ? modified : comment))
       );
     } catch (error) {
-      toast.error("Opps! No internet connection");
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
     } finally {
       setLoadingId((prev) => prev.filter((id) => id !== commentId));
+    }
+  };
+
+  const handleReplySubmit = async (
+    e: FormEvent<HTMLFormElement>,
+    id: string
+  ) => {
+    try {
+      e.preventDefault();
+      const inputElement = e.currentTarget.querySelector<HTMLInputElement>(
+        'input[name="reply"]'
+      );
+      const submitButton =
+        e.currentTarget.querySelector<HTMLButtonElement>(".submit-btn");
+
+      if (inputElement && submitButton) {
+        const replyValue = inputElement.value;
+        if (replyValue.length < 2 || replyValue.length >= 110) {
+          toast.info("write a riply between 2 to 110 characters", {
+            action: {
+              label: "x",
+              onClick: () => null,
+            },
+          });
+          return;
+        }
+        submitButton.disabled = false;
+        submitButton.innerHTML = "Loading...";
+        const modifiedComment = await replySubjectComment(id, replyValue);
+        setComments((prev) =>
+          prev.map((comment) =>
+            comment._id === id ? modifiedComment : comment
+          )
+        );
+        submitButton.disabled = true;
+        submitButton.innerHTML = "Reply";
+      }
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
     }
   };
   return (
@@ -187,11 +242,15 @@ const SubjectComment = ({ data, progress }: PropType) => {
                         </button>
                       </div>
                       {comment?.isToReply && (
-                        <div className="mt-3 text-sm">
+                        <form
+                          onSubmit={(e) => handleReplySubmit(e, comment._id)}
+                          className="mt-3 text-sm"
+                        >
                           <Separator className="my-3" />
                           <input
                             className="bg-transparent border-b w-full border-green-500/30 py-1 px-2 outline-none focus:border-green-500"
                             placeholder="add a reply.."
+                            name="reply"
                           />
                           <div className="flex justify-end gap-3 mt-2">
                             <Button
@@ -199,23 +258,25 @@ const SubjectComment = ({ data, progress }: PropType) => {
                               size="sm"
                               className="rounded-full"
                               onClick={() => toggleReply(comment._id)}
+                              type="button"
                             >
                               Cancel
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
-                              className="rounded-full"
+                              className="rounded-full submit-btn"
+                              type="submit"
                             >
                               Reply
                             </Button>
                           </div>
-                        </div>
+                        </form>
                       )}
                       {comment?.isReplyOpen && comment.replies.length > 0 && (
                         <div className="mt-3">
                           {comment.replies.map((replie) => (
-                            <>
+                            <span key={replie._id}>
                               <Separator />
                               <div className="mr-4 grid grid-cols-[30px_1fr] gap-1 text-xs my-3">
                                 <div>
@@ -227,12 +288,13 @@ const SubjectComment = ({ data, progress }: PropType) => {
                                 </div>
                                 <div>
                                   <p className="opacity-60">
-                                    @{replie?.userId?.userName}
+                                    @{replie?.userId?.userName} -{" "}
+                                    {timeAgo.format(new Date(replie.createdAt))}
                                   </p>
                                   <p>{replie.replie}</p>
                                 </div>
                               </div>
-                            </>
+                            </span>
                           ))}
                         </div>
                       )}

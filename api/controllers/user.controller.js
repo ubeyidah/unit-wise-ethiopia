@@ -2,7 +2,10 @@ import Source from "../models/source.model.js";
 import SubjectComment from "../models/subjectComment.model.js";
 import User from "../models/user.model.js";
 import { takeInfoSchema } from "../schemas/auth.schema.js";
-import { subjectsCommentSchema } from "../schemas/subject.schema.js";
+import {
+  subjectReplieSchema,
+  subjectsCommentSchema,
+} from "../schemas/subject.schema.js";
 
 export const takeInfo = async (req, res) => {
   try {
@@ -123,6 +126,30 @@ export const likeDeslikeComment = async (req, res) => {
     res.status(200).json(modified);
   } catch (error) {
     console.log("Error: subject comments like: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const replieComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user._id;
+    const { reply } = req.body;
+    const { error } = subjectReplieSchema.validate({ reply });
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
+    const subjectComment = await SubjectComment.findById(commentId);
+    subjectComment.replies.push({ userId, replie: reply });
+
+    const [_, modified] = await Promise.all([
+      await subjectComment.save(),
+      await SubjectComment.findById(commentId)
+        .populate("authorId", ["_id", "userName", "profileImage"])
+        .populate("replies.userId", ["_id", "userName", "profileImage"]),
+    ]);
+    res.status(200).json(modified);
+  } catch (error) {
+    console.log("Error: replie subject comments: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };

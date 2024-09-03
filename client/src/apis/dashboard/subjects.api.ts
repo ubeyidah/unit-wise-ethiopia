@@ -108,6 +108,7 @@ export type SubjectCommentReplieType = {
   userId: SubjectMessageType;
   replie: string;
   _id: string;
+  createdAt: Date;
 };
 
 export type SubjectComType = {
@@ -158,4 +159,24 @@ export const likeSubjectComment = async (
     };
   }
   return modifiedComment;
+};
+
+export const replySubjectComment = async (
+  commentId: string,
+  reply: string
+): Promise<SubjectComType> => {
+  const res = await fetch(`/api/user/subject-comment/replie/${commentId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ reply }),
+  });
+  const replyComment = await res.json();
+  if (!res.ok) {
+    throw {
+      message: replyComment.message || res.statusText,
+    };
+  }
+  return replyComment;
 };

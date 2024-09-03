@@ -5,6 +5,10 @@ const repliesSchema = new mongoose.Schema({
     ref: "User",
   },
   replie: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const subjectCommentSchema = new mongoose.Schema(
