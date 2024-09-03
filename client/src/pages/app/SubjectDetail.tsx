@@ -4,6 +4,8 @@ import {
   SubjectDetailType,
   SubTopicType,
   markSubject,
+  getSubjectComments,
+  SubjectCommentsListType,
 } from "@/apis/dashboard/subjects.api";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,10 +18,12 @@ import { ImSpinner8 } from "react-icons/im";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "sonner";
 import SubjectDetailOverview from "@/components/dashboard/SubjectDetailOverview";
+import SubjectComment from "@/components/dashboard/SubjectComment";
 
 export type LoaderType = {
   subjectData: SubjectDetailType[];
   subjectName: string;
+  comments: SubjectCommentsListType;
 };
 export const loader: LoaderFunction = async ({
   params,
@@ -28,6 +32,7 @@ export const loader: LoaderFunction = async ({
   return {
     subjectData: await getSubject(subject || ""),
     subjectName: subject || "",
+    comments: await getSubjectComments(subject || ""),
   };
 };
 const SubjectDetail = () => {
@@ -117,6 +122,10 @@ const SubjectDetail = () => {
         <div className="p-3">
           <div className="md:sticky md:top-[80px] md:left-0 ">
             <SubjectDetailOverview data={data} progress={progress} />
+            <SubjectComment
+              data={data.comments}
+              subjectName={data.subjectName}
+            />
           </div>
         </div>
         <div className="p-3">

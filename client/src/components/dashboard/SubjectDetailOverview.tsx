@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
 import { GoArrowLeft } from "react-icons/go";
 import { Button } from "../ui/button";
@@ -21,6 +21,7 @@ type PropType = {
 };
 const SubjectDetailOverview = ({ data, progress }: PropType) => {
   const auth = useAuthContext();
+  const navigate = useNavigate();
   const [commentText, setCommentText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const totalCha = 200;
@@ -31,7 +32,7 @@ const SubjectDetailOverview = ({ data, progress }: PropType) => {
       if (commentText.trim() === "" || commentText.length < 8) return;
       const res = await createSubjectComment(data.subjectName, commentText);
       setCommentText("");
-      console.log(res);
+      navigate(".", { replace: true });
     } catch (error) {
       console.log(error);
     } finally {

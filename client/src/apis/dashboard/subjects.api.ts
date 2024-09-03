@@ -97,3 +97,52 @@ export const createSubjectComment = async (
   }
   return data;
 };
+
+export type SubjectMessageType = {
+  _id: string;
+  userName: string;
+  profileImage: string;
+};
+
+export type SubjectCommentReplieType = {
+  userId: SubjectMessageType;
+  replie: string;
+  _id: string;
+};
+
+export type SubjectComType = {
+  _id: string;
+  authorId: SubjectMessageType;
+  message: string;
+  subject: string;
+  likes: string[] | [];
+  replies: SubjectCommentReplieType[] | [];
+  createdAt: Date;
+};
+
+export interface SubjectCommentsListType {
+  comments: SubjectComType[];
+  totalPages: number;
+  currentPage: number;
+}
+
+export const getSubjectComments = async (
+  subject: string
+): Promise<SubjectCommentsListType> => {
+  const res = await fetch(`/api/user/subject-comments/${subject}`);
+  const subjects = await res.json();
+  return subjects;
+};
+export const loadMoreSubjectComments = async (
+  subject: string,
+  page: number
+): Promise<SubjectCommentsListType> => {
+  const res = await fetch(`/api/user/subject-comments/${subject}?page=${page}`);
+  const subjects = await res.json();
+  if (!res.ok) {
+    throw {
+      message: subjects.message || res.statusText,
+    };
+  }
+  return subjects;
+};

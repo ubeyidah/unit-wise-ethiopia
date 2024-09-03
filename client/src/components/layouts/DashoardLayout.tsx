@@ -18,7 +18,7 @@ const DashoardLayout = () => {
       <DashboardSidebar side={isSideOpen} toggle={toggleSidebar} />
       <div className="flex flex-col">
         <DashoardHeader />
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex flex-1 flex-col gap-4 py-4 px-1 lg:gap-6 lg:p-6">
           <Outlet />
         </main>
       </div>

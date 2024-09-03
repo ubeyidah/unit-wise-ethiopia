@@ -22,14 +22,14 @@ const DashboardSidebar = ({ side, toggle }: PropType) => {
         ></button>
         <div
           className={`flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 ${
-            side ? "" : "lg:px-0 justify-center"
+            side ? "" : "p-0 lg:p-0 justify-center"
           }`}
         >
           <Link
             to="/dashboard"
             className="flex items-center gap-2 font-semibold"
           >
-            <img src="/logo.png" className="h-8 w-8" />
+            <img src="/logo.png" className="w-11" />
             <span className={side ? "" : "hidden"}>UnitWise Ethiopia</span>
           </Link>
         </div>

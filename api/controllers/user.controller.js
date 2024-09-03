@@ -75,16 +75,25 @@ export const subjectComment = async (req, res) => {
 };
 
 export const getSubjectComments = async (req, res) => {
+  const { subject } = req.params;
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 5;
   try {
-    const { subject } = req.params;
+    const totalComments = await SubjectComment.countDocuments({ subject });
+    const totalPages = Math.ceil(totalComments / limit);
+
     const subjectComments = await SubjectComment.find({ subject })
       .populate("authorId", ["_id", "userName", "profileImage"])
-      .populate("replies.userId", ["_id", "userName", "profileImage"]);
-    if (subjectComments.length <= 0)
-      return res
-        .status(400)
-        .json({ message: "incorrect subject name or no comments found" });
-    res.status(200).json(subjectComments);
+      .populate("replies.userId", ["_id", "userName", "profileImage"])
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json({
+      comments: subjectComments,
+      totalPages: totalPages || 0,
+      currentPage: page,
+    });
   } catch (error) {
     console.log("Error: get subject comments: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
