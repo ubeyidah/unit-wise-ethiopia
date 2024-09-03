@@ -17,7 +17,6 @@ import { IoCheckmarkOutline } from "react-icons/io5";
 import { ImSpinner8 } from "react-icons/im";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "sonner";
-import SubjectDetailOverview from "@/components/dashboard/SubjectDetailOverview";
 import SubjectComment from "@/components/dashboard/SubjectComment";
 
 export type LoaderType = {
@@ -121,11 +120,7 @@ const SubjectDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="p-3">
           <div className="md:sticky md:top-[80px] md:left-0 ">
-            <SubjectDetailOverview data={data} progress={progress} />
-            <SubjectComment
-              data={data.comments}
-              subjectName={data.subjectName}
-            />
+            <SubjectComment data={data} progress={progress} />
           </div>
         </div>
         <div className="p-3">

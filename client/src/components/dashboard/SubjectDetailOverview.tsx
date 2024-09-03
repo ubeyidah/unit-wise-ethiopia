@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Card } from "../ui/card";
 import { GoArrowLeft } from "react-icons/go";
 import { Button } from "../ui/button";
@@ -18,10 +18,10 @@ import { ImSpinner8 } from "react-icons/im";
 type PropType = {
   data: LoaderType;
   progress: { completed: number; total: number; percent: number };
+  reloadComment: (page?: number) => Promise<void>;
 };
-const SubjectDetailOverview = ({ data, progress }: PropType) => {
+const SubjectDetailOverview = ({ data, progress, reloadComment }: PropType) => {
   const auth = useAuthContext();
-  const navigate = useNavigate();
   const [commentText, setCommentText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const totalCha = 200;
@@ -30,9 +30,11 @@ const SubjectDetailOverview = ({ data, progress }: PropType) => {
       e.preventDefault();
       setLoading(true);
       if (commentText.trim() === "" || commentText.length < 8) return;
-      const res = await createSubjectComment(data.subjectName, commentText);
+      Promise.all([
+        await createSubjectComment(data.subjectName, commentText),
+        await reloadComment(1),
+      ]);
       setCommentText("");
-      navigate(".", { replace: true });
     } catch (error) {
       console.log(error);
     } finally {
