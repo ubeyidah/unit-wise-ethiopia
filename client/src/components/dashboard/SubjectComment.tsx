@@ -1,5 +1,6 @@
 import {
   SubjectComType,
+  likeSubjectComment,
   loadMoreSubjectComments,
 } from "@/apis/dashboard/subjects.api";
 import TimeAgo from "javascript-time-ago";
@@ -16,7 +17,6 @@ import SubjectDetailOverview from "./SubjectDetailOverview";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { formatNumber } from "@/lib/formatNumber";
 import { useAuthContext } from "@/context/AuthProvider";
-import { Input } from "../ui/input";
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
@@ -33,6 +33,7 @@ const SubjectComment = ({ data, progress }: PropType) => {
   const auth = useAuthContext();
   const [isOpenComment, setIsOpenComment] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState<string[]>([]);
   const [comments, setComments] = useState<SubjectCommentRederType[]>(
     data.comments.comments
   );
@@ -40,7 +41,7 @@ const SubjectComment = ({ data, progress }: PropType) => {
     setComments((prev) =>
       prev.map((cm) => ({ ...cm, isReplyOpen: false, isToReply: false }))
     );
-  }, [loading]);
+  }, [loading, loadingId]);
   const [pageInfo, setPageInfo] = useState({
     currentPage: data.comments.currentPage,
     totalPage: data.comments.totalPages,
@@ -87,6 +88,20 @@ const SubjectComment = ({ data, progress }: PropType) => {
           : comment
       )
     );
+  };
+
+  const handleCommentLike = async (commentId: string) => {
+    try {
+      setLoadingId((prev) => [...prev, commentId]);
+      const modified = await likeSubjectComment(commentId);
+      setComments((prev) =>
+        prev.map((comment) => (comment._id === commentId ? modified : comment))
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection");
+    } finally {
+      setLoadingId((prev) => prev.filter((id) => id !== commentId));
+    }
   };
   return (
     <>
@@ -136,16 +151,22 @@ const SubjectComment = ({ data, progress }: PropType) => {
                           className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 ${
                             isLikedComment ? "bg-slate-500/30" : ""
                           }`}
+                          onClick={() => handleCommentLike(comment._id)}
+                          disabled={loadingId.includes(comment._id)}
                         >
-                          {isLikedComment ? (
+                          {loadingId.includes(comment._id) ? (
+                            <ImSpinner8 className="animate-spin text-sm" />
+                          ) : isLikedComment ? (
                             <BiSolidLike className="size-4" />
                           ) : (
                             <BiLike className="size-4" />
                           )}
 
-                          <span className="text-xs">
-                            {formatNumber(comment.likes.length)}
-                          </span>
+                          {!loadingId.includes(comment._id) && (
+                            <span className="text-xs">
+                              {formatNumber(comment.likes.length)}
+                            </span>
+                          )}
                         </button>
                         <button
                           className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs ${

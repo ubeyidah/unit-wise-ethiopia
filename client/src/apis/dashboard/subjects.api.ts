@@ -130,19 +130,32 @@ export const getSubjectComments = async (
   subject: string
 ): Promise<SubjectCommentsListType> => {
   const res = await fetch(`/api/user/subject-comments/${subject}`);
-  const subjects = await res.json();
-  return subjects;
+  const subjectComment = await res.json();
+  return subjectComment;
 };
 export const loadMoreSubjectComments = async (
   subject: string,
   page: number
 ): Promise<SubjectCommentsListType> => {
   const res = await fetch(`/api/user/subject-comments/${subject}?page=${page}`);
-  const subjects = await res.json();
+  const loadedSubjectComments = await res.json();
   if (!res.ok) {
     throw {
-      message: subjects.message || res.statusText,
+      message: loadedSubjectComments.message || res.statusText,
     };
   }
-  return subjects;
+  return loadedSubjectComments;
+};
+
+export const likeSubjectComment = async (
+  commentId: string
+): Promise<SubjectComType> => {
+  const res = await fetch(`/api/user/comment-like/${commentId}`);
+  const modifiedComment = await res.json();
+  if (!res.ok) {
+    throw {
+      message: modifiedComment.message || res.statusText,
+    };
+  }
+  return modifiedComment;
 };

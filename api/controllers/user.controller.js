@@ -99,3 +99,30 @@ export const getSubjectComments = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const likeDeslikeComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user._id;
+    const subjectComment = await SubjectComment.findById(commentId)
+      .populate("authorId", ["_id", "userName", "profileImage"])
+      .populate("replies.userId", ["_id", "userName", "profileImage"]);
+    if (!subjectComment)
+      return res.status(404).json({ message: "comment not found" });
+    if (subjectComment.likes.includes(userId)) {
+      // dislike user
+      subjectComment.likes = subjectComment.likes.filter(
+        (like) => like.toString() !== userId.toString()
+      );
+    } else {
+      // like user
+      subjectComment.likes.push(userId);
+    }
+    const modified = await subjectComment.save();
+
+    res.status(200).json(modified);
+  } catch (error) {
+    console.log("Error: subject comments like: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
