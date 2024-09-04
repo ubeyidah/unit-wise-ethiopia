@@ -18,6 +18,14 @@ import SubjectDetailOverview from "./SubjectDetailOverview";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { formatNumber } from "@/lib/formatNumber";
 import { useAuthContext } from "@/context/AuthProvider";
+import { CiTrash } from "react-icons/ci";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
@@ -201,45 +209,72 @@ const SubjectComment = ({ data, progress }: PropType) => {
                       <div>
                         <h2 className="text-sm">{comment.message} </h2>
                       </div>
-                      <div className="mt-1 flex gap-2 items-center">
-                        <button
-                          className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 ${
-                            isLikedComment ? "bg-slate-500/30" : ""
-                          }`}
-                          onClick={() => handleCommentLike(comment._id)}
-                          disabled={loadingId.includes(comment._id)}
-                        >
-                          {loadingId.includes(comment._id) ? (
-                            <ImSpinner8 className="animate-spin text-sm" />
-                          ) : isLikedComment ? (
-                            <BiSolidLike className="size-4" />
-                          ) : (
-                            <BiLike className="size-4" />
-                          )}
+                      <div className="mt-1 flex gap-2 items-center justify-between">
+                        <div className="flex gap-2 items-center">
+                          <button
+                            className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 ${
+                              isLikedComment ? "bg-slate-500/30" : ""
+                            }`}
+                            onClick={() => handleCommentLike(comment._id)}
+                            disabled={loadingId.includes(comment._id)}
+                          >
+                            {loadingId.includes(comment._id) ? (
+                              <ImSpinner8 className="animate-spin text-sm" />
+                            ) : isLikedComment ? (
+                              <BiSolidLike className="size-4" />
+                            ) : (
+                              <BiLike className="size-4" />
+                            )}
 
-                          {!loadingId.includes(comment._id) && (
-                            <span className="text-xs">
-                              {formatNumber(comment.likes.length)}
-                            </span>
-                          )}
-                        </button>
-                        <button
-                          className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs ${
-                            comment.isToReply ? "bg-slate-500/30" : ""
-                          }`}
-                          onClick={() => toggleReply(comment._id)}
-                        >
-                          Reply
-                        </button>
-                        <button
-                          className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs"
-                          onClick={() => toggleOpenReply(comment._id)}
-                        >
-                          <IoIosArrowDown
-                            className={comment.isReplyOpen ? "rotate-180" : ""}
-                          />
-                          {formatNumber(comment.replies.length)} replies
-                        </button>
+                            {!loadingId.includes(comment._id) && (
+                              <span className="text-xs">
+                                {formatNumber(comment.likes.length)}
+                              </span>
+                            )}
+                          </button>
+                          <button
+                            className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs ${
+                              comment.isToReply ? "bg-slate-500/30" : ""
+                            }`}
+                            onClick={() => toggleReply(comment._id)}
+                          >
+                            Reply
+                          </button>
+                          <button
+                            className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs"
+                            onClick={() => toggleOpenReply(comment._id)}
+                          >
+                            <IoIosArrowDown
+                              className={
+                                comment.isReplyOpen ? "rotate-180" : ""
+                              }
+                            />
+                            {formatNumber(comment.replies.length)} replies
+                          </button>
+                        </div>
+                        <div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="rounded-full text-md"
+                                disabled={
+                                  auth?.user?._id !== comment?.authorId._id
+                                }
+                              >
+                                <BsThreeDotsVertical />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            {auth?.user?._id === comment?.authorId._id && (
+                              <DropdownMenuContent>
+                                <DropdownMenuItem className="flex items-center gap-1 text-xs">
+                                  <CiTrash /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            )}
+                          </DropdownMenu>
+                        </div>
                       </div>
                       {comment?.isToReply && (
                         <form
@@ -281,17 +316,46 @@ const SubjectComment = ({ data, progress }: PropType) => {
                               <div className="mr-4 grid grid-cols-[30px_1fr] gap-1 text-xs my-3">
                                 <div>
                                   <img
-                                    src={replie?.userId?.profileImage}
+                                    src={replie?.userId?.profileImage as string}
                                     alt={replie?.userId?.userName}
                                     className="rounded-full size-6"
                                   />
                                 </div>
-                                <div>
-                                  <p className="opacity-60">
-                                    @{replie?.userId?.userName} -{" "}
-                                    {timeAgo.format(new Date(replie.createdAt))}
-                                  </p>
-                                  <p>{replie.replie}</p>
+                                <div className="flex items-center justify-between gap-2 flex-wrap">
+                                  <div>
+                                    <p className="opacity-60">
+                                      @{replie?.userId?.userName} -{" "}
+                                      {timeAgo.format(
+                                        new Date(replie.createdAt)
+                                      )}
+                                    </p>
+                                    <p>{replie.replie}</p>
+                                  </div>
+                                  <div>
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger>
+                                        <Button
+                                          size="icon"
+                                          variant="ghost"
+                                          className="rounded-full text-md"
+                                          disabled={
+                                            auth?.user?._id !==
+                                            replie?.userId._id
+                                          }
+                                        >
+                                          <BsThreeDotsVertical />
+                                        </Button>
+                                      </DropdownMenuTrigger>
+                                      {auth?.user?._id ===
+                                        replie?.userId._id && (
+                                        <DropdownMenuContent>
+                                          <DropdownMenuItem className="flex items-center gap-1 text-xs">
+                                            <CiTrash /> Delete
+                                          </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                      )}
+                                    </DropdownMenu>
+                                  </div>
                                 </div>
                               </div>
                             </span>

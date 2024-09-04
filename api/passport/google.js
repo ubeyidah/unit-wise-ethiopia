@@ -15,7 +15,9 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const fullName = `${profile.name.givenName} ${profile.name.familyName}`;
+        const fullName = `${profile.name.givenName} ${
+          profile.name.familyName || ""
+        }`;
         const email = profile.emails[0].value;
         const profileImage = profile.photos[0].value;
         const userName = await extractUserName(email);
