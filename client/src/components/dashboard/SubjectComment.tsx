@@ -1,5 +1,7 @@
 import {
   SubjectComType,
+  deleteReplySubjectComment,
+  deleteSubjectComment,
   likeSubjectComment,
   loadMoreSubjectComments,
   replySubjectComment,
@@ -43,6 +45,7 @@ const SubjectComment = ({ data, progress }: PropType) => {
   const [isOpenComment, setIsOpenComment] = useState(true);
   const [loading, setLoading] = useState(false);
   const [loadingId, setLoadingId] = useState<string[]>([]);
+  const [deleteLoadingId, setDeleteLoadingId] = useState<string[]>([]);
   const [comments, setComments] = useState<SubjectCommentRederType[]>(
     data.comments.comments
   );
@@ -146,16 +149,16 @@ const SubjectComment = ({ data, progress }: PropType) => {
           });
           return;
         }
-        submitButton.disabled = false;
-        submitButton.innerHTML = "Loading...";
+        submitButton.innerHTML = `<ImSpinner8 className="animate-spin text-sm mr-1" /> Loading...`;
+        submitButton.disabled = true;
         const modifiedComment = await replySubjectComment(id, replyValue);
         setComments((prev) =>
           prev.map((comment) =>
             comment._id === id ? modifiedComment : comment
           )
         );
-        submitButton.disabled = true;
         submitButton.innerHTML = "Reply";
+        submitButton.disabled = false;
       }
     } catch (error) {
       toast.error("Opps! No internet connection", {
@@ -166,6 +169,51 @@ const SubjectComment = ({ data, progress }: PropType) => {
       });
     }
   };
+
+  const deleteComment = async (commentId: string) => {
+    try {
+      setDeleteLoadingId((prev) => [...prev, commentId]);
+      await deleteSubjectComment(commentId);
+      setComments((prev) =>
+        prev.filter((comment) => comment._id !== commentId)
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setDeleteLoadingId((prev) => prev.filter((id) => id !== commentId));
+    }
+  };
+  const deleteReply = async (commentId: string, replyId: string) => {
+    try {
+      setDeleteLoadingId((prev) => [...prev, replyId]);
+      await deleteReplySubjectComment(commentId, replyId);
+      setComments((prev) =>
+        prev.map((comment) => {
+          const modifiedCom = comment.replies.filter(
+            (reply) => reply._id !== replyId
+          );
+          return comment._id === commentId
+            ? { ...comment, replies: modifiedCom }
+            : comment;
+        })
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setDeleteLoadingId((prev) => prev.filter((id) => id !== replyId));
+    }
+  };
+
   return (
     <>
       <SubjectDetailOverview
@@ -254,21 +302,25 @@ const SubjectComment = ({ data, progress }: PropType) => {
                         </div>
                         <div>
                           <DropdownMenu>
-                            <DropdownMenuTrigger>
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                className="rounded-full text-md"
-                                disabled={
-                                  auth?.user?._id !== comment?.authorId._id
-                                }
-                              >
+                            <DropdownMenuTrigger
+                              className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 size-7 cursor-pointer border border-slate-500/20 text-xs disabled:opacity-55 disabled:cursor-none disabled:pointer-events-none"
+                              disabled={
+                                auth?.user?._id !== comment?.authorId._id ||
+                                deleteLoadingId.includes(comment._id)
+                              }
+                            >
+                              {deleteLoadingId.includes(comment._id) ? (
+                                <ImSpinner8 className="animate-spin text-sm" />
+                              ) : (
                                 <BsThreeDotsVertical />
-                              </Button>
+                              )}
                             </DropdownMenuTrigger>
                             {auth?.user?._id === comment?.authorId._id && (
                               <DropdownMenuContent>
-                                <DropdownMenuItem className="flex items-center gap-1 text-xs">
+                                <DropdownMenuItem
+                                  className="flex items-center gap-1 text-xs"
+                                  onClick={() => deleteComment(comment._id)}
+                                >
                                   <CiTrash /> Delete
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
@@ -333,23 +385,34 @@ const SubjectComment = ({ data, progress }: PropType) => {
                                   </div>
                                   <div>
                                     <DropdownMenu>
-                                      <DropdownMenuTrigger>
-                                        <Button
-                                          size="icon"
-                                          variant="ghost"
-                                          className="rounded-full text-md"
-                                          disabled={
-                                            auth?.user?._id !==
-                                            replie?.userId._id
-                                          }
-                                        >
+                                      <DropdownMenuTrigger
+                                        className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 size-7 cursor-pointer border border-slate-500/20 text-xs disabled:opacity-55 disabled:cursor-none disabled:pointer-events-none"
+                                        disabled={
+                                          auth?.user?._id !==
+                                            replie?.userId._id ||
+                                          deleteLoadingId.includes(replie._id)
+                                        }
+                                      >
+                                        {deleteLoadingId.includes(
+                                          replie._id
+                                        ) ? (
+                                          <ImSpinner8 className="animate-spin text-sm" />
+                                        ) : (
                                           <BsThreeDotsVertical />
-                                        </Button>
+                                        )}
                                       </DropdownMenuTrigger>
                                       {auth?.user?._id ===
                                         replie?.userId._id && (
                                         <DropdownMenuContent>
-                                          <DropdownMenuItem className="flex items-center gap-1 text-xs">
+                                          <DropdownMenuItem
+                                            className="flex items-center gap-1 text-xs"
+                                            onClick={() =>
+                                              deleteReply(
+                                                comment._id,
+                                                replie._id
+                                              )
+                                            }
+                                          >
                                             <CiTrash /> Delete
                                           </DropdownMenuItem>
                                         </DropdownMenuContent>

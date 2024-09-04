@@ -180,3 +180,38 @@ export const replySubjectComment = async (
   }
   return replyComment;
 };
+
+export const deleteSubjectComment = async (commentId: string) => {
+  const res = await fetch(`/api/user/subject-comment/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw {
+      message: result.message || res.statusText,
+    };
+  }
+  return result;
+};
+export const deleteReplySubjectComment = async (
+  commentId: string,
+  replyId: string
+) => {
+  const res = await fetch(`/api/user/subject/replie/${replyId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ commentId }),
+  });
+  const replyComment = await res.json();
+  if (!res.ok) {
+    throw {
+      message: replyComment.message || res.statusText,
+    };
+  }
+  return replyComment;
+};
