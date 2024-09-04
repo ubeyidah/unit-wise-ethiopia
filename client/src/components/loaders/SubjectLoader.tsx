@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const SubjectDetailLoader = () => {
+const SubjectLoader = () => {
   return [0, 8, 3, 4, 7].map((subject) => {
     return (
       <div key={subject}>
@@ -23,4 +23,4 @@ const SubjectDetailLoader = () => {
   });
 };
 
-export default SubjectDetailLoader;
+export default SubjectLoader;

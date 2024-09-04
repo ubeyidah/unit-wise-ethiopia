@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { subjectIcons } from "@/data/dashboard";
 import React from "react";
-import SubjectDetailLoader from "@/components/loaders/SubjectDetailLoader";
+import SubjectLoader from "@/components/loaders/SubjectLoader";
 
 export const loader: LoaderFunction = async (): Promise<
   ReturnType<typeof defer>
@@ -36,7 +36,7 @@ const Subjects = () => {
         chapters.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-4">
-        <React.Suspense fallback={<SubjectDetailLoader />}>
+        <React.Suspense fallback={<SubjectLoader />}>
           <Await resolve={data.subjects}>
             {(subjects: SubjectsType[]) =>
               subjects.map((subject) => {
