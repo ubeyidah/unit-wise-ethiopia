@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
@@ -243,11 +244,15 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
                 <div key={comment._id} className="mb-1">
                   <Separator />
                   <div className="grid grid-cols-[40px_1fr] p-3 gap-1">
-                    <img
-                      src={comment.authorId.profileImage}
-                      alt={comment.authorId.userName}
-                      className="size-7 rounded-full object-cover object-center"
-                    />
+                    <Avatar>
+                      <AvatarImage
+                        src={comment.authorId.profileImage}
+                        className="size-9 rounded-full object-cover object-center"
+                      />
+                      <AvatarFallback className="uppercase">
+                        {comment.authorId.userName[0]}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <div className="text-xs flex items-center gap-1">
                         <p>@{comment.authorId.userName} - </p>
@@ -368,11 +373,17 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
                               <Separator />
                               <div className="mr-4 grid grid-cols-[30px_1fr] gap-1 text-xs my-3">
                                 <div>
-                                  <img
-                                    src={replie?.userId?.profileImage as string}
-                                    alt={replie?.userId?.userName}
-                                    className="rounded-full size-6"
-                                  />
+                                  <Avatar>
+                                    <AvatarImage
+                                      src={
+                                        replie?.userId?.profileImage as string
+                                      }
+                                      className="size-9 rounded-full object-cover object-center"
+                                    />
+                                    <AvatarFallback className="uppercase">
+                                      {replie?.userId?.userName[0]}
+                                    </AvatarFallback>
+                                  </Avatar>
                                 </div>
                                 <div className="flex items-center justify-between gap-2 flex-wrap">
                                   <div>

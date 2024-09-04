@@ -37,6 +37,7 @@ import { logoutUser } from "@/apis/auth/auth.api";
 import { toast } from "sonner";
 import { ImSpinner8 } from "react-icons/im";
 import Notification from "../Notification";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const DashoardHeader = () => {
   const auth = useAuthContext();
@@ -145,18 +146,27 @@ const DashoardHeader = () => {
       <Notification />
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="rounded-full cursor-pointer">
-          <img
-            src={auth?.user?.profileImage}
-            className="size-9 rounded-full object-cover object-center"
-          />
+          <Avatar>
+            <AvatarImage
+              src={auth?.user?.profileImage}
+              className="size-9 rounded-full object-cover object-center"
+            />
+            <AvatarFallback className="uppercase">
+              {auth?.user?.userName[0]}
+            </AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="mt-3">
           <DropdownMenuLabel className="flex items-center gap-2">
-            <img
-              src={auth?.user?.profileImage}
-              alt="profile image"
-              className="size-8 rounded-full object-cover object-center"
-            />
+            <Avatar>
+              <AvatarImage
+                src={auth?.user?.profileImage}
+                className="size-9 rounded-full object-cover object-center"
+              />
+              <AvatarFallback className="uppercase">
+                {auth?.user?.userName[0]}
+              </AvatarFallback>
+            </Avatar>
             <div className="text-sm">
               <p>@{auth?.user?.userName}</p>
               <p className="line-clamp-1 text-wrap text-xs font-normal">

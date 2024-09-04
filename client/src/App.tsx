@@ -32,6 +32,7 @@ import Subjects, { loader as subjectLoader } from "./pages/app/Subjects";
 import SubjectDetail, {
   loader as subjectDetailLoader,
 } from "./pages/app/SubjectDetail";
+import StudyHub from "./pages/app/StudyHub";
 
 const App = () => {
   const auth = useAuthContext();
@@ -95,6 +96,11 @@ const App = () => {
           <Route
             path="subjects/:subject"
             element={<SubjectDetail />}
+            loader={subjectDetailLoader}
+          />
+          <Route
+            path="study-hub"
+            element={<StudyHub />}
             loader={subjectDetailLoader}
           />
         </Route>

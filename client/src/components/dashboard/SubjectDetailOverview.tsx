@@ -62,7 +62,7 @@ const SubjectDetailOverview = ({
         You can also share anything short, like your feelings or feedback. If
         you want to share serious resources, you can do so on our{" "}
         <Link
-          to="/dashboard/sudy-hub"
+          to="/dashboard/study-hub"
           className="text-blue-600 underline hover:opacity-70"
         >
           StudyHub
