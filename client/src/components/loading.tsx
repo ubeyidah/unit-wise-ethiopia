@@ -2,7 +2,7 @@ import { MutatingDots } from "react-loader-spinner";
 
 const Loading = () => {
   return (
-    <section className="h-screen w-full flex items-center flex-col justify-center">
+    <section className="h-screen max-h-full w-full flex items-center flex-col justify-center">
       <img
         src="/logo.png"
         alt="loading"
