@@ -11,16 +11,19 @@ import emojis from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useAuthContext } from "@/context/AuthProvider";
 import { FormEvent, useState } from "react";
-import { LoaderType } from "@/pages/app/SubjectDetail";
 import { createSubjectComment } from "@/apis/dashboard/subjects.api";
 import { ImSpinner8 } from "react-icons/im";
 
 type PropType = {
-  data: LoaderType;
+  subjectName: string;
   progress: { completed: number; total: number; percent: number };
   reloadComment: (page?: number) => Promise<void>;
 };
-const SubjectDetailOverview = ({ data, progress, reloadComment }: PropType) => {
+const SubjectDetailOverview = ({
+  subjectName,
+  progress,
+  reloadComment,
+}: PropType) => {
   const auth = useAuthContext();
   const [commentText, setCommentText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,7 +34,7 @@ const SubjectDetailOverview = ({ data, progress, reloadComment }: PropType) => {
       setLoading(true);
       if (commentText.trim() === "" || commentText.length < 8) return;
       Promise.all([
-        await createSubjectComment(data.subjectName, commentText),
+        await createSubjectComment(subjectName, commentText),
         await reloadComment(1),
       ]);
       setCommentText("");
@@ -49,7 +52,7 @@ const SubjectDetailOverview = ({ data, progress, reloadComment }: PropType) => {
             <GoArrowLeft />
           </Button>
         </Link>
-        <h3 className="uppercase md:text-lg mr-3">{data.subjectName}</h3>
+        <h3 className="uppercase md:text-lg mr-3">{subjectName}</h3>
       </div>
       <h1 className="text-xl my-4">👋 Hi {auth?.user?.fullName}</h1>
       <p className="text-sm">

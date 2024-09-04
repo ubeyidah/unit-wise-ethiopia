@@ -5,6 +5,7 @@ import {
   likeSubjectComment,
   loadMoreSubjectComments,
   replySubjectComment,
+  SubjectCommentsListType,
 } from "@/apis/dashboard/subjects.api";
 import TimeAgo from "javascript-time-ago";
 import { Card } from "../ui/card";
@@ -15,7 +16,6 @@ import { Button } from "../ui/button";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ImSpinner8 } from "react-icons/im";
-import { LoaderType } from "@/pages/app/SubjectDetail";
 import SubjectDetailOverview from "./SubjectDetailOverview";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { formatNumber } from "@/lib/formatNumber";
@@ -32,7 +32,8 @@ TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
 type PropType = {
-  data: LoaderType;
+  commentsArray: SubjectCommentsListType;
+  subjectName: string;
   progress: { completed: number; total: number; percent: number };
 };
 
@@ -40,14 +41,14 @@ interface SubjectCommentRederType extends SubjectComType {
   isReplyOpen?: boolean;
   isToReply?: boolean;
 }
-const SubjectComment = ({ data, progress }: PropType) => {
+const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
   const auth = useAuthContext();
   const [isOpenComment, setIsOpenComment] = useState(true);
   const [loading, setLoading] = useState(false);
   const [loadingId, setLoadingId] = useState<string[]>([]);
   const [deleteLoadingId, setDeleteLoadingId] = useState<string[]>([]);
   const [comments, setComments] = useState<SubjectCommentRederType[]>(
-    data.comments.comments
+    commentsArray.comments
   );
   useEffect(() => {
     setComments((prev) =>
@@ -55,16 +56,16 @@ const SubjectComment = ({ data, progress }: PropType) => {
     );
   }, [loading, loadingId]);
   const [pageInfo, setPageInfo] = useState({
-    currentPage: data.comments.currentPage,
-    totalPage: data.comments.totalPages,
-    canLoadMore: data.comments.currentPage < data.comments.totalPages,
+    currentPage: commentsArray.currentPage,
+    totalPage: commentsArray.totalPages,
+    canLoadMore: commentsArray.currentPage < commentsArray.totalPages,
   });
 
   const loadMoreComments = async (page?: number) => {
     try {
       setLoading(true);
       const loadedComments = await loadMoreSubjectComments(
-        data.subjectName,
+        subjectName,
         page || pageInfo.currentPage + 1
       );
       page
@@ -217,7 +218,7 @@ const SubjectComment = ({ data, progress }: PropType) => {
   return (
     <>
       <SubjectDetailOverview
-        data={data}
+        subjectName={subjectName}
         reloadComment={loadMoreComments}
         progress={progress}
       />
