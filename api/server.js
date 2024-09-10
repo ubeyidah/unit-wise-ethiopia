@@ -9,6 +9,7 @@ import userRoutes from "./routes/user.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import adminVerifyRoutes from "./routes/adminVerify.routes.js";
 import subjectRoutes from "./routes/subject.routes.js";
+import blogRoutes from "./routes/blog.routes.js";
 
 config();
 const app = express();
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/subject", subjectRoutes);
+app.use("/api/blog", blogRoutes);
 
 // admin only routes
 app.use("/api/admin", adminVerifyRoutes);
