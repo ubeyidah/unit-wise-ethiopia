@@ -7,6 +7,10 @@ import { Input } from "../ui/input";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "sonner";
 import Joi from "joi";
+import { createBlog } from "@/apis/blog/blog.api";
+import { useState } from "react";
+import { ImSpinner8 } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
 type PropType = {
   back: () => void;
@@ -14,6 +18,8 @@ type PropType = {
   update: (name: string, value: string | [] | PartialBlock[]) => void;
 };
 const FinalPublishform = ({ back, blog, update }: PropType) => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleTags = (e: any) => {
     if (e.keyCode === 188 || e.keyCode === 13) {
       e.preventDefault();
@@ -43,6 +49,7 @@ const FinalPublishform = ({ back, blog, update }: PropType) => {
 
   const handlePublish = async () => {
     try {
+      setLoading(true);
       const postSchema = Joi.object({
         title: Joi.string().required(),
         coverImage: Joi.string().required().uri(),
@@ -60,7 +67,15 @@ const FinalPublishform = ({ back, blog, update }: PropType) => {
           },
         });
       }
-      console.log(blog);
+      await createBlog(blog);
+      toast.success("👍Your Blog Published Successfully", {
+        className: "border",
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+      navigate("/dashboard/study-hub");
     } catch (error) {
       toast.error("Opps! No internet connection", {
         className: "border",
@@ -69,6 +84,8 @@ const FinalPublishform = ({ back, blog, update }: PropType) => {
           onClick: () => null,
         },
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -128,8 +145,18 @@ const FinalPublishform = ({ back, blog, update }: PropType) => {
         </div>
       </div>
       <div className="mt-7 flex justify-end">
-        <Button onClick={handlePublish} className="w-32 rounded-full">
-          Publish
+        <Button
+          onClick={handlePublish}
+          className="w-32 rounded-full flex gap-2"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <ImSpinner8 className="animate-spin" /> Publishing
+            </>
+          ) : (
+            "Publish"
+          )}
         </Button>
       </div>
     </div>
