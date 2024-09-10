@@ -30,11 +30,9 @@ export const createBlog = async (req, res) => {
 };
 export const getBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().populate("author", [
-      "_id",
-      "userName",
-      "profileImage",
-    ]);
+    const blogs = await Blog.find()
+      .populate("author", ["_id", "userName", "profileImage"])
+      .sort({ updatedAt: -1 });
     const blogToSend = blogs.map((blog) => {
       return {
         _id: blog._id,
@@ -60,7 +58,6 @@ export const getBlog = async (req, res) => {
       "userName",
       "profileImage",
     ]);
-
     res.status(200).json(blog);
   } catch (error) {
     console.log("Error: get blogs: ", error.message);

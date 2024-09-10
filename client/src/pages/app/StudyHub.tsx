@@ -1,8 +1,32 @@
+import { BlogsType, getBlogs } from "@/apis/blog/blog.api";
 import StudyHubCard from "@/components/dashboard/StudyHubCard";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Suspense } from "react";
+import {
+  Await,
+  defer,
+  LoaderFunction,
+  useLoaderData,
+  useSearchParams,
+} from "react-router-dom";
+
+export const loader: LoaderFunction = () => {
+  const blogsPromise = getBlogs();
+  return defer({ blogs: blogsPromise });
+};
+
+type LoaderData = {
+  blogs: Promise<BlogsType[]>;
+};
 
 const StudyHub = () => {
+  const { blogs } = useLoaderData() as LoaderData;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSeachParams = (key: string, value: string | null) => {
+    // setSearchParams(prev => )
+  };
   return (
     <section className="min-h-full px-2">
       <div className="text-center py-3 pb-6">
@@ -13,7 +37,7 @@ const StudyHub = () => {
           <input
             type="text"
             className="bg-transparent outline-none border-none w-full h-full text-md"
-            placeholder="Search topics, courses, or resources"
+            placeholder="Search topics, courses . . ."
             aria-label="Search"
           />
           <Button className="my-1 mr-1 rounded-full">Search</Button>
@@ -28,10 +52,20 @@ const StudyHub = () => {
       </div>
       <Separator />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center gap-4 py-8">
-        {[0, 3, 3, 3, 3].map((_) => (
-          <StudyHubCard />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center gap-6 py-8 gap-y-11">
+        <Suspense fallback={<h3>loading....</h3>}>
+          <Await resolve={blogs}>
+            {(blogsList: BlogsType[]) => {
+              return (
+                <>
+                  {blogsList.map((blog) => (
+                    <StudyHubCard key={blog._id} {...blog} />
+                  ))}
+                </>
+              );
+            }}
+          </Await>
+        </Suspense>
       </div>
     </section>
   );

@@ -32,7 +32,7 @@ import Subjects, { loader as subjectLoader } from "./pages/app/Subjects";
 import SubjectDetail, {
   loader as subjectDetailLoader,
 } from "./pages/app/SubjectDetail";
-import StudyHub from "./pages/app/StudyHub";
+import StudyHub, { loader as studyHubLoader } from "./pages/app/StudyHub";
 import WriteStudyHubPost from "./pages/app/WriteStudyHubPost";
 
 const App = () => {
@@ -99,7 +99,11 @@ const App = () => {
             element={<SubjectDetail />}
             loader={subjectDetailLoader}
           />
-          <Route path="study-hub" element={<StudyHub />} />
+          <Route
+            path="study-hub"
+            element={<StudyHub />}
+            loader={studyHubLoader}
+          />
           <Route path="study-hub/write" element={<WriteStudyHubPost />} />
         </Route>
 

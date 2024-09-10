@@ -34,6 +34,7 @@ const FinalPublishform = ({ back, blog, update }: PropType) => {
         return;
       }
       const value = e.target.value;
+      if (!value) return;
       update("tags", [...blog.tags, value.trim()]);
       e.target.value = "";
     }

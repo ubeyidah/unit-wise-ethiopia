@@ -1,68 +1,75 @@
 import { Suspense } from "react";
 import { useImage } from "react-image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { ImSpinner8 } from "react-icons/im";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { BlogsType } from "@/apis/blog/blog.api";
+import { formatNumber } from "@/lib/formatNumber";
+import { formatDate } from "@/lib/formatDate";
 
-const StudyHubCard = () => {
+const StudyHubCard = ({
+  title,
+  _id,
+  description,
+  coverImage,
+  updatedAt,
+  author,
+  likes,
+}: BlogsType) => {
   return (
-    <div className="border rounded-xl p-1">
+    <div className="border rounded-xl p-1 pb-8 relative">
       <Link
         className="group flex flex-col focus:outline-none"
-        to="/dashboard/ubeyidah/aslkdfaj09sdfs9df8asd9"
+        to={`/dashboard/${author.userName}/${_id}`}
       >
-        <div className="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-lg dark:bg-neutral-800">
+        <div className="aspect-video overflow-hidden bg-gray-100 rounded-lg dark:bg-neutral-800">
           <Suspense>
             <Image
-              url="https://images.unsplash.com/photo-1503676260728-1c00da094a0b"
-              des="des"
-              className="group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-lg w-full"
+              url={coverImage}
+              des={title}
+              className="group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out object-cover object-center rounded-lg w-full h-full"
             />
           </Suspense>
         </div>
 
         <div className="pt-4 px-1">
-          <h3 className="font-medium text-sm text-black dark:text-white line-clamp-2">
-            eYoga thek aks kthe mental of the area intekak Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Non in illo aspernatur incidunt
-            consequatur obcaecati, nam sit doloremque iste accusamus quisquam.
-            Id quia dignissimos quas eos provident dolore unde voluptas.
+          <h3 className="font-medium text-md text-black dark:text-white line-clamp-2">
+            {title}
           </h3>
           <p className="mt-1 text-gray-600 dark:text-neutral-400 text-xs line-clamp-3">
-            A revamped and dynamic approach to yoga analytics A revamped and
-            dynamic approach to yoga analytics Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Numquam, quisquam est corporis ipsa
-            esse autem labore, modi aliquid minima nostrum at. Voluptatem quis
-            cupiditate optio placeat tempora, quos delectus qui!
+            {description}
           </p>
-
-          <div className="flex flex-wrap gap-2 text-xs justify-between pb-4 py-2 items-center">
-            <div className="flex items-center gap-1">
-              <Avatar>
-                <AvatarImage
-                  src="https://static.vecteezy.com/system/resources/thumbnails/022/006/509/small/science-background-illustration-scientific-design-flasks-glass-and-chemistry-physics-elements-generative-ai-photo.jpeg"
-                  className="size-9 rounded-full object-cover object-center"
-                />
-                <AvatarFallback className="uppercase">as</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-sm opacity-90">ubeyidah</p>
-                <p className="text-[11px] -mt-1  opacity-70">3 sec ago</p>
-              </div>
-            </div>
-            <button
-              className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1.5 px-3 border border-slate-500/20`}
-            >
-              {/* <ImSpinner8 className="animate-spin text-sm" /> */}
-              {/* <BiSolidLike className="size-4" /> */}
-              <BiLike className="size-4" />
-
-              <span className="text-xs">8k</span>
-            </button>
-          </div>
         </div>
       </Link>
+
+      <div className="flex gap-6 bg-white dark:bg-black text-xs justify-between px-1 py-1 items-center border rounded-full absolute -bottom-5 left-1/2 -translate-x-1/2 h-[41px] w-full max-w-[240px]">
+        <div className="flex items-center gap-1">
+          <Avatar>
+            <AvatarImage
+              src={author.profileImage}
+              className="w-8 h-8 rounded-full object-cover object-center"
+            />
+            <AvatarFallback className="uppercase">
+              {author.userName[0]}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="text-sm opacity-90">{author.userName}</p>
+            <p className="text-[11px] -mt-1 opacity-70">
+              {formatDate(updatedAt)}
+            </p>
+          </div>
+        </div>
+        <button
+          className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1.5 px-3 border border-slate-500/20`}
+        >
+          {/* <ImSpinner8 className="animate-spin text-sm" /> */}
+          {/* <BiSolidLike className="size-4" /> */}
+          <BiLike className="size-4" />
+
+          <span className="text-xs">{formatNumber(likes.length)}</span>
+        </button>
+      </div>
     </div>
   );
 };
