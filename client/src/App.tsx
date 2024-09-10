@@ -34,6 +34,7 @@ import SubjectDetail, {
 } from "./pages/app/SubjectDetail";
 import StudyHub, { loader as studyHubLoader } from "./pages/app/StudyHub";
 import WriteStudyHubPost from "./pages/app/WriteStudyHubPost";
+import StudyHubDetail from "./pages/app/StudyHubDetail";
 
 const App = () => {
   const auth = useAuthContext();
@@ -105,6 +106,7 @@ const App = () => {
             loader={studyHubLoader}
           />
           <Route path="study-hub/write" element={<WriteStudyHubPost />} />
+          <Route path="study-hub/:id" element={<StudyHubDetail />} />
         </Route>
 
         {/* verification routes */}

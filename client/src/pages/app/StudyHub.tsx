@@ -1,5 +1,6 @@
 import { BlogsType, getBlogs } from "@/apis/blog/blog.api";
 import StudyHubCard from "@/components/dashboard/StudyHubCard";
+import StudyHubLoader from "@/components/loaders/StudyHubLoader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Suspense } from "react";
@@ -53,7 +54,7 @@ const StudyHub = () => {
       <Separator />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center gap-6 py-8 gap-y-11">
-        <Suspense fallback={<h3>loading....</h3>}>
+        <Suspense fallback={<StudyHubLoader />}>
           <Await resolve={blogs}>
             {(blogsList: BlogsType[]) => {
               return (

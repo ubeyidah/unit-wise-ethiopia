@@ -20,7 +20,7 @@ const StudyHubCard = ({
     <div className="border rounded-xl p-1 pb-8 relative">
       <Link
         className="group flex flex-col focus:outline-none"
-        to={`/dashboard/${author.userName}/${_id}`}
+        to={`/dashboard/study-hub/${_id}`}
       >
         <div className="aspect-video overflow-hidden bg-gray-100 rounded-lg dark:bg-neutral-800">
           <Suspense>
