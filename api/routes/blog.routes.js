@@ -1,7 +1,15 @@
 import express from "express";
-import { createBlog } from "../controllers/blog.controller.js";
+import {
+  createBlog,
+  getBlogs,
+  getBlog,
+} from "../controllers/blog.controller.js";
+import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router();
 
-router.post("/", createBlog);
+router.post("/", protectRoute, createBlog);
+router.get("/", protectRoute, getBlogs);
+router.get("/:id", protectRoute, getBlog);
+
 export default router;
