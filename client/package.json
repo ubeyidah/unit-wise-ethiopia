@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@blocknote/core": "^0.15.6",
+    "@blocknote/mantine": "^0.15.6",
+    "@blocknote/react": "^0.15.6",
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@hookform/resolvers": "^3.9.0",
@@ -37,6 +40,7 @@
     "firebase": "^10.13.0",
     "framer-motion": "^11.3.31",
     "javascript-time-ago": "^2.5.11",
+    "joi": "^17.13.3",
     "lucide-react": "^0.437.0",
     "nanoid": "^5.0.7",
     "next-themes": "^0.3.0",
@@ -48,6 +52,7 @@
     "react-image": "^4.1.0",
     "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^6.26.1",
+    "react-textarea-autosize": "^8.5.3",
     "recharts": "^2.12.7",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",

@@ -243,12 +243,9 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
               return (
                 <div key={comment._id} className="mb-1">
                   <Separator />
-                  <div className="grid grid-cols-[40px_1fr] p-3 gap-1">
-                    <Avatar>
-                      <AvatarImage
-                        src={comment.authorId.profileImage}
-                        className="size-9 rounded-full object-cover object-center"
-                      />
+                  <div className="grid grid-cols-[40px_1fr] p-3 gap-2">
+                    <Avatar className="size-10 rounded-full object-cover object-center">
+                      <AvatarImage src={comment.authorId.profileImage} />
                       <AvatarFallback className="uppercase">
                         {comment.authorId.userName[0]}
                       </AvatarFallback>
@@ -371,14 +368,13 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
                           {comment.replies.map((replie) => (
                             <span key={replie._id}>
                               <Separator />
-                              <div className="mr-4 grid grid-cols-[30px_1fr] gap-1 text-xs my-3">
+                              <div className="mr-4 grid grid-cols-[30px_1fr] gap-2 text-xs my-3">
                                 <div>
-                                  <Avatar>
+                                  <Avatar className="size-7 rounded-full object-cover object-center">
                                     <AvatarImage
                                       src={
                                         replie?.userId?.profileImage as string
                                       }
-                                      className="size-9 rounded-full object-cover object-center"
                                     />
                                     <AvatarFallback className="uppercase">
                                       {replie?.userId?.userName[0]}

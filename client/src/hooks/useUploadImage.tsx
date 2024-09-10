@@ -5,11 +5,12 @@ import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import { IoClose } from "react-icons/io5";
 
-type Path = "payment" | "profile";
+type Path = "payment" | "profile" | "postImages";
 interface hookReturnType {
   progress: number;
   url: string | null;
   uploadImage: (image: File, path: Path) => void;
+  uploadAsyncImage: (image: File, path: Path) => Promise<string>;
 }
 
 const useUploadImage = (): hookReturnType => {
@@ -60,10 +61,33 @@ const useUploadImage = (): hookReturnType => {
     );
   };
 
+  const uploadAsyncImage = async (file: File): Promise<string> => {
+    return new Promise((res, rej) => {
+      const storageRef = ref(storage, `postImg/${file.name + nanoid()}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        () => {},
+        (error) => {
+          rej(error);
+        },
+        async () => {
+          try {
+            const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            res(imageUrl);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      );
+    });
+  };
+
   return {
     progress,
     url,
     uploadImage,
+    uploadAsyncImage,
   };
 };
 

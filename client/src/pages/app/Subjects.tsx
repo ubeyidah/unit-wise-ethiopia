@@ -35,7 +35,7 @@ const Subjects = () => {
         all grades, and embark on your educational journey with organized
         chapters.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-7">
         <React.Suspense fallback={<SubjectLoader />}>
           <Await resolve={data.subjects}>
             {(subjects: SubjectsType[]) =>

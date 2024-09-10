@@ -20,11 +20,11 @@ const StudyHub = () => {
         </div>
       </div>
       <div className="flex items-center flex-wrap pr-2 text-xs sm:text-sm">
-        <button className="py-2 px-5 border-b border-green-600 text-green-600">
+        <button className="py-2 px-5 border-b border-green-600 text-green-600 hover:text-green-600">
           Latest
         </button>
-        <button className="py-2 px-5">Popular</button>
-        <button className="py-2 px-5">Oldest</button>
+        <button className="py-2 px-5 hover:text-green-600">Popular</button>
+        <button className="py-2 px-5 hover:text-green-600">Oldest</button>
       </div>
       <Separator />
 

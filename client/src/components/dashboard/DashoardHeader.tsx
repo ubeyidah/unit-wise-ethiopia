@@ -38,6 +38,7 @@ import { toast } from "sonner";
 import { ImSpinner8 } from "react-icons/im";
 import Notification from "../Notification";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { RiBallPenLine } from "react-icons/ri";
 
 const DashoardHeader = () => {
   const auth = useAuthContext();
@@ -146,11 +147,8 @@ const DashoardHeader = () => {
       <Notification />
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="rounded-full cursor-pointer">
-          <Avatar>
-            <AvatarImage
-              src={auth?.user?.profileImage}
-              className="size-9 rounded-full object-cover object-center"
-            />
+          <Avatar className="size-9 rounded-full object-cover object-center">
+            <AvatarImage src={auth?.user?.profileImage} />
             <AvatarFallback className="uppercase">
               {auth?.user?.userName[0]}
             </AvatarFallback>
@@ -158,11 +156,8 @@ const DashoardHeader = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="mt-3">
           <DropdownMenuLabel className="flex items-center gap-2">
-            <Avatar>
-              <AvatarImage
-                src={auth?.user?.profileImage}
-                className="size-9 rounded-full object-cover object-center"
-              />
+            <Avatar className="size-8 rounded-full object-cover object-center">
+              <AvatarImage src={auth?.user?.profileImage} />
               <AvatarFallback className="uppercase">
                 {auth?.user?.userName[0]}
               </AvatarFallback>
@@ -178,6 +173,11 @@ const DashoardHeader = () => {
           <Link to="/profile">
             <DropdownMenuItem className="flex items-center gap-3">
               <BiUser /> Profile
+            </DropdownMenuItem>
+          </Link>
+          <Link to="/dashboard/study-hub/write">
+            <DropdownMenuItem className="flex items-center gap-3">
+              <RiBallPenLine /> collaborate
             </DropdownMenuItem>
           </Link>
           <Link to="/settings">
