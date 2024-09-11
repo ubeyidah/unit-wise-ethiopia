@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { BlogsType } from "@/apis/blog/blog.api";
 import { formatNumber } from "@/lib/formatNumber";
 import { formatDate } from "@/lib/formatDate";
+import { Skeleton } from "../ui/skeleton";
 
 const StudyHubCard = ({
   title,
@@ -44,13 +45,13 @@ const StudyHubCard = ({
 
       <div className="flex gap-6 bg-white dark:bg-black text-xs justify-between px-1 py-1 items-center border rounded-full absolute -bottom-5 left-1/2 -translate-x-1/2 h-[41px] w-full max-w-[240px]">
         <div className="flex items-center gap-1">
-          <Avatar>
+          <Avatar className="w-8 h-8 rounded-full object-cover object-center">
             <AvatarImage
               src={author.profileImage}
               className="w-8 h-8 rounded-full object-cover object-center"
             />
             <AvatarFallback className="uppercase">
-              {author.userName[0]}
+              <Skeleton className="w-full h-full rounded-full" />
             </AvatarFallback>
           </Avatar>
           <div>

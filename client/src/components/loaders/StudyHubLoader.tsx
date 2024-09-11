@@ -24,9 +24,9 @@ const StudyHubLoader = () => {
           </div>
         </div>
         <button
-          className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1.5 px-3 `}
+          className={`flex items-center justify-center rounded-fullgap-2 py-1.5 px-3 `}
         >
-          <Skeleton className="rounded-full w-10 h-4" />
+          <Skeleton className="rounded-full w-14 h-5" />
         </button>
       </div>
     </div>

@@ -38,14 +38,43 @@ export interface BlogsType {
   };
   likes: string[];
 }
-export const getBlogs = async (): Promise<BlogType[]> => {
-  const res = await fetch("/api/blog");
+
+export interface BlogInfoType {
+  blogs: BlogsType[];
+  totalPages: number;
+  currentPage: number;
+}
+
+export const getBlogs = async (
+  page?: number,
+  search?: string,
+  filter?: string
+): Promise<BlogInfoType> => {
+  const params = new URLSearchParams();
+
+  if (page) {
+    params.append("page", page.toString());
+  }
+
+  if (search) {
+    params.append("search", search);
+  }
+
+  if (filter) {
+    params.append("filter", filter);
+  }
+
+  const url = `/api/blog?${params.toString()}`; // Build URL with query params
+  const res = await fetch(url);
   const result = await res.json();
+
   if (!res.ok) {
     throw new Error(result.message || res.statusText);
   }
+
   return result;
 };
+
 export interface BlogType {
   _id: string;
   title: string;
