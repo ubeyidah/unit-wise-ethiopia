@@ -169,3 +169,29 @@ export const getBlogComments = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const likeDeslikeComments = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user._id;
+    const comment = await BlogComment.findById(commentId)
+      .populate("authorId", ["_id", "userName", "profileImage"])
+      .populate("replies.userId", ["_id", "userName", "profileImage"]);
+    if (!comment) return res.status(404).json({ message: "comment not found" });
+    if (comment.likes.includes(userId)) {
+      // dislike user
+      comment.likes = comment.likes.filter(
+        (like) => like.toString() !== userId.toString()
+      );
+    } else {
+      // like user
+      comment.likes.push(userId);
+    }
+    const modified = await comment.save();
+
+    res.status(200).json(modified);
+  } catch (error) {
+    console.log("Error: blog comments like: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
