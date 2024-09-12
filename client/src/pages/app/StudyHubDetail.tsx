@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { FaRegCommentDots } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import Comments from "@/components/blog/Comments";
+import StudyHubDetailLoader from "@/components/loaders/StudyHubDetailLoader";
 
 export const loader: LoaderFunction = ({ params }) => {
   const blogId = params.id || "";
@@ -31,7 +32,7 @@ const StudyHubDetail = () => {
   const [singleBlog, setSingleBlog] = useState<BlogType>();
 
   return (
-    <Suspense fallback={<h2>Loading...</h2>}>
+    <Suspense fallback={<StudyHubDetailLoader />}>
       <Await resolve={blog}>
         {(blogDetail: BlogType) => {
           useEffect(() => {

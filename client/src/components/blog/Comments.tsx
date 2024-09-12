@@ -49,7 +49,7 @@ const Comments = () => {
               <p className="opacity-60">30 min ago</p>
             </div>
             <div>
-              <h2 className="text-sm">
+              <h2 className="text-sm mt-1">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
                 doloribus libero obcaecati, recusandae corrupti nam impedit
                 consectetur minima molestiae quis necessitatibus dicta ea

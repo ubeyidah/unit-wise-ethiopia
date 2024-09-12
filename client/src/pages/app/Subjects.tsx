@@ -26,7 +26,7 @@ type LoaderData = {
 const Subjects = () => {
   const data = useLoaderData() as LoaderData;
   return (
-    <section className="min-h-full pb-14">
+    <section className="min-h-full pb-14 px-2 md:px-4">
       <h1 className="text-xl md:text-3xl mt-2 text-green-500">
         Explore Your Subjects and Start Learning Today
       </h1>

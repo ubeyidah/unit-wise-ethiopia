@@ -43,7 +43,7 @@ const Dashboard = () => {
     { subjects: "English", progress: 74 },
   ];
   return (
-    <section className="min-h-full flex max-md:flex-col">
+    <section className="min-h-full flex max-md:flex-col px-2 md:px-4">
       <div className="w-full lg:w-[70%]"></div>
       <div className="w-full lg:w-[30%]">
         <div>
