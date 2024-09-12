@@ -1,5 +1,7 @@
+import Joi from "joi";
 import Blog from "../models/blog.model.js";
 import { postSchema } from "../schemas/blog.schema.js";
+import BlogComment from "../models/blogComment.model.js";
 
 export const createBlog = async (req, res) => {
   try {
@@ -112,6 +114,28 @@ export const likeDeslikeComment = async (req, res) => {
     res.status(200).json(modified.likes);
   } catch (error) {
     console.log("Error: blog like: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const createBlogComment = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    const { comment } = req.body;
+    const authorId = req.user._id;
+    const { error } = Joi.string().required().max(700).validate(comment);
+
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
+
+    const blogCom = await BlogComment({
+      authorId,
+      message: comment,
+      blogId,
+    }).save();
+    res.status(200).json(blogCom);
+  } catch (error) {
+    console.log("Error: create comment: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
