@@ -238,3 +238,23 @@ export const deleteBlogComment = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const deleteReply = async (req, res) => {
+  try {
+    const { replyId } = req.params;
+    const userId = req.user._id;
+    const { commentId } = req.body;
+    if (!commentId)
+      return res.status(400).json({ message: "commentID is required" });
+    const modifiedComment = await BlogComment.findByIdAndUpdate(commentId, {
+      $pull: { replies: { _id: replyId, userId } },
+    });
+    if (!modifiedComment)
+      return res.status(400).json({ message: "comment not found" });
+
+    res.status(200).json(modifiedComment);
+  } catch (error) {
+    console.log("Error: replie blog comments delete: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
