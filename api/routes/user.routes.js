@@ -7,6 +7,7 @@ import {
   replieComment,
   deleteComment,
   deleteReply,
+  followUnfollowUser,
 } from "../controllers/user.controller.js";
 import protectRoute from "../middleware/protectRoute.js";
 const router = express.Router();
@@ -18,5 +19,6 @@ router.get("/comment-like/:commentId", protectRoute, likeDeslikeComment);
 router.put("/subject-comment/replie/:commentId", protectRoute, replieComment);
 router.delete("/subject-comment/:commentId", protectRoute, deleteComment);
 router.put("/subject/replie/:replyId", protectRoute, deleteReply);
+router.get("/follow/:id", protectRoute, followUnfollowUser);
 
 export default router;

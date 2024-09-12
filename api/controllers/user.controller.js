@@ -190,3 +190,37 @@ export const deleteReply = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const followUnfollowUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const myId = req.user._id;
+    if (id.toString() === myId.toString())
+      return res.status(400).json({ message: "you can not follow your self" });
+
+    const [user, currentUser] = await Promise.all([
+      await User.findById(id),
+      await User.findById(myId),
+    ]);
+    if (!user) return res.status(404).json({ message: "comment not found" });
+
+    if (user.followers.includes(myId)) {
+      // unlike user
+      user.followers = user.followers.filter(
+        (followerId) => followerId.toString() !== myId.toString()
+      );
+      currentUser.following = currentUser.following.filter(
+        (followerId) => followerId.toString() !== id.toString()
+      );
+    } else {
+      // like user
+      user.followers.push(myId);
+      currentUser.following.push(id);
+    }
+    await Promise.all([user.save(), currentUser.save()]);
+    res.status(200).json({ message: "Follow/Unfollow user successful" });
+  } catch (error) {
+    console.log("Error: follow unfollow user: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};

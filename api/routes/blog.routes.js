@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/", protectRoute, createBlog);
 router.get("/", protectRoute, getBlogs);
 router.get("/:id", protectRoute, getBlog);
-router.get("/like/:blogId", protectRoute, likeDeslikeComment);
+router.put("/like/:blogId", protectRoute, likeDeslikeComment);
 
 export default router;
