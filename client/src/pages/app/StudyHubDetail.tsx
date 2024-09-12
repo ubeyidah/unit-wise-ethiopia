@@ -11,12 +11,12 @@ import {
 import Editor from "@/components/Editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Textarea } from "@/components/ui/textarea";
 import { formatDate } from "@/lib/formatDate";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FaRegCommentDots } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
+import Comments from "@/components/blog/Comments";
 
 export const loader: LoaderFunction = ({ params }) => {
   const blogId = params.id || "";
@@ -116,22 +116,7 @@ const StudyHubDetail = () => {
                 />
               </div>
               <Separator className="my-4" />
-
-              <div id="comment">
-                <label>
-                  Write Comment
-                  <Textarea placeholder="Add a comment" className="h-24" />
-                </label>
-                <div className="flex items-center justify-end relative pt-2">
-                  <Button
-                    variant="outline"
-                    className="rounded-full"
-                    type="submit"
-                  >
-                    comment
-                  </Button>
-                </div>
-              </div>
+              <Comments />
             </section>
           );
         }}
