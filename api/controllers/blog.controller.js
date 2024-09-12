@@ -87,3 +87,31 @@ export const getBlog = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const likeDeslikeComment = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    const userId = req.user._id;
+    const blog = await Blog.findById(blogId).populate("author", [
+      "_id",
+      "userName",
+      "profileImage",
+    ]);
+    if (!blog) return res.status(404).json({ message: "blog not found" });
+    if (blog.likes.includes(userId)) {
+      // dislike user
+      blog.likes = blog.likes.filter(
+        (like) => like.toString() !== userId.toString()
+      );
+    } else {
+      // like user
+      blog.likes.push(userId);
+    }
+    const modified = await blog.save();
+
+    res.status(200).json(modified.likes);
+  } catch (error) {
+    console.log("Error: blog like: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
