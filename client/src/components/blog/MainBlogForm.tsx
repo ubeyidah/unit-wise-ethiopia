@@ -15,13 +15,8 @@ import { Input } from "@/components/ui/input";
 import { IoClose } from "react-icons/io5";
 import { Oval } from "react-loader-spinner";
 import { PartialBlock } from "@blocknote/core";
-interface BlogType {
-  title: string;
-  coverImage: string;
-  description: string;
-  content: [{}];
-  tags: [];
-}
+import { BlogType } from "@/apis/blog/blog.api";
+
 type PropType = {
   blog: BlogType;
   update: (name: string, value: string | [] | PartialBlock[]) => void;

@@ -96,6 +96,7 @@
 html,
 body {
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 @layer components {
@@ -215,4 +216,21 @@ body {
     --chart-4: 137 55% 15%;
     --chart-5: 141 40% 9%;
   }
+}
+
+::selection {
+  background: #4caf50; /* Green */
+  color: white;
+}
+
+.display-content .ProseMirror.bn-editor.bn-default-styles {
+  padding: 2px !important;
+  background-color: transparent !important;
+}
+
+.display-content
+  .bn-block-group
+  .bn-block-group
+  .bn-block-outer:not([data-prev-depth-changed]):before {
+  border-left: none;
 }

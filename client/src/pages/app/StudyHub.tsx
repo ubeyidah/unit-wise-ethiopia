@@ -97,7 +97,7 @@ const StudyHub = () => {
               className="rounded-full text-3xl w-12"
               onClick={clearSearch}
             >
-              <IoIosClose />
+              <IoIosClose className="opacity-60" />
             </Button>
           )}
           <Button
@@ -109,7 +109,6 @@ const StudyHub = () => {
               <FaSpinner className="animate-spin size-4 px-4 box-content opacity-80" />
             ) : (
               <>
-                {" "}
                 <IoSearchOutline /> Search
               </>
             )}
@@ -128,7 +127,7 @@ const StudyHub = () => {
       <InfiniteScroll
         dataLength={blogs?.length || 0}
         next={fetchMoreBlog}
-        hasMore={hasMore}
+        hasMore={!!blogs && hasMore}
         loader={
           <div className="flex items-center justify-center my-5 gap-3">
             <FaSpinner className="animate-spin size-6 opacity-80" />

@@ -1,8 +1,10 @@
+import { PartialBlock } from "@blocknote/core";
+
 export interface BlogType {
   title: string;
   coverImage: string;
   description: string;
-  content: [any];
+  content: string;
   tags: string[];
   createdAt: Date;
 }
@@ -47,8 +49,7 @@ export interface BlogInfoType {
 
 export const getBlogs = async (
   page?: number,
-  search?: string,
-  filter?: string
+  search?: string
 ): Promise<BlogInfoType> => {
   const params = new URLSearchParams();
 
@@ -58,10 +59,6 @@ export const getBlogs = async (
 
   if (search) {
     params.append("search", search);
-  }
-
-  if (filter) {
-    params.append("filter", filter);
   }
 
   const url = `/api/blog?${params.toString()}`; // Build URL with query params
@@ -86,7 +83,7 @@ export interface BlogType {
     profileImage: string;
   };
   likes: string[];
-  content: [any];
+  content: string;
   tags: string[];
   updatedAt: Date;
 }

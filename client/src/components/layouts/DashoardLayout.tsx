@@ -9,6 +9,7 @@ const DashoardLayout = () => {
     setIsSideOpen((prev) => !prev);
   };
   const sideToggleClass = "md:grid-cols-[70px_1fr] lg:grid-cols-[70px_1fr]";
+  // py-4 px-1 lg:gap-6 lg:p-6
   return (
     <div
       className={`grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] transition-all duration-100 ${
@@ -16,9 +17,9 @@ const DashoardLayout = () => {
       }`}
     >
       <DashboardSidebar side={isSideOpen} toggle={toggleSidebar} />
-      <div className="flex flex-col">
+      <div className="flex flex-col lg:gap-6">
         <DashoardHeader />
-        <main className="flex flex-1 flex-col gap-4 py-4 px-1 lg:gap-6 lg:p-6">
+        <main className="flex flex-1 flex-col gap-4">
           <Outlet />
         </main>
       </div>

@@ -68,7 +68,9 @@ const FinalPublishform = ({ back, blog, update }: PropType) => {
           },
         });
       }
-      await createBlog(blog);
+      console.log(blog.content);
+
+      await createBlog({ ...blog, content: JSON.stringify(blog.content) });
       toast.success("👍Your Blog Published Successfully", {
         className: "border",
         action: {
