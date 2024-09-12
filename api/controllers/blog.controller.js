@@ -3,6 +3,7 @@ import Blog from "../models/blog.model.js";
 import { postSchema } from "../schemas/blog.schema.js";
 import BlogComment from "../models/blogComment.model.js";
 import mongoose from "mongoose";
+import { subjectReplieSchema } from "../schemas/subject.schema.js";
 
 export const createBlog = async (req, res) => {
   try {
@@ -192,6 +193,31 @@ export const likeDeslikeComments = async (req, res) => {
     res.status(200).json(modified);
   } catch (error) {
     console.log("Error: blog comments like: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const replieBlogComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user._id;
+    const { reply } = req.body;
+    const { error } = subjectReplieSchema.validate({ reply });
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
+
+    const comment = await BlogComment.findById(commentId);
+    comment.replies.push({ userId, replie: reply });
+
+    const [_, modified] = await Promise.all([
+      await comment.save(),
+      await BlogComment.findById(commentId)
+        .populate("authorId", ["_id", "userName", "profileImage"])
+        .populate("replies.userId", ["_id", "userName", "profileImage"]),
+    ]);
+    res.status(200).json(modified);
+  } catch (error) {
+    console.log("Error: replie blog comments: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
