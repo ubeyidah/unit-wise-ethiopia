@@ -2,6 +2,7 @@ import Joi from "joi";
 import Blog from "../models/blog.model.js";
 import { postSchema } from "../schemas/blog.schema.js";
 import BlogComment from "../models/blogComment.model.js";
+import mongoose from "mongoose";
 
 export const createBlog = async (req, res) => {
   try {
@@ -136,6 +137,35 @@ export const createBlogComment = async (req, res) => {
     res.status(200).json(blogCom);
   } catch (error) {
     console.log("Error: create comment: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const getBlogComments = async (req, res) => {
+  const { blogId } = req.params;
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 5;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(blogId)) {
+      return res.status(404).json({ message: "invalid id" }); //
+    }
+    const totalComments = await BlogComment.countDocuments({ blogId });
+    const totalPages = Math.ceil(totalComments / limit);
+
+    const comments = await BlogComment.find({ blogId })
+      .populate("authorId", ["_id", "userName", "profileImage"])
+      .populate("replies.userId", ["_id", "userName", "profileImage"])
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json({
+      comments: comments,
+      totalPages: totalPages || 0,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.log("Error: get blog comments: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };

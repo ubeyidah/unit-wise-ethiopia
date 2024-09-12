@@ -5,6 +5,7 @@ import {
   getBlog,
   likeDeslikeComment,
   createBlogComment,
+  getBlogComments,
 } from "../controllers/blog.controller.js";
 import protectRoute from "../middleware/protectRoute.js";
 
@@ -15,5 +16,6 @@ router.get("/", protectRoute, getBlogs);
 router.get("/:id", protectRoute, getBlog);
 router.put("/like/:blogId", protectRoute, likeDeslikeComment);
 router.post("/comment/:blogId", protectRoute, createBlogComment);
+router.get("/comment/:blogId", protectRoute, getBlogComments);
 
 export default router;
