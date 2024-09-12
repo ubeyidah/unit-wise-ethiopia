@@ -221,3 +221,20 @@ export const replieBlogComment = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const deleteBlogComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const authorId = req.user._id.toString();
+    const deletedComment = await BlogComment.findOneAndDelete({
+      _id: commentId,
+      authorId,
+    });
+    if (!deletedComment)
+      return res.status(404).json({ message: "Comment not deleted " });
+    res.status(200).json({ message: "Comment deleted successfully" });
+  } catch (error) {
+    console.log("Error: deleteing blog comments: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
