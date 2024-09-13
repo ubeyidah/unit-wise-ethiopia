@@ -21,6 +21,7 @@ import {
   deleteBlogComments,
   getBlogComments,
   likeBlogComments,
+  replyBlogComment,
 } from "@/apis/blog/blog.api";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/formatDate";
@@ -72,11 +73,26 @@ const Comments = ({ blogId }: PropType) => {
   const createComment = async (e: FormEvent) => {
     e.preventDefault();
     try {
+      if (!commentText || commentText.length < 8)
+        return toast.info("Say something", {
+          action: {
+            label: "x",
+            onClick: () => null,
+          },
+        });
+      if (commentText.length > 700)
+        return toast.info("too many text", {
+          action: {
+            label: "x",
+            onClick: () => null,
+          },
+        });
       setLoading((prev) => [...prev, "comment"]);
-      const res = await createBlogComment(blogId, commentText);
-      await loadMoreComments(1);
+      await Promise.all([
+        await createBlogComment(blogId, commentText),
+        await loadMoreComments(1),
+      ]);
       setCommentText("");
-      console.log(res);
     } catch (error) {
       toast.error("Opps! No internet connection", {
         action: {
@@ -164,6 +180,70 @@ const Comments = ({ blogId }: PropType) => {
       );
     }
   };
+
+  const toggleReply = (id: string) => {
+    setComments(
+      (prev) =>
+        prev &&
+        prev.map((comment) =>
+          comment._id === id
+            ? { ...comment, isToReply: !comment.isToReply }
+            : comment
+        )
+    );
+  };
+
+  const handleReplySubmit = async (
+    e: FormEvent<HTMLFormElement>,
+    id: string
+  ) => {
+    try {
+      e.preventDefault();
+      const inputElement = e.currentTarget.querySelector<HTMLInputElement>(
+        'input[name="reply"]'
+      );
+      const submitButton =
+        e.currentTarget.querySelector<HTMLButtonElement>(".submit-btn");
+
+      if (inputElement && submitButton) {
+        const replyValue = inputElement.value;
+        if (replyValue.length < 2 || replyValue.length >= 110) {
+          toast.info("write a reply between 2 to 110 characters", {
+            action: {
+              label: "x",
+              onClick: () => null,
+            },
+          });
+          return;
+        }
+
+        submitButton.innerHTML = `<ImSpinner8 className="animate-spin text-sm mr-1" /> Loading...`;
+        submitButton.disabled = true;
+        const modifiedCommentReply = await replyBlogComment(id, replyValue);
+
+        setComments(
+          (prev) =>
+            prev &&
+            prev.map((comment) =>
+              comment._id === id
+                ? { ...comment, replies: modifiedCommentReply }
+                : comment
+            )
+        );
+        toggleReply(id);
+        submitButton.innerHTML = "Reply";
+        submitButton.disabled = false;
+      }
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    }
+  };
+
   return (
     <div>
       <form onSubmit={createComment} id="comment">
@@ -174,6 +254,7 @@ const Comments = ({ blogId }: PropType) => {
             className="h-24"
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
+            maxLength={700}
           />
         </label>
         <div className="flex items-center justify-end relative pt-2">
@@ -196,6 +277,11 @@ const Comments = ({ blogId }: PropType) => {
       <Separator />
 
       <div className="px-3 md:px-5">
+        {(!comments || comments?.length <= 0) && (
+          <div className="text-center my-9 opacity-60 text-sm md:text-lg">
+            No comments yet. Be the first to share your thoughts!
+          </div>
+        )}
         {comments?.map((comment, i) => (
           <div key={comment._id + comment.blogId + i}>
             <Separator />
@@ -229,9 +315,9 @@ const Comments = ({ blogId }: PropType) => {
                     />
                     <button
                       className={`flex h-6 items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs ${
-                        false ? "bg-slate-500/30" : ""
+                        comment.isToReply ? "bg-slate-500/30" : ""
                       }`}
-                      onClick={() => {}}
+                      onClick={() => toggleReply(comment._id)}
                     >
                       Reply
                     </button>
@@ -271,6 +357,38 @@ const Comments = ({ blogId }: PropType) => {
                     </DropdownMenu>
                   </div>
                 </div>
+                {comment?.isToReply && (
+                  <form
+                    onSubmit={(e) => handleReplySubmit(e, comment._id)}
+                    className="mt-3 text-sm"
+                  >
+                    <Separator className="my-3" />
+                    <input
+                      className="bg-transparent border-b w-full border-green-500/15 py-1 px-2 outline-none focus:border-green-500"
+                      placeholder="add a reply.."
+                      name="reply"
+                    />
+                    <div className="flex justify-end gap-3 mt-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-full"
+                        onClick={() => toggleReply(comment._id)}
+                        type="button"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full submit-btn"
+                        type="submit"
+                      >
+                        Reply
+                      </Button>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
           </div>

@@ -143,7 +143,7 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
       if (inputElement && submitButton) {
         const replyValue = inputElement.value;
         if (replyValue.length < 2 || replyValue.length >= 110) {
-          toast.info("write a riply between 2 to 110 characters", {
+          toast.info("write a reply between 2 to 110 characters", {
             action: {
               label: "x",
               onClick: () => null,

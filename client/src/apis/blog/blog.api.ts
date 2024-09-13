@@ -200,3 +200,19 @@ export const deleteBlogComments = async (
   }
   return result;
 };
+
+export const replyBlogComment = async (commentId: string, reply: string) => {
+  const res = await fetch(`/api/blog/comment/reply/${commentId}`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ reply }),
+  });
+
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+  return result;
+};

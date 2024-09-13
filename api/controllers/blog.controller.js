@@ -216,7 +216,7 @@ export const replieBlogComment = async (req, res) => {
         .populate("authorId", ["_id", "userName", "profileImage"])
         .populate("replies.userId", ["_id", "userName", "profileImage"]),
     ]);
-    res.status(200).json(modified);
+    res.status(200).json(modified.replies);
   } catch (error) {
     console.log("Error: replie blog comments: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
