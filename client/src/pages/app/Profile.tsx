@@ -1,5 +1,6 @@
 import { followUser, getUserProfile, ProfileType } from "@/apis/user/user.api";
 import FollowButton from "@/components/FollowButton";
+import ProfileLoader from "@/components/loaders/ProfileLoader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuthContext } from "@/context/AuthProvider";
@@ -29,7 +30,7 @@ const Profile = () => {
   const [loading, setLoading] = useState<string[]>([]);
   return (
     <section className="px-2 md:px-5">
-      <Suspense fallback={<h3>Loading...</h3>}>
+      <Suspense fallback={<ProfileLoader />}>
         <Await resolve={data}>
           {(data: ProfileType) => {
             const [profile, setProfile] = useState(data);
