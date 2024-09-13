@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuthContext } from "@/context/AuthProvider";
 import { formatNumber } from "@/lib/formatNumber";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Await,
   defer,
@@ -33,6 +33,9 @@ const Profile = () => {
         <Await resolve={data}>
           {(data: ProfileType) => {
             const [profile, setProfile] = useState(data);
+            useEffect(() => {
+              setProfile(data);
+            }, [data]);
             const handleFollow = async (id: string) => {
               try {
                 setLoading((prev) => [...prev, "follow"]);
@@ -99,7 +102,7 @@ const Profile = () => {
                 <div className="flex items-center mt-7 ">
                   <NavLink
                     end={true}
-                    to="/dashboard/user/ubeyidah"
+                    to=""
                     className={({ isActive }) =>
                       !isActive
                         ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
@@ -109,7 +112,7 @@ const Profile = () => {
                     Posts
                   </NavLink>
                   <NavLink
-                    to="/dashboard/user/ubeyidah/likes"
+                    to="likes"
                     className={({ isActive }) =>
                       !isActive
                         ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
