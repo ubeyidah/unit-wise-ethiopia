@@ -235,7 +235,19 @@ export const getProfile = async (req, res) => {
     const user = await User.findOne({ userName: username });
     if (!user) return res.status(400).json({ message: "User not found" });
     const postsCount = await Blog.countDocuments({ author: user._id });
-    res.status(200).json({ user, postsCount });
+    res.status(200).json({
+      user: {
+        _id: user._id,
+        profileImage: user.profileImage,
+        userName: user.userName,
+        fullName: user.fullName,
+        status: user.status,
+        following: user.following,
+        followers: user.followers,
+        school: user.school,
+      },
+      postsCount,
+    });
   } catch (error) {
     console.log("Error: user profile: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });

@@ -1,47 +1,126 @@
+import { followUser, getUserProfile, ProfileType } from "@/apis/user/user.api";
+import FollowButton from "@/components/FollowButton";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuthContext } from "@/context/AuthProvider";
+import { formatNumber } from "@/lib/formatNumber";
+import { Suspense, useState } from "react";
+import {
+  Await,
+  defer,
+  LoaderFunction,
+  NavLink,
+  Outlet,
+  useLoaderData,
+  useLocation,
+} from "react-router-dom";
+import { toast } from "sonner";
 
+type LoaderType = {
+  data: Promise<ProfileType>;
+};
+export const loader: LoaderFunction = ({ params }) => {
+  const { username } = params;
+  const dataPromise = getUserProfile(username as string);
+  return defer({ data: dataPromise });
+};
 const Profile = () => {
   const auth = useAuthContext();
+  const { data } = useLoaderData() as LoaderType;
+  const [loading, setLoading] = useState<string[]>([]);
   return (
     <section className="px-2 md:px-5">
-      <div className="w-fll h-full max-h-20 ">
-        <img
-          src={auth?.user?.profileImage}
-          alt=""
-          className="w-full object-cover object-center h-full blur-xl opacity-25"
-        />
-      </div>
-      <div className="flex gap-6 -mt-10">
-        <img
-          src={auth?.user?.profileImage}
-          alt=""
-          className="size-24 rounded-full"
-        />
-        <div>
-          <h1 className="text-3xl uppercase font-bold">
-            {auth?.user?.status} {auth?.user?.fullName}
-          </h1>
-          <p className="text-sm opacity-70">
-            @{auth?.user?.userName} • 1.06M followers • 631 Posts
-          </p>
-          <p className="text-sm opacity-70">From {auth?.user?.school}</p>
-          <Button variant="outline" className="rounded-full mt-2">
-            Follow
-          </Button>
-        </div>
-      </div>
+      <Suspense fallback={<h3>Loading...</h3>}>
+        <Await resolve={data}>
+          {(data: ProfileType) => {
+            const [profile, setProfile] = useState(data);
+            const handleFollow = async (id: string) => {
+              try {
+                setLoading((prev) => [...prev, "follow"]);
+                const res = await followUser(id);
+                setProfile((prev: any) => ({
+                  ...prev,
+                  user: { ...prev.user, followers: res },
+                }));
+              } catch (error) {
+                toast.error("Opps! No internet connection", {
+                  action: {
+                    label: "x",
+                    onClick: () => null,
+                  },
+                });
+              } finally {
+                setLoading((prev) => prev.filter((item) => item !== "follow"));
+              }
+            };
+            return (
+              <>
+                <div className="w-fll h-full max-h-20 ">
+                  <img
+                    src={profile.user.profileImage}
+                    alt=""
+                    className="w-full object-cover object-center h-full blur-xl opacity-25"
+                  />
+                </div>
+                <div className="flex gap-6 -mt-10">
+                  <img
+                    src={profile.user.profileImage}
+                    alt=""
+                    className="size-24 rounded-full"
+                  />
+                  <div>
+                    <h1 className="text-3xl uppercase font-bold">
+                      {profile.user.status} {profile.user.fullName}
+                    </h1>
+                    <p className="text-sm opacity-70">
+                      @{profile.user.userName} •{" "}
+                      {formatNumber(profile.user.followers.length)} followers •{" "}
+                      {formatNumber(profile.user.following.length)} following •{" "}
+                      {formatNumber(profile.postsCount)} Posts
+                    </p>
+                    <p className="text-sm opacity-70 mb-4">
+                      From {profile.user.school}
+                    </p>
+                    <FollowButton
+                      followers={profile.user.followers}
+                      handleFollow={handleFollow}
+                      loading={loading}
+                      myId={auth?.user?._id as string}
+                      userId={profile.user._id as string}
+                    />
+                  </div>
+                </div>
 
-      <div className="flex items-center mt-7 ">
-        <button className="text-green-600 px-5 py-1 border-b border-green-500 transition-all duration-200">
-          Posts
-        </button>
-        <button className="px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200">
-          Likes
-        </button>
-      </div>
-      <Separator />
+                <div className="flex items-center mt-7 ">
+                  <NavLink
+                    end={true}
+                    to="/dashboard/user/ubeyidah"
+                    className={({ isActive }) =>
+                      !isActive
+                        ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
+                        : `px-5 py-1 border-green-500 border-b text-green-600 transition-all duration-200 `
+                    }
+                  >
+                    Posts
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/user/ubeyidah/likes"
+                    className={({ isActive }) =>
+                      !isActive
+                        ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
+                        : `px-5 py-1 border-green-500 border-b text-green-600 transition-all duration-200 `
+                    }
+                  >
+                    Likes
+                  </NavLink>
+                </div>
+                <Separator />
+              </>
+            );
+          }}
+        </Await>
+      </Suspense>
+      <Outlet />
     </section>
   );
 };

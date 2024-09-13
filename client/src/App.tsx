@@ -37,7 +37,9 @@ import WriteStudyHubPost from "./pages/app/WriteStudyHubPost";
 import StudyHubDetail, {
   loader as studyHubDetailLoader,
 } from "./pages/app/StudyHubDetail";
-import Profile from "./pages/app/Profile";
+import Profile, { loader as profileLoader } from "./pages/app/Profile";
+import Posts from "./components/Posts";
+import Likes from "./components/Likes";
 
 const App = () => {
   const auth = useAuthContext();
@@ -114,7 +116,14 @@ const App = () => {
             element={<StudyHubDetail />}
             loader={studyHubDetailLoader}
           />
-          <Route path="user/:username" element={<Profile />} />
+          <Route
+            path="user/:username"
+            element={<Profile />}
+            loader={profileLoader}
+          >
+            <Route index element={<Posts />} />
+            <Route path="likes" element={<Likes />} />
+          </Route>
         </Route>
 
         {/* verification routes */}

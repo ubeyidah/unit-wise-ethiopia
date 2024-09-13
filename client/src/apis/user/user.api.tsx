@@ -1,5 +1,4 @@
 import { User } from "@/context/AuthProvider";
-import { ProfileType } from "@/pages/MoreInfo";
 import { IoIosClose } from "react-icons/io";
 import { redirect } from "react-router-dom";
 import { toast } from "sonner";
@@ -30,6 +29,24 @@ export const takeInfoToServer = async (
 
 export const followUser = async (id: string): Promise<string[]> => {
   const res = await fetch(`/api/user/follow/${id}`);
+  const result = await res.json();
+  if (!res.ok) {
+    throw {
+      message: result.message || res.statusText,
+    };
+  }
+  return result;
+};
+
+export interface ProfileType {
+  user: User;
+  postsCount: number;
+}
+
+export const getUserProfile = async (
+  username: string
+): Promise<Partial<ProfileType>> => {
+  const res = await fetch(`/api/user/${username}`);
   const result = await res.json();
   if (!res.ok) {
     throw {
