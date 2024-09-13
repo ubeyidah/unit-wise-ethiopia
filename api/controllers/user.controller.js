@@ -1,3 +1,4 @@
+import Blog from "../models/blog.model.js";
 import Source from "../models/source.model.js";
 import SubjectComment from "../models/subjectComment.model.js";
 import User from "../models/user.model.js";
@@ -224,6 +225,19 @@ export const followUnfollowUser = async (req, res) => {
     res.status(200).json(finallUser.followers);
   } catch (error) {
     console.log("Error: follow unfollow user: =>", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ userName: username });
+    if (!user) return res.status(400).json({ message: "User not found" });
+    const postsCount = await Blog.countDocuments({ author: user._id });
+    res.status(200).json({ user, postsCount });
+  } catch (error) {
+    console.log("Error: user profile: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
