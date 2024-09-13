@@ -33,7 +33,7 @@ const LikeButton = ({
 }: PropType) => {
   return (
     <Button
-      className={`rounded-full flex gap-1 active:scale-x-110 active:scale-y-95 transition-all duration-75 ${className} ${
+      className={`rounded-full flex gap-1 items-center active:scale-x-110 active:scale-y-95 transition-all duration-75 ${className} ${
         likes.includes(userId as string)
           ? " bg-green-400/30 border border-green-400/50"
           : ""

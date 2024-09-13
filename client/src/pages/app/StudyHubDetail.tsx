@@ -23,6 +23,7 @@ import { followUser } from "@/apis/user/user.api";
 import { toast } from "sonner";
 import LikeButton from "@/components/LikeButton";
 import FollowButton from "@/components/FollowButton";
+import Share from "@/components/Share";
 
 export const loader: LoaderFunction = ({ params }) => {
   const blogId = params.id || "";
@@ -174,7 +175,24 @@ const StudyHubDetail = () => {
                   editable={false}
                 />
               </div>
-              <Separator className="my-4" />
+              <div>
+                <div className="flex items-center justify-end gap-1">
+                  <Share />
+                </div>
+                <Separator className="my-3" />
+
+                <div className="flex items-center gap-2 flex-wrap mt-2">
+                  {singleBlog.tags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="py-0.5 px-2 border rounded-full text-blue-500/80 text-sm bg-blue-700/10"
+                    >
+                      {tag}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Separator className="my-5 mb-7" />
               <Comments blogId={singleBlog._id} />
             </section>
           );
