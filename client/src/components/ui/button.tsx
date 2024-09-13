@@ -31,6 +31,7 @@ const buttonVariants = cva(
         icon: "h-9 w-9",
         iconsm: "h-5 w-5",
         likeBtn: "h-8 w-14",
+        commetnBtn: "h-6 w-14",
       },
     },
     defaultVariants: {

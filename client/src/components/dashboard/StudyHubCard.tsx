@@ -1,10 +1,8 @@
 import { Suspense } from "react";
 import { useImage } from "react-image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { BiLike } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { BlogsType } from "@/apis/blog/blog.api";
-import { formatNumber } from "@/lib/formatNumber";
 import { formatDate } from "@/lib/formatDate";
 import { Skeleton } from "../ui/skeleton";
 import LikeButton from "../LikeButton";

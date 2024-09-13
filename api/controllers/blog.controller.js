@@ -191,7 +191,7 @@ export const likeDeslikeComments = async (req, res) => {
     }
     const modified = await comment.save();
 
-    res.status(200).json(modified);
+    res.status(200).json(modified.likes);
   } catch (error) {
     console.log("Error: blog comments like: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });

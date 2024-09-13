@@ -10,7 +10,7 @@ type PropType = {
   handleLike: (blogId: string) => void;
   blogId: string;
   className?: string;
-  size?: "default" | "sm" | "lg" | "icon" | "iconsm" | "likeBtn";
+  size?: "default" | "sm" | "lg" | "icon" | "iconsm" | "likeBtn" | "commetnBtn";
   variant?:
     | "blogDetail"
     | "default"

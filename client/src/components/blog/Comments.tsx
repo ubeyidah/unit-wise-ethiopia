@@ -4,7 +4,6 @@ import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Skeleton } from "../ui/skeleton";
 import { ImSpinner8 } from "react-icons/im";
-import { BiLike, BiSolidLike } from "react-icons/bi";
 import { formatNumber } from "@/lib/formatNumber";
 import { IoIosArrowDown } from "react-icons/io";
 import {
@@ -20,9 +19,12 @@ import {
   BlogCommentType,
   createBlogComment,
   getBlogComments,
+  likeBlogComments,
 } from "@/apis/blog/blog.api";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/formatDate";
+import LikeButton from "../LikeButton";
+import { useAuthContext } from "@/context/AuthProvider";
 
 type PropType = {
   blogId: string;
@@ -33,7 +35,7 @@ interface BlogComment extends BlogCommentType {
   isOpenReply: boolean;
 }
 const Comments = ({ blogId }: PropType) => {
-  const isLikedComment = [0].includes(0);
+  const auth = useAuthContext();
   const [commentText, setCommentText] = useState("");
   const [loading, setLoading] = useState<string[]>([]);
   const [comments, setComments] = useState<BlogComment[]>();
@@ -117,6 +119,30 @@ const Comments = ({ blogId }: PropType) => {
     }
   };
 
+  const handleLike = async (commentId: string) => {
+    try {
+      setLoading((prev) => [...prev, commentId]);
+      const res = await likeBlogComments(commentId);
+      setComments((prev) =>
+        prev?.map((comment) => {
+          if (comment._id === commentId) {
+            return { ...comment, likes: res };
+          }
+          return comment;
+        })
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) => prev.filter((item) => item !== commentId));
+    }
+  };
+
   return (
     <div>
       <form onSubmit={createComment} id="comment">
@@ -149,8 +175,8 @@ const Comments = ({ blogId }: PropType) => {
       <Separator />
 
       <div className="px-3 md:px-5">
-        {comments?.map((comment) => (
-          <div key={comment._id}>
+        {comments?.map((comment, i) => (
+          <div key={comment._id + comment.blogId + i}>
             <Separator />
 
             <div className="grid grid-cols-[40px,1fr] gap-2 my-3">
@@ -171,27 +197,17 @@ const Comments = ({ blogId }: PropType) => {
                 </div>
                 <div className="mt-1 flex gap-2 items-center justify-between">
                   <div className="flex gap-2 items-center">
+                    <LikeButton
+                      blogId={comment._id}
+                      handleLike={handleLike}
+                      likes={comment.likes}
+                      loading={loading}
+                      userId={auth?.user?._id as string}
+                      variant="cardLike"
+                      size="commetnBtn"
+                    />
                     <button
-                      className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 ${
-                        false ? "bg-slate-500/30" : ""
-                      }`}
-                      onClick={() => {}}
-                      // disabled={loadingId.includes(comment._id)}
-                    >
-                      {[3].includes(0) ? (
-                        <ImSpinner8 className="animate-spin text-sm" />
-                      ) : isLikedComment ? (
-                        <BiSolidLike className="size-4" />
-                      ) : (
-                        <BiLike className="size-4" />
-                      )}
-
-                      {![3].includes(0) && (
-                        <span className="text-xs">{formatNumber(3)}</span>
-                      )}
-                    </button>
-                    <button
-                      className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs ${
+                      className={`flex h-6 items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs ${
                         false ? "bg-slate-500/30" : ""
                       }`}
                       onClick={() => {}}
@@ -199,7 +215,7 @@ const Comments = ({ blogId }: PropType) => {
                       Reply
                     </button>
                     <button
-                      className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs"
+                      className="flex h-6 items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs"
                       onClick={() => {}}
                     >
                       <IoIosArrowDown className={true ? "rotate-180" : ""} />
