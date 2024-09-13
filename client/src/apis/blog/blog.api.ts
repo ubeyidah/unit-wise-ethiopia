@@ -183,3 +183,20 @@ export const likeBlogComments = async (
   }
   return result;
 };
+
+export const deleteBlogComments = async (
+  commentId: string
+): Promise<string[]> => {
+  const res = await fetch(`/api/blog/comment/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+  return result;
+};

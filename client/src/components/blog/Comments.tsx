@@ -18,6 +18,7 @@ import { FormEvent, useEffect, useState } from "react";
 import {
   BlogCommentType,
   createBlogComment,
+  deleteBlogComments,
   getBlogComments,
   likeBlogComments,
 } from "@/apis/blog/blog.api";
@@ -143,6 +144,26 @@ const Comments = ({ blogId }: PropType) => {
     }
   };
 
+  const deleteComment = async (commentId: string) => {
+    try {
+      setLoading((prev) => [...prev, "d" + commentId]);
+      await deleteBlogComments(commentId);
+      setComments((prev) =>
+        prev?.filter((comment) => comment._id !== commentId)
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) =>
+        prev.filter((item) => "d" + item !== "d" + commentId)
+      );
+    }
+  };
   return (
     <div>
       <form onSubmit={createComment} id="comment">
@@ -226,19 +247,22 @@ const Comments = ({ blogId }: PropType) => {
                     <DropdownMenu>
                       <DropdownMenuTrigger
                         className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 size-7 cursor-pointer border border-slate-500/20 text-xs disabled:opacity-55 disabled:cursor-none disabled:pointer-events-none"
-                        disabled={false}
+                        disabled={
+                          loading.includes("d" + comment._id) ||
+                          auth?.user?._id !== comment?.authorId._id
+                        }
                       >
-                        {[3].includes(0) ? (
+                        {loading.includes("d" + comment._id) ? (
                           <ImSpinner8 className="animate-spin text-sm" />
                         ) : (
                           <BsThreeDotsVertical />
                         )}
                       </DropdownMenuTrigger>
-                      {true && (
+                      {auth?.user?._id === comment?.authorId._id && (
                         <DropdownMenuContent>
                           <DropdownMenuItem
                             className="flex items-center gap-1 text-xs"
-                            onClick={() => {}}
+                            onClick={() => deleteComment(comment._id)}
                           >
                             <CiTrash /> Delete
                           </DropdownMenuItem>
