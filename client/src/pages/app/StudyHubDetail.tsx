@@ -16,14 +16,11 @@ import { formatDate } from "@/lib/formatDate";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FaRegCommentDots } from "react-icons/fa";
-import { BiLike, BiSolidLike } from "react-icons/bi";
 import Comments from "@/components/blog/Comments";
 import StudyHubDetailLoader from "@/components/loaders/StudyHubDetailLoader";
 import { useAuthContext } from "@/context/AuthProvider";
 import { followUser } from "@/apis/user/user.api";
-import { ImSpinner8 } from "react-icons/im";
 import { toast } from "sonner";
-import { formatNumber } from "@/lib/formatNumber";
 import LikeButton from "@/components/LikeButton";
 import FollowButton from "@/components/FollowButton";
 

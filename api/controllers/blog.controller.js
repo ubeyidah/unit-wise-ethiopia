@@ -52,7 +52,7 @@ export const getBlogs = async (req, res) => {
     const blogs = await Blog.find(filterCondition)
       .populate("author", ["_id", "userName", "profileImage"])
       .skip(skip)
-      .sort({ updatedAt: -1 })
+      .sort({ createdAt: -1 })
       .limit(limit);
     const totalPosts = await Blog.countDocuments(filterCondition);
     const blogToSend = blogs.map((blog) => {
@@ -61,7 +61,7 @@ export const getBlogs = async (req, res) => {
         title: blog.title,
         description: blog.description,
         coverImage: blog.coverImage,
-        updatedAt: blog.updatedAt,
+        updatedAt: blog.createdAt, // keep it as it is
         author: blog.author,
         likes: blog.likes,
       };
