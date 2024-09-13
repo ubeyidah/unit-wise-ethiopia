@@ -244,6 +244,18 @@ const Comments = ({ blogId }: PropType) => {
     }
   };
 
+  const toggleOpenReply = (id: string) => {
+    setComments(
+      (prev) =>
+        prev &&
+        prev.map((comment) =>
+          comment._id === id
+            ? { ...comment, isOpenReply: !comment.isOpenReply }
+            : comment
+        )
+    );
+  };
+
   return (
     <div>
       <form onSubmit={createComment} id="comment">
@@ -323,10 +335,12 @@ const Comments = ({ blogId }: PropType) => {
                     </button>
                     <button
                       className="flex h-6 items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1 px-3 border border-slate-500/20 text-xs"
-                      onClick={() => {}}
+                      onClick={() => toggleOpenReply(comment._id)}
                     >
-                      <IoIosArrowDown className={true ? "rotate-180" : ""} />
-                      {formatNumber(3)} replies
+                      <IoIosArrowDown
+                        className={comment.isOpenReply ? "rotate-180" : ""}
+                      />
+                      {formatNumber(comment.replies.length)} replies
                     </button>
                   </div>
                   <div>
@@ -388,6 +402,68 @@ const Comments = ({ blogId }: PropType) => {
                       </Button>
                     </div>
                   </form>
+                )}
+                {comment?.isOpenReply && comment.replies.length > 0 && (
+                  <div className="mt-3">
+                    {comment.replies.map((reply) => (
+                      <span key={reply._id}>
+                        <Separator />
+                        <div className="mr-4 grid grid-cols-[30px_1fr] gap-2 text-xs my-3">
+                          <div>
+                            <Avatar className="size-7 rounded-full object-cover object-center">
+                              <AvatarImage
+                                src={reply?.userId?.profileImage as string}
+                              />
+                              <AvatarFallback className="uppercase">
+                                {reply?.userId?.userName[0]}
+                              </AvatarFallback>
+                            </Avatar>
+                          </div>
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                            <div>
+                              <p className="opacity-60">
+                                @{reply?.userId?.userName} -{" "}
+                                {formatDate(reply.createdAt)}
+                              </p>
+                              <p>{reply.replie}</p>
+                            </div>
+                            <div>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger
+                                  className="flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 size-7 cursor-pointer border border-slate-500/20 text-xs disabled:opacity-55 disabled:cursor-none disabled:pointer-events-none"
+                                  disabled={
+                                    auth?.user?._id !== reply?.userId._id ||
+                                    loading.includes(reply._id)
+                                  }
+                                >
+                                  {loading.includes(reply._id) ? (
+                                    <ImSpinner8 className="animate-spin text-sm" />
+                                  ) : (
+                                    <BsThreeDotsVertical />
+                                  )}
+                                </DropdownMenuTrigger>
+                                {auth?.user?._id === reply?.userId._id && (
+                                  <DropdownMenuContent>
+                                    <DropdownMenuItem
+                                      className="flex items-center gap-1 text-xs"
+                                      // onClick={() =>
+                                      //   deleteReply(
+                                      //     comment._id,
+                                      //     replie._id
+                                      //   )
+                                      // }
+                                    >
+                                      <CiTrash /> Delete
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                )}
+                              </DropdownMenu>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>
