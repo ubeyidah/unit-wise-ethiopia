@@ -27,11 +27,16 @@ import { formatDate } from "@/lib/formatDate";
 type PropType = {
   blogId: string;
 };
+
+interface BlogComment extends BlogCommentType {
+  isToReply: boolean;
+  isOpenReply: boolean;
+}
 const Comments = ({ blogId }: PropType) => {
   const isLikedComment = [0].includes(0);
   const [commentText, setCommentText] = useState("");
   const [loading, setLoading] = useState<string[]>([]);
-  const [comments, setComments] = useState<BlogCommentType[]>();
+  const [comments, setComments] = useState<BlogComment[]>();
   const [pageInfo, setPageInfo] = useState({
     totalPage: 0,
     currentPage: 0,
@@ -43,7 +48,10 @@ const Comments = ({ blogId }: PropType) => {
       try {
         setLoading((prev) => [...prev, "main"]);
         const data = await getBlogComments(blogId);
-        setComments(data.comments);
+        const redyComment = data.comments.map((comment) => {
+          return { ...comment, isToReply: false, isOpenReply: false };
+        });
+        setComments(redyComment);
         setPageInfo({
           totalPage: data.totalPages,
           currentPage: data.currentPage,
@@ -63,6 +71,7 @@ const Comments = ({ blogId }: PropType) => {
     try {
       setLoading((prev) => [...prev, "comment"]);
       const res = await createBlogComment(blogId, commentText);
+      await loadMoreComments(1);
       setCommentText("");
       console.log(res);
     } catch (error) {
@@ -77,6 +86,36 @@ const Comments = ({ blogId }: PropType) => {
     }
   };
   if (loading.includes("main")) return <>Loading...</>;
+
+  const loadMoreComments = async (page?: number) => {
+    try {
+      setLoading((prev) => [...prev, "loadmore"]);
+      const loadedComments = await getBlogComments(
+        blogId,
+        page || pageInfo.currentPage + 1
+      );
+      const redyComment = loadedComments.comments.map((comment) => {
+        return { ...comment, isToReply: false, isOpenReply: false };
+      });
+      page
+        ? setComments(redyComment)
+        : setComments((prev: any) => [...prev, ...redyComment]);
+      setPageInfo({
+        currentPage: loadedComments.currentPage,
+        totalPage: loadedComments.totalPages,
+        canLoadMore: loadedComments.currentPage < loadedComments.totalPages,
+      });
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) => prev.filter((item) => item !== "loadmore"));
+    }
+  };
 
   return (
     <div>
@@ -196,6 +235,20 @@ const Comments = ({ blogId }: PropType) => {
             </div>
           </div>
         ))}
+
+        <div className="flex justify-center items-center ">
+          {pageInfo.canLoadMore &&
+            (loading.includes("loadmore") ? (
+              <div className="flex items-center gap-3 text-xs opacity-70">
+                <ImSpinner8 className="animate-spin" />
+                loading...
+              </div>
+            ) : (
+              <Button onClick={() => loadMoreComments()} variant="link">
+                See More
+              </Button>
+            ))}
+        </div>
       </div>
     </div>
   );
