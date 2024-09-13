@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Link } from "react-router-dom";
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
@@ -244,15 +245,21 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
                 <div key={comment._id} className="mb-1">
                   <Separator />
                   <div className="grid grid-cols-[40px_1fr] p-3 gap-2">
-                    <Avatar className="size-10 rounded-full object-cover object-center">
-                      <AvatarImage src={comment.authorId.profileImage} />
-                      <AvatarFallback className="uppercase">
-                        {comment.authorId.userName[0]}
-                      </AvatarFallback>
-                    </Avatar>
+                    <Link to={`/dashboard/user/${comment.authorId.userName}`}>
+                      <Avatar className="size-10 rounded-full object-cover object-center">
+                        <AvatarImage src={comment.authorId.profileImage} />
+                        <AvatarFallback className="uppercase">
+                          {comment.authorId.userName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Link>
                     <div>
                       <div className="text-xs flex items-center gap-1">
-                        <p>@{comment.authorId.userName} - </p>
+                        <Link
+                          to={`/dashboard/user/${comment.authorId.userName}`}
+                        >
+                          @{comment.authorId.userName} -{" "}
+                        </Link>
                         <p className="opacity-60">
                           {timeAgo.format(new Date(comment.createdAt))}
                         </p>
@@ -370,21 +377,30 @@ const SubjectComment = ({ commentsArray, subjectName, progress }: PropType) => {
                               <Separator />
                               <div className="mr-4 grid grid-cols-[30px_1fr] gap-2 text-xs my-3">
                                 <div>
-                                  <Avatar className="size-7 rounded-full object-cover object-center">
-                                    <AvatarImage
-                                      src={
-                                        replie?.userId?.profileImage as string
-                                      }
-                                    />
-                                    <AvatarFallback className="uppercase">
-                                      {replie?.userId?.userName[0]}
-                                    </AvatarFallback>
-                                  </Avatar>
+                                  <Link
+                                    to={`/dashboard/user/${replie?.userId?.userName}`}
+                                  >
+                                    <Avatar className="size-7 rounded-full object-cover object-center">
+                                      <AvatarImage
+                                        src={
+                                          replie?.userId?.profileImage as string
+                                        }
+                                      />
+                                      <AvatarFallback className="uppercase">
+                                        {replie?.userId?.userName[0]}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                  </Link>
                                 </div>
                                 <div className="flex items-center justify-between gap-2 flex-wrap">
                                   <div>
                                     <p className="opacity-60">
-                                      @{replie?.userId?.userName} -{" "}
+                                      <Link
+                                        to={`/dashboard/user/${replie?.userId?.userName}`}
+                                      >
+                                        @{replie?.userId?.userName}{" "}
+                                      </Link>{" "}
+                                      -{" "}
                                       {timeAgo.format(
                                         new Date(replie.createdAt)
                                       )}

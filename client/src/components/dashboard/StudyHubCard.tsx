@@ -53,17 +53,24 @@ const StudyHubCard = ({
 
       <div className="flex gap-6 bg-white dark:bg-black text-xs justify-between px-1 py-1 items-center border rounded-full absolute -bottom-5 left-1/2 -translate-x-1/2 h-[41px] w-full max-w-[240px]">
         <div className="flex items-center gap-1">
-          <Avatar className="w-8 h-8 rounded-full object-cover object-center">
-            <AvatarImage
-              src={author.profileImage}
-              className="w-8 h-8 rounded-full object-cover object-center"
-            />
-            <AvatarFallback className="uppercase">
-              <Skeleton className="w-full h-full rounded-full" />
-            </AvatarFallback>
-          </Avatar>
+          <Link to={`/dashboard/user/${author.userName}`}>
+            <Avatar className="w-8 h-8 rounded-full object-cover object-center">
+              <AvatarImage
+                src={author.profileImage}
+                className="w-8 h-8 rounded-full object-cover object-center"
+              />
+              <AvatarFallback className="uppercase">
+                <Skeleton className="w-full h-full rounded-full" />
+              </AvatarFallback>
+            </Avatar>
+          </Link>
           <div>
-            <p className="text-sm opacity-90">{author.userName}</p>
+            <Link
+              to={`/dashboard/user/${author.userName}`}
+              className="text-sm opacity-90"
+            >
+              {author.userName}
+            </Link>
             <p className="text-[11px] -mt-1 opacity-70">
               {formatDate(updatedAt)}
             </p>

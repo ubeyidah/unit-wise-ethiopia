@@ -170,7 +170,7 @@ const DashoardHeader = () => {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link to="/profile">
+          <Link to={`/dashboard/user/${auth?.user?.userName}`}>
             <DropdownMenuItem className="flex items-center gap-3">
               <BiUser /> Profile
             </DropdownMenuItem>

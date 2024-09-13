@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { formatDate } from "@/lib/formatDate";
 import LikeButton from "../LikeButton";
 import { useAuthContext } from "@/context/AuthProvider";
+import { Link } from "react-router-dom";
 
 type PropType = {
   blogId: string;
@@ -105,7 +106,7 @@ const Comments = ({ blogId }: PropType) => {
       setLoading((prev) => prev.filter((item) => item !== "comment"));
     }
   };
-  if (loading.includes("main")) return <>Loading...</>;
+  if (loading.includes("main")) return <>Loading comments . . .</>;
 
   const loadMoreComments = async (page?: number) => {
     try {
@@ -328,16 +329,20 @@ const Comments = ({ blogId }: PropType) => {
             <Separator />
 
             <div className="grid grid-cols-[40px,1fr] gap-2 my-3">
-              <Avatar className="w-10 h-10 rounded-full object-cover object-center">
-                <AvatarImage src={comment.authorId.profileImage} />
-                <AvatarFallback className="uppercase">
-                  <Skeleton className="w-full h-full rounded-full" />
-                </AvatarFallback>
-              </Avatar>
+              <Link to={`/dashboard/user/${comment.authorId.userName}`}>
+                <Avatar className="w-10 h-10 rounded-full object-cover object-center">
+                  <AvatarImage src={comment.authorId.profileImage} />
+                  <AvatarFallback className="uppercase">
+                    <Skeleton className="w-full h-full rounded-full" />
+                  </AvatarFallback>
+                </Avatar>
+              </Link>
 
               <div>
                 <div className="text-xs flex items-center gap-1">
-                  <p>@{comment.authorId.userName} - </p>
+                  <Link to={`/dashboard/user/${comment.authorId.userName}`}>
+                    @{comment.authorId.userName} -{" "}
+                  </Link>
                   <p className="opacity-60">{formatDate(comment.createdAt)}</p>
                 </div>
                 <div>

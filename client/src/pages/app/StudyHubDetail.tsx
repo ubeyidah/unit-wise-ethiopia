@@ -121,16 +121,21 @@ const StudyHubDetail = () => {
 
               <div className="flex items-center justify-between my-4">
                 <div className="flex items-center gap-2">
-                  <Avatar className="w-10 h-10 rounded-full object-cover object-center">
-                    <AvatarImage src={singleBlog.author.profileImage} />
-                    <AvatarFallback className="uppercase">
-                      <Skeleton className="w-full h-full rounded-full" />
-                    </AvatarFallback>
-                  </Avatar>
+                  <Link to={`/dashboard/user/${singleBlog.author.userName}`}>
+                    <Avatar className="w-10 h-10 rounded-full object-cover object-center">
+                      <AvatarImage src={singleBlog.author.profileImage} />
+                      <AvatarFallback className="uppercase">
+                        <Skeleton className="w-full h-full rounded-full" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </Link>
                   <div>
-                    <h3 className="text-wrap text-sm leading-3 max-sm:max-w-40 line-clamp-1">
+                    <Link
+                      to={`/dashboard/user/${singleBlog.author.userName}`}
+                      className="text-wrap text-sm leading-3 max-sm:max-w-40 line-clamp-1"
+                    >
                       {singleBlog.author.userName}
-                    </h3>
+                    </Link>
                     <p className="text-xs opacity-70 mt-0.5">
                       {followerLen} &#183; follower
                     </p>
