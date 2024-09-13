@@ -19,6 +19,7 @@ import {
   BlogCommentType,
   createBlogComment,
   deleteBlogComments,
+  deleteReplyBlogComment,
   getBlogComments,
   likeBlogComments,
   replyBlogComment,
@@ -73,7 +74,7 @@ const Comments = ({ blogId }: PropType) => {
   const createComment = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      if (!commentText || commentText.length < 8)
+      if (!commentText || commentText.length < 4)
         return toast.info("Say something", {
           action: {
             label: "x",
@@ -254,6 +255,34 @@ const Comments = ({ blogId }: PropType) => {
             : comment
         )
     );
+  };
+
+  const deleteReply = async (commentId: string, replyId: string) => {
+    try {
+      setLoading((prev) => [...prev, replyId]);
+      await deleteReplyBlogComment(commentId, replyId);
+      setComments(
+        (prev) =>
+          prev &&
+          prev.map((comment) => {
+            const modifiedCom = comment.replies.filter(
+              (reply) => reply._id !== replyId
+            );
+            return comment._id === commentId
+              ? { ...comment, replies: modifiedCom }
+              : comment;
+          })
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) => prev.filter((id) => id !== replyId));
+    }
   };
 
   return (
@@ -446,12 +475,9 @@ const Comments = ({ blogId }: PropType) => {
                                   <DropdownMenuContent>
                                     <DropdownMenuItem
                                       className="flex items-center gap-1 text-xs"
-                                      // onClick={() =>
-                                      //   deleteReply(
-                                      //     comment._id,
-                                      //     replie._id
-                                      //   )
-                                      // }
+                                      onClick={() =>
+                                        deleteReply(comment._id, reply._id)
+                                      }
                                     >
                                       <CiTrash /> Delete
                                     </DropdownMenuItem>
