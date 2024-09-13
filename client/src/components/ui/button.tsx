@@ -19,6 +19,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        cardLike:
+          "flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2  border border-slate-500/20",
         blogDetail:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-full max-sm:h-8  max-sm:px-3 max-sm:text-xs",
       },
@@ -28,6 +30,7 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
         iconsm: "h-5 w-5",
+        likeBtn: "h-8 w-14",
       },
     },
     defaultVariants: {

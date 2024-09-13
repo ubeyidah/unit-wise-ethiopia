@@ -94,3 +94,17 @@ export const getBlog = async (id: string): Promise<BlogType> => {
   }
   return result;
 };
+
+export const likeBlogs = async (blogId: string): Promise<string[]> => {
+  const res = await fetch(`/api/blog/like/${blogId}`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+  return result;
+};

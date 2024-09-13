@@ -1,4 +1,9 @@
-import { BlogInfoType, BlogsType, getBlogs } from "@/apis/blog/blog.api";
+import {
+  BlogInfoType,
+  BlogsType,
+  getBlogs,
+  likeBlogs,
+} from "@/apis/blog/blog.api";
 import StudyHubCard from "@/components/dashboard/StudyHubCard";
 import StudyHubLoader from "@/components/loaders/StudyHubLoader";
 import { Button } from "@/components/ui/button";
@@ -10,6 +15,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { MdOutlineSearchOff } from "react-icons/md";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Await, defer, LoaderFunction, useLoaderData } from "react-router-dom";
+import { toast } from "sonner";
 
 export const loader: LoaderFunction = () => {
   const blogsPromise = getBlogs();
@@ -27,6 +33,7 @@ const StudyHub = () => {
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState<string[]>([]);
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
@@ -68,6 +75,30 @@ const StudyHub = () => {
       throw new Error("unable to fetch blogs");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLike = async (blogId: string) => {
+    try {
+      setLoadingId((prev) => [...prev, blogId]);
+      const res = await likeBlogs(blogId);
+      setBlogs((prev) =>
+        prev?.map((blog) => {
+          if (blog._id === blogId) {
+            return { ...blog, likes: res };
+          }
+          return blog;
+        })
+      );
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoadingId((prev) => prev.filter((item) => item !== blogId));
     }
   };
 
@@ -166,6 +197,8 @@ const StudyHub = () => {
                         <StudyHubCard
                           key={blog._id + i + blog.title}
                           {...blog}
+                          handleLike={handleLike}
+                          loadingId={loadingId}
                         />
                       ))}
                     </>

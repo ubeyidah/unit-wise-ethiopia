@@ -1,5 +1,5 @@
 import "@blocknote/mantine/style.css";
-import { BlogType, getBlog } from "@/apis/blog/blog.api";
+import { BlogType, getBlog, likeBlogs } from "@/apis/blog/blog.api";
 import { Suspense, useEffect, useState } from "react";
 import {
   Await,
@@ -16,13 +16,16 @@ import { formatDate } from "@/lib/formatDate";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FaRegCommentDots } from "react-icons/fa";
-import { BiLike } from "react-icons/bi";
+import { BiLike, BiSolidLike } from "react-icons/bi";
 import Comments from "@/components/blog/Comments";
 import StudyHubDetailLoader from "@/components/loaders/StudyHubDetailLoader";
 import { useAuthContext } from "@/context/AuthProvider";
 import { followUser } from "@/apis/user/user.api";
 import { ImSpinner8 } from "react-icons/im";
 import { toast } from "sonner";
+import { formatNumber } from "@/lib/formatNumber";
+import LikeButton from "@/components/LikeButton";
+import FollowButton from "@/components/FollowButton";
 
 export const loader: LoaderFunction = ({ params }) => {
   const blogId = params.id || "";
@@ -57,6 +60,23 @@ const StudyHubDetail = () => {
       setLoading((prev) => prev.filter((item) => item !== "follow"));
     }
   };
+
+  const handleLike = async (blogId: string) => {
+    try {
+      setLoading((prev) => [...prev, "like"]);
+      const res = await likeBlogs(blogId);
+      setSingleBlog((prev: any) => ({ ...prev, likes: res }));
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) => prev.filter((item) => item !== "like"));
+    }
+  };
   return (
     <Suspense fallback={<StudyHubDetailLoader />}>
       <Await resolve={blog}>
@@ -67,9 +87,7 @@ const StudyHubDetail = () => {
 
           if (!singleBlog) return;
           const followerLen: number = singleBlog.author.followers.length;
-          const isFollower = singleBlog.author.followers.includes(
-            auth?.user?._id as string
-          );
+
           return (
             <section className="max-w-4xl mx-auto px-2 pb-32 ">
               <div className="flex items-center justify-between my-6">
@@ -121,29 +139,20 @@ const StudyHubDetail = () => {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  {auth?.user?._id !== singleBlog.author._id && (
-                    <Button
-                      className={`rounded-full active:scale-x-110 active:scale-y-95 transition-all duration-75 ${
-                        isFollower ? "bg-muted" : ""
-                      }`}
-                      variant="blogDetail"
-                      onClick={() => handleFollow(singleBlog.author._id)}
-                    >
-                      {loading.includes("follow") ? (
-                        <ImSpinner8 className="animate-spin px-3 box-content" />
-                      ) : isFollower ? (
-                        "Unfollow"
-                      ) : (
-                        "Follow"
-                      )}
-                    </Button>
-                  )}
-                  <Button
-                    className="rounded-full flex gap-1"
-                    variant="blogDetail"
-                  >
-                    <BiLike /> 8k
-                  </Button>
+                  <FollowButton
+                    followers={singleBlog.author.followers}
+                    handleFollow={handleFollow}
+                    loading={loading}
+                    myId={auth?.user?._id as string}
+                    userId={singleBlog.author._id as string}
+                  />
+                  <LikeButton
+                    blogId={singleBlog._id}
+                    handleLike={handleLike}
+                    likes={singleBlog.likes}
+                    loading={loading}
+                    userId={auth?.user?._id as string}
+                  />
                   <a href="#comment">
                     <Button className="rounded-full" variant="blogDetail">
                       <FaRegCommentDots />

@@ -7,6 +7,13 @@ import { BlogsType } from "@/apis/blog/blog.api";
 import { formatNumber } from "@/lib/formatNumber";
 import { formatDate } from "@/lib/formatDate";
 import { Skeleton } from "../ui/skeleton";
+import LikeButton from "../LikeButton";
+import { useAuthContext } from "@/context/AuthProvider";
+
+interface PropType extends BlogsType {
+  handleLike: (blogId: string) => void;
+  loadingId: string[];
+}
 
 const StudyHubCard = ({
   title,
@@ -16,7 +23,10 @@ const StudyHubCard = ({
   updatedAt,
   author,
   likes,
-}: BlogsType) => {
+  handleLike,
+  loadingId,
+}: PropType) => {
+  const auth = useAuthContext();
   return (
     <div className="border rounded-xl p-1 pb-8 relative">
       <Link
@@ -61,15 +71,24 @@ const StudyHubCard = ({
             </p>
           </div>
         </div>
-        <button
+
+        <LikeButton
+          blogId={_id}
+          handleLike={handleLike}
+          likes={likes}
+          loading={loadingId}
+          userId={auth?.user?._id as string}
+          variant="cardLike"
+          size="likeBtn"
+        />
+        {/* <button
           className={`flex items-center justify-center rounded-full hover:bg-slate-500/30 gap-2 py-1.5 px-3 border border-slate-500/20`}
         >
-          {/* <ImSpinner8 className="animate-spin text-sm" /> */}
-          {/* <BiSolidLike className="size-4" /> */}
+          <ImSpinner8 className="animate-spin text-sm" /> 
           <BiLike className="size-4" />
 
           <span className="text-xs">{formatNumber(likes.length)}</span>
-        </button>
+        </button> */}
       </div>
     </div>
   );

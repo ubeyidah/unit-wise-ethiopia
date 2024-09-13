@@ -28,7 +28,7 @@ export const takeInfoToServer = async (
   return redirect("/payment-verify");
 };
 
-export const followUser = async (id: string) => {
+export const followUser = async (id: string): Promise<string[]> => {
   const res = await fetch(`/api/user/follow/${id}`);
   const result = await res.json();
   if (!res.ok) {
