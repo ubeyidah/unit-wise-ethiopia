@@ -125,3 +125,44 @@ export const createBlogComment = async (
   }
   return result;
 };
+
+type blogCommentAuthorType = {
+  _id: string;
+  userName: string;
+  profileImage: string;
+};
+
+type blogCommentReplieType = {
+  userId: blogCommentAuthorType;
+  replie: string;
+  _id: string;
+  createdAt: Date;
+};
+
+export interface BlogCommentType {
+  _id: string;
+  authorId: blogCommentAuthorType;
+  message: string;
+  blogId: string;
+  likes: string[];
+  replies: blogCommentReplieType[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface BlogCommentInfoType {
+  comments: BlogCommentType[];
+  totalPages: number;
+  currentPage: number;
+}
+
+export const getBlogComments = async (
+  blogId: string,
+  page?: number
+): Promise<BlogCommentInfoType> => {
+  const res = await fetch(`/api/blog/comment/${blogId}?page=${page || 1}`);
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+  return result;
+};
