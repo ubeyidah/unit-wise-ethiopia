@@ -84,6 +84,7 @@ export const getBlog = async (req, res) => {
       "_id",
       "userName",
       "profileImage",
+      "followers",
     ]);
     res.status(200).json(blog);
   } catch (error) {

@@ -11,6 +11,7 @@ import {
 import Editor from "@/components/Editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { IoMdMore } from "react-icons/io";
 import { formatDate } from "@/lib/formatDate";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -18,6 +19,10 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import Comments from "@/components/blog/Comments";
 import StudyHubDetailLoader from "@/components/loaders/StudyHubDetailLoader";
+import { useAuthContext } from "@/context/AuthProvider";
+import { followUser } from "@/apis/user/user.api";
+import { ImSpinner8 } from "react-icons/im";
+import { toast } from "sonner";
 
 export const loader: LoaderFunction = ({ params }) => {
   const blogId = params.id || "";
@@ -30,7 +35,28 @@ type LoaderData = {
 const StudyHubDetail = () => {
   const { blog } = useLoaderData() as LoaderData;
   const [singleBlog, setSingleBlog] = useState<BlogType>();
+  const [loading, setLoading] = useState<string[]>([]);
+  const auth = useAuthContext();
 
+  const handleFollow = async (id: string) => {
+    try {
+      setLoading((prev) => [...prev, "follow"]);
+      const res = await followUser(id);
+      setSingleBlog((prev: any) => ({
+        ...prev,
+        author: { ...prev?.author, followers: res },
+      }));
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) => prev.filter((item) => item !== "follow"));
+    }
+  };
   return (
     <Suspense fallback={<StudyHubDetailLoader />}>
       <Await resolve={blog}>
@@ -40,6 +66,10 @@ const StudyHubDetail = () => {
           }, []);
 
           if (!singleBlog) return;
+          const followerLen: number = singleBlog.author.followers.length;
+          const isFollower = singleBlog.author.followers.includes(
+            auth?.user?._id as string
+          );
           return (
             <section className="max-w-4xl mx-auto px-2 pb-32 ">
               <div className="flex items-center justify-between my-6">
@@ -61,39 +91,53 @@ const StudyHubDetail = () => {
                   Back to all Blogs
                 </Link>
                 <p className="text-md opacity-80">
-                  {formatDate(blogDetail.updatedAt)}
+                  {formatDate(singleBlog.updatedAt)}
                 </p>
               </div>
               <div>
                 <img
-                  src={blogDetail.coverImage}
+                  src={singleBlog.coverImage}
                   alt="blog cover image"
                   className="w-full rounded-md object-center object-cover"
                 />
               </div>
-              <h1 className="text-xl my-3 font-bold">{blogDetail.title}</h1>
+              <h1 className="text-xl my-3 font-bold">{singleBlog.title}</h1>
 
               <div className="flex items-center justify-between my-4">
                 <div className="flex items-center gap-2">
                   <Avatar className="w-10 h-10 rounded-full object-cover object-center">
-                    <AvatarImage src={blogDetail.author.profileImage} />
+                    <AvatarImage src={singleBlog.author.profileImage} />
                     <AvatarFallback className="uppercase">
                       <Skeleton className="w-full h-full rounded-full" />
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <h3 className="text-wrap text-sm leading-3 max-sm:max-w-40 line-clamp-1">
-                      {blogDetail.author.userName}
+                      {singleBlog.author.userName}
                     </h3>
                     <p className="text-xs opacity-70 mt-0.5">
-                      20k &#183; follower
+                      {followerLen} &#183; follower
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <Button className="rounded-full" variant="blogDetail">
-                    follow
-                  </Button>
+                  {auth?.user?._id !== singleBlog.author._id && (
+                    <Button
+                      className={`rounded-full active:scale-x-110 active:scale-y-95 transition-all duration-75 ${
+                        isFollower ? "bg-muted" : ""
+                      }`}
+                      variant="blogDetail"
+                      onClick={() => handleFollow(singleBlog.author._id)}
+                    >
+                      {loading.includes("follow") ? (
+                        <ImSpinner8 className="animate-spin px-3 box-content" />
+                      ) : isFollower ? (
+                        "Unfollow"
+                      ) : (
+                        "Follow"
+                      )}
+                    </Button>
+                  )}
                   <Button
                     className="rounded-full flex gap-1"
                     variant="blogDetail"
@@ -105,13 +149,21 @@ const StudyHubDetail = () => {
                       <FaRegCommentDots />
                     </Button>
                   </a>
+                  {auth?.user?._id === singleBlog.author._id && (
+                    <Button
+                      className="rounded-full text-xl"
+                      variant="blogDetail"
+                    >
+                      <IoMdMore />
+                    </Button>
+                  )}
                 </div>
               </div>
               <Separator />
               <p className="opacity-70 mt-3 mb-5">{blogDetail.description}</p>
               <div className="display-content mt-4">
                 <Editor
-                  initialContent={blogDetail.content}
+                  initialContent={singleBlog.content}
                   onChange={() => null}
                   editable={false}
                 />

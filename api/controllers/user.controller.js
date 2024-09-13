@@ -217,8 +217,11 @@ export const followUnfollowUser = async (req, res) => {
       user.followers.push(myId);
       currentUser.following.push(id);
     }
-    await Promise.all([user.save(), currentUser.save()]);
-    res.status(200).json({ message: "Follow/Unfollow user successful" });
+    const [finallUser, _] = await Promise.all([
+      user.save(),
+      currentUser.save(),
+    ]);
+    res.status(200).json(finallUser.followers);
   } catch (error) {
     console.log("Error: follow unfollow user: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });

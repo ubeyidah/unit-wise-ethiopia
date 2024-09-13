@@ -27,3 +27,14 @@ export const takeInfoToServer = async (
   login(result.user);
   return redirect("/payment-verify");
 };
+
+export const followUser = async (id: string) => {
+  const res = await fetch(`/api/user/follow/${id}`);
+  const result = await res.json();
+  if (!res.ok) {
+    throw {
+      message: result.message || res.statusText,
+    };
+  }
+  return result;
+};

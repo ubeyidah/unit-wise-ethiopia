@@ -1,5 +1,3 @@
-import { PartialBlock } from "@blocknote/core";
-
 export interface BlogType {
   title: string;
   coverImage: string;
@@ -81,6 +79,7 @@ export interface BlogType {
     _id: string;
     userName: string;
     profileImage: string;
+    followers: string[];
   };
   likes: string[];
   content: string;
