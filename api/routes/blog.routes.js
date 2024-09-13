@@ -3,7 +3,7 @@ import {
   createBlog,
   getBlogs,
   getBlog,
-  likeDeslikeComment,
+  likeDeslikeBlog,
   createBlogComment,
   getBlogComments,
   likeDeslikeComments,
@@ -18,7 +18,7 @@ const router = express.Router();
 router.post("/", protectRoute, createBlog);
 router.get("/", protectRoute, getBlogs);
 router.get("/:id", protectRoute, getBlog);
-router.put("/like/:blogId", protectRoute, likeDeslikeComment);
+router.put("/like/:blogId", protectRoute, likeDeslikeBlog);
 router.post("/comment/:blogId", protectRoute, createBlogComment);
 router.get("/comment/:blogId", protectRoute, getBlogComments);
 router.put("/comment/like/:commentId", protectRoute, likeDeslikeComments);

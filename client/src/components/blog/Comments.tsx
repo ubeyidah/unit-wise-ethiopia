@@ -15,22 +15,62 @@ import {
 } from "../ui/dropdown-menu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiTrash } from "react-icons/ci";
+import { FormEvent, useState } from "react";
+import { createBlogComment } from "@/apis/blog/blog.api";
+import { toast } from "sonner";
 
-const Comments = () => {
+type PropType = {
+  blogId: string;
+};
+const Comments = ({ blogId }: PropType) => {
   const isLikedComment = [0].includes(0);
+  const [commentText, setCommentText] = useState("");
+  const [loading, setLoading] = useState<string[]>([]);
+
+  const createComment = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading((prev) => [...prev, "comment"]);
+      const res = await createBlogComment(blogId, commentText);
+      console.log(res);
+    } catch (error) {
+      toast.error("Opps! No internet connection", {
+        action: {
+          label: "x",
+          onClick: () => null,
+        },
+      });
+    } finally {
+      setLoading((prev) => prev.filter((item) => item !== "comment"));
+    }
+  };
   return (
     <div>
-      <div id="comment">
+      <form onSubmit={createComment} id="comment">
         <label>
           Write Comment
-          <Textarea placeholder="Add a comment" className="h-24" />
+          <Textarea
+            placeholder="Add a comment"
+            className="h-24"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+          />
         </label>
         <div className="flex items-center justify-end relative pt-2">
-          <Button variant="outline" className="rounded-full" type="submit">
-            comment
+          <Button
+            variant="outline"
+            className="rounded-full"
+            type="submit"
+            disabled={loading.includes("comment")}
+          >
+            {loading.includes("comment") ? (
+              <ImSpinner8 className="animate-spin text-gray-500 px-4 box-content" />
+            ) : (
+              "Comment"
+            )}
           </Button>
         </div>
-      </div>
+      </form>
 
       <h3>Comments</h3>
       <Separator />

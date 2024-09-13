@@ -108,3 +108,20 @@ export const likeBlogs = async (blogId: string): Promise<string[]> => {
   }
   return result;
 };
+export const createBlogComment = async (
+  blogId: string,
+  comment: string
+): Promise<string[]> => {
+  const res = await fetch(`/api/blog/comment/${blogId}`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ comment }),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+  return result;
+};

@@ -93,7 +93,7 @@ export const getBlog = async (req, res) => {
   }
 };
 
-export const likeDeslikeComment = async (req, res) => {
+export const likeDeslikeBlog = async (req, res) => {
   try {
     const { blogId } = req.params;
     const userId = req.user._id;

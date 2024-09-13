@@ -175,7 +175,7 @@ const StudyHubDetail = () => {
                 />
               </div>
               <Separator className="my-4" />
-              <Comments />
+              <Comments blogId={singleBlog._id} />
             </section>
           );
         }}
