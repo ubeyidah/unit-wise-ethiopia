@@ -12,7 +12,6 @@ import {
   NavLink,
   Outlet,
   useLoaderData,
-  useLocation,
 } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -88,6 +87,12 @@ const Profile = () => {
                       myId={auth?.user?._id as string}
                       userId={profile.user._id as string}
                     />
+                    {auth?.user?._id.toString() ===
+                      profile.user._id.toString() && (
+                      <Button variant="outline" className="rounded-full">
+                        Customize Profile
+                      </Button>
+                    )}
                   </div>
                 </div>
 
