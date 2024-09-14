@@ -10,13 +10,15 @@ import {
   followUnfollowUser,
   getProfile,
   getUserBlogs,
+  getUserLikedBlogs,
 } from "../controllers/user.controller.js";
 import protectRoute from "../middleware/protectRoute.js";
 const router = express.Router();
 
 router.post("/take-info", takeInfo);
-router.get("/:username", getProfile);
-router.get("/blog/:username", getUserBlogs);
+router.get("/:username", protectRoute, getProfile);
+router.get("/blog/:username", protectRoute, getUserBlogs);
+router.get("/blog/liked/:username", protectRoute, getUserLikedBlogs);
 router.post("/subject-comment", protectRoute, subjectComment);
 router.get("/subject-comments/:subject", protectRoute, getSubjectComments);
 router.get("/comment-like/:commentId", protectRoute, likeDeslikeComment);

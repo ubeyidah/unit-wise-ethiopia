@@ -7,7 +7,7 @@ import protectRoute from "../middleware/protectRoute.js";
 import adminRoutes from "../middleware/adminRoute.js";
 const router = express.Router();
 
-// later conver theme to admin protect
+// later convert them to admin protect
 router.put("/verify-user/:id", verifyUser);
 router.put("/block-user/:id", blockUser);
 
