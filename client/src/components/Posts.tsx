@@ -8,6 +8,7 @@ import { Await, defer, LoaderFunction, useLoaderData } from "react-router-dom";
 import PostCard from "./PostCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FaSpinner } from "react-icons/fa";
+import PostLoader from "./loaders/PostLoader";
 
 type LoaderType = {
   data: UserBlogInfoType;
@@ -22,7 +23,7 @@ export const loader: LoaderFunction = ({ params }) => {
 const Posts = () => {
   const { data, username } = useLoaderData() as LoaderType;
   return (
-    <Suspense fallback={<h3>Loading ... .. .</h3>}>
+    <Suspense fallback={<PostLoader />}>
       <Await resolve={data}>
         {(blogsInfo: UserBlogInfoType) => {
           const [blogs, setBlogs] = useState(blogsInfo.blogs);
