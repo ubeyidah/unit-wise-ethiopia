@@ -253,3 +253,36 @@ export const getProfile = async (req, res) => {
     return res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+export const getUserBlogs = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit) || 8; // Limit to 8 posts per page
+    const skip = (page - 1) * limit;
+    const user = await User.findOne({ userName: username });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    const blogs = await Blog.find({ author: user._id })
+      .skip(skip)
+      .sort({ createdAt: -1 })
+      .limit(limit);
+    const totalPosts = await Blog.countDocuments({ author: user._id });
+    const blogToSend = blogs.map((blog) => {
+      return {
+        _id: blog._id,
+        title: blog.title,
+        coverImage: blog.coverImage,
+        createdAt: blog.createdAt,
+        likes: blog.likes,
+      };
+    });
+    res.status(200).json({
+      blogs: blogToSend,
+      totalPages: Math.ceil(totalPosts / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    console.log("Error: get user blogs: ", error.message);
+    return res.status(error.status || 500).json({ message: error.message });
+  }
+};
