@@ -55,3 +55,36 @@ export const getUserProfile = async (
   }
   return result;
 };
+
+export interface UserBlogsType {
+  _id: string;
+  title: string;
+  coverImage: string;
+  createdAt: Date;
+  likes: string[];
+}
+
+export interface UserBlogInfoType {
+  blogs: UserBlogsType[];
+  totalPages: number;
+  currentPage: number;
+}
+
+export const getUserBlogs = async (
+  username: string,
+  page?: number
+): Promise<UserBlogInfoType> => {
+  const params = new URLSearchParams();
+  if (page) {
+    params.append("page", page.toString());
+  }
+  const url = `/api/user/blog/${username}?${params.toString()}`; // Build URL with query params
+  const res = await fetch(url);
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+
+  return result;
+};

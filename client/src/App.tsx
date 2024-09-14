@@ -38,7 +38,7 @@ import StudyHubDetail, {
   loader as studyHubDetailLoader,
 } from "./pages/app/StudyHubDetail";
 import Profile, { loader as profileLoader } from "./pages/app/Profile";
-import Posts from "./components/Posts";
+import Posts, { loader as postsLoader } from "./components/Posts";
 import Likes from "./components/Likes";
 
 const App = () => {
@@ -121,7 +121,7 @@ const App = () => {
             element={<Profile />}
             loader={profileLoader}
           >
-            <Route index element={<Posts />} />
+            <Route index element={<Posts />} loader={postsLoader} />
             <Route path="likes" element={<Likes />} />
           </Route>
         </Route>
