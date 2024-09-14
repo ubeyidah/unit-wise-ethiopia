@@ -62,6 +62,7 @@ export interface UserBlogsType {
   coverImage: string;
   createdAt: Date;
   likes: string[];
+  authorId: string;
 }
 
 export interface UserBlogInfoType {

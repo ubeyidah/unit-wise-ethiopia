@@ -82,7 +82,7 @@ const MainBlogForm = ({ blog, update, next }: PropType) => {
     next();
   };
   return (
-    <div className="max-w-3xl px-3 mx-auto pb-7">
+    <div className="max-w-3xl px-3 mx-auto pb-40 pt-4 ">
       <div>
         <div className="flex items-end justify-between">
           <h1 className="text-xl text-green-600 font-bold">

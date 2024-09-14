@@ -65,14 +65,14 @@ const Profile = () => {
                     className="w-full object-cover object-center h-full blur-xl opacity-25"
                   />
                 </div>
-                <div className="flex gap-6 -mt-10">
+                <div className="flex gap-6 -mt-10 max-sm:flex-col max-sm:items-center max-sm:text-center">
                   <img
                     src={profile.user.profileImage}
                     alt=""
-                    className="size-24 rounded-full"
+                    className="size-24 rounded-full max-md:size-20 max-sm:size-16"
                   />
                   <div>
-                    <h1 className="text-3xl uppercase font-bold">
+                    <h1 className="text-3xl uppercase font-bold max-md:text-xl">
                       {profile.user.status} {profile.user.fullName}
                     </h1>
                     <p className="text-sm opacity-70">
@@ -90,6 +90,7 @@ const Profile = () => {
                       loading={loading}
                       myId={auth?.user?._id as string}
                       userId={profile.user._id as string}
+                      className="w-2/5"
                     />
                     {auth?.user?._id.toString() ===
                       profile.user._id.toString() && (
