@@ -316,6 +316,7 @@ export const getUserLikedBlogs = async (req, res) => {
         coverImage: blog.coverImage,
         createdAt: blog.createdAt,
         likes: blog.likes,
+        authorId: blog.author,
       };
     });
     res.status(200).json({

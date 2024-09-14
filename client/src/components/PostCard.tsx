@@ -14,6 +14,9 @@ import { IoMdMore } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { FaRegTrashCan } from "react-icons/fa6";
 
+interface Prop extends UserBlogsType {
+  options?: boolean;
+}
 const PostCard = ({
   _id,
   title,
@@ -21,7 +24,8 @@ const PostCard = ({
   createdAt,
   likes,
   authorId,
-}: UserBlogsType) => {
+  options = true,
+}: Prop) => {
   const auth = useAuthContext();
 
   return (
@@ -41,7 +45,7 @@ const PostCard = ({
           </p>
         </div>
         <div>
-          {auth?.user?._id.toString() === authorId.toString() && (
+          {options && auth?.user?._id.toString() === authorId.toString() && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">

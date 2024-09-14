@@ -39,7 +39,8 @@ import StudyHubDetail, {
 } from "./pages/app/StudyHubDetail";
 import Profile, { loader as profileLoader } from "./pages/app/Profile";
 import Posts, { loader as postsLoader } from "./components/Posts";
-import Likes from "./components/Likes";
+import Likes, { loader as likeLoader } from "./components/Likes";
+import YourFriends from "./components/YourFriends";
 
 const App = () => {
   const auth = useAuthContext();
@@ -122,7 +123,8 @@ const App = () => {
             loader={profileLoader}
           >
             <Route index element={<Posts />} loader={postsLoader} />
-            <Route path="likes" element={<Likes />} />
+            <Route path="likes" element={<Likes />} loader={likeLoader} />
+            <Route path="your-friends" element={<YourFriends />} />
           </Route>
         </Route>
 

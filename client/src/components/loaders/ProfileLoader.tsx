@@ -17,6 +17,7 @@ const ProfileLoader = () => {
       <div className="flex items-center mt-7 ">
         <Skeleton className="w-14 h-4 rounded-sm mb-2 ml-3" />
         <Skeleton className="w-14 h-4 rounded-sm mb-2 ml-3" />
+        <Skeleton className="w-14 h-4 rounded-sm mb-2 ml-3" />
       </div>
       <Separator />
     </>

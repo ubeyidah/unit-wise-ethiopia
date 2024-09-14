@@ -103,7 +103,7 @@ const StudyHub = () => {
   };
 
   return (
-    <section className="min-h-full px-4 max-sm:px-2">
+    <section className="min-h-full px-4 max-sm:px-2 mb-5">
       <div className="text-center py-3 pb-6">
         <h4 className="font-serif font-thin inline-flex animate-background-shine bg-[linear-gradient(110deg,#939393,45%,#1e293b,55%,#939393)] bg-[length:250%_100%] bg-clip-text text-lg max-sm:text-sm py-4 text-transparent">
           “Share your knowledge, learn from others, and grow together.”

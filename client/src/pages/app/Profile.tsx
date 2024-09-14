@@ -113,16 +113,31 @@ const Profile = () => {
                   >
                     Posts
                   </NavLink>
-                  <NavLink
-                    to="likes"
-                    className={({ isActive }) =>
-                      !isActive
-                        ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
-                        : `px-5 py-1 border-green-500 border-b text-green-600 transition-all duration-200 `
-                    }
-                  >
-                    Likes
-                  </NavLink>
+                  {auth?.user?._id === profile.user._id && (
+                    <>
+                      {" "}
+                      <NavLink
+                        to="likes"
+                        className={({ isActive }) =>
+                          !isActive
+                            ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
+                            : `px-5 py-1 border-green-500 border-b text-green-600 transition-all duration-200 `
+                        }
+                      >
+                        Likes
+                      </NavLink>
+                      <NavLink
+                        to="your-friends"
+                        className={({ isActive }) =>
+                          !isActive
+                            ? `px-5 py-1 border-green-500  hover:text-green-600 transition-all duration-200`
+                            : `px-5 py-1 border-green-500 border-b text-green-600 transition-all duration-200 `
+                        }
+                      >
+                        Your Friends
+                      </NavLink>
+                    </>
+                  )}
                 </div>
                 <Separator />
               </>

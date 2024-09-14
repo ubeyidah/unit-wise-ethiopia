@@ -89,3 +89,22 @@ export const getUserBlogs = async (
 
   return result;
 };
+
+export const getUserLikedBlogs = async (
+  username: string,
+  page?: number
+): Promise<UserBlogInfoType> => {
+  const params = new URLSearchParams();
+  if (page) {
+    params.append("page", page.toString());
+  }
+  const url = `/api/user/blog/liked/${username}?${params.toString()}`; // Build URL with query params
+  const res = await fetch(url);
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || res.statusText);
+  }
+
+  return result;
+};
