@@ -3,6 +3,7 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
+  Link,
 } from "react-router-dom";
 import Home from "./pages/landing/Home";
 import About from "./pages/landing/About";
@@ -56,6 +57,19 @@ const App = () => {
         {/* public route */}
 
         <Route path="/terms" element={<Terms />} />
+        <Route
+          path="*"
+          element={
+            <div className="h-screen flex items-center justify-center flex-col gap-4">
+              <h1 className="text-3xl font-bold text-green-500 text-center">
+                Opps page not found
+              </h1>
+              <Link to="/dashboard" className="text-blue-600 hover:underline">
+                Back To Home
+              </Link>
+            </div>
+          }
+        />
         <Route path="/privacy-policy" element={<Privacy />} />
 
         {/* only not logged in user can hit */}
