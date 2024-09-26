@@ -3,6 +3,7 @@ import session from "express-session";
 import { config } from "dotenv";
 import passport from "./passport/google.js";
 import connectDb from "./config/db.js";
+import path from "path";
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
@@ -14,6 +15,7 @@ import blogRoutes from "./routes/blog.routes.js";
 config();
 const app = express();
 app.use(express.json());
+const __dirname = path.resolve();
 
 app.use(
   session({
@@ -38,6 +40,13 @@ app.use("/api/blog", blogRoutes);
 
 // admin only routes
 app.use("/api/admin", adminVerifyRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   connectDb();
