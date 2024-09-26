@@ -1,12 +1,6 @@
-import { pricing, sources, paymentInfo as payment } from "@/data/landing";
-import { FaMoneyCheck, FaUser } from "react-icons/fa";
-import { BsCloudUpload } from "react-icons/bs";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "./ui/accordion";
+import { sources } from "@/data/landing";
+import { FaUser } from "react-icons/fa";
+
 import {
   Select,
   SelectContent,
@@ -16,21 +10,13 @@ import {
 } from "./ui/select";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProfileType } from "@/pages/MoreInfo";
 import { toast } from "sonner";
 import { IoClose } from "react-icons/io5";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import useUploadImage from "@/hooks/useUploadImage";
 import AccountSwitcher from "./AccountSwitcher";
 import { takeInfoToServer } from "@/apis/user/user.api";
 import { useAuthContext } from "@/context/AuthProvider";
-import { Oval } from "react-loader-spinner";
 import { ImSpinner8 } from "react-icons/im";
 
 type PaymentErrorType = {
@@ -413,42 +399,42 @@ const Payment = ({
 
 export default Payment;
 
-function UploadTemplate({
-  error,
-  progress,
-}: {
-  error: PaymentErrorType;
-  progress: number;
-}) {
-  return (
-    <label
-      htmlFor="screenshot"
-      // className={`flex justify-center items-center flex-col p-4 border-dashed border rounded-sm bg-green-500/5 text-green-400 aspect-video gap-4 relative ${
-      //   !!error.paymentImage ? "border-red-500/60" : "border-green-500/60"
-      // }`}
-    >
-      {progress ? (
-        <>
-          <Oval
-            visible={true}
-            height="80"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="oval-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
-          <span className="text-xl absolute">{progress.toFixed(0)}%</span>
-        </>
-      ) : (
-        <>
-          {" "}
-          <BsCloudUpload className="size-10" />
-          <p className="text-sm text-center">
-            Upload Payment Screenshot/Receipt
-          </p>
-        </>
-      )}
-    </label>
-  );
-}
+// function UploadTemplate({
+//   error,
+//   progress,
+// }: {
+//   error: PaymentErrorType;
+//   progress: number;
+// }) {
+//   return (
+//     <label
+//       htmlFor="screenshot"
+//       // className={`flex justify-center items-center flex-col p-4 border-dashed border rounded-sm bg-green-500/5 text-green-400 aspect-video gap-4 relative ${
+//       //   !!error.paymentImage ? "border-red-500/60" : "border-green-500/60"
+//       // }`}
+//     >
+//       {progress ? (
+//         <>
+//           <Oval
+//             visible={true}
+//             height="80"
+//             width="80"
+//             color="#4fa94d"
+//             ariaLabel="oval-loading"
+//             wrapperStyle={{}}
+//             wrapperClass=""
+//           />
+//           <span className="text-xl absolute">{progress.toFixed(0)}%</span>
+//         </>
+//       ) : (
+//         <>
+//           {" "}
+//           <BsCloudUpload className="size-10" />
+//           <p className="text-sm text-center">
+//             Upload Payment Screenshot/Receipt
+//           </p>
+//         </>
+//       )}
+//     </label>
+//   );
+// }
