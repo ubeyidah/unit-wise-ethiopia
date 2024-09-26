@@ -40,7 +40,7 @@ const LikeButton = ({
       }`}
       variant={variant}
       onClick={() => handleLike(blogId)}
-      disabled={loading.includes("like")}
+      disabled={loading.includes("like") || loading.includes(blogId)}
       size={size}
     >
       {loading.includes("like") || loading.includes(blogId) ? (

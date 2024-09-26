@@ -8,8 +8,6 @@ import { FaSpinner } from "react-icons/fa";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Await, defer, LoaderFunction, useLoaderData } from "react-router-dom";
 import PostCard from "./PostCard";
-import EmptyPostProfile from "./EmptyPostProfile";
-import { useAuthContext } from "@/context/AuthProvider";
 import PostLoader from "./loaders/PostLoader";
 
 type LoaderType = {
@@ -24,7 +22,6 @@ export const loader: LoaderFunction = ({ params }) => {
 
 const Likes = () => {
   const { data, username } = useLoaderData() as LoaderType;
-  const auth = useAuthContext();
   return (
     <Suspense fallback={<PostLoader />}>
       <Await resolve={data}>
