@@ -1,5 +1,4 @@
 import { MutatingDots } from "react-loader-spinner";
-
 const Loading = () => {
   return (
     <section className="h-screen max-h-full w-full flex items-center flex-col justify-center">

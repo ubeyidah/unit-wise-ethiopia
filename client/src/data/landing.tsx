@@ -3,7 +3,6 @@ import { FaChartLine } from "react-icons/fa";
 import { LuListTodo } from "react-icons/lu";
 import { MdPostAdd } from "react-icons/md";
 import { PiTreeStructureFill } from "react-icons/pi";
-import { RiCalendarScheduleFill } from "react-icons/ri";
 
 export const headerLinks = [
   {

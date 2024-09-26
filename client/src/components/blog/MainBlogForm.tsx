@@ -15,10 +15,10 @@ import { Input } from "@/components/ui/input";
 import { IoClose } from "react-icons/io5";
 import { Oval } from "react-loader-spinner";
 import { PartialBlock } from "@blocknote/core";
-import { BlogType } from "@/apis/blog/blog.api";
+import { BlogType } from "@/pages/app/WriteStudyHubPost";
 
 type PropType = {
-  blog: BlogType;
+  blog: Partial<BlogType>;
   update: (name: string, value: string | [] | PartialBlock[]) => void;
   next: () => void;
 };
