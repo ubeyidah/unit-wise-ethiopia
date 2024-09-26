@@ -1,9 +1,11 @@
 import { User } from "@/context/AuthProvider";
 import { IoIosClose } from "react-icons/io";
 import { redirect } from "react-router-dom";
+import { ProfileType as PType } from "@/pages/MoreInfo";
 import { toast } from "sonner";
+
 export const takeInfoToServer = async (
-  data: ProfileType,
+  data: PType,
   login: (userData: User) => void
 ) => {
   const res = await fetch("/api/user/take-info", {
@@ -24,7 +26,7 @@ export const takeInfoToServer = async (
     });
   }
   login(result.user);
-  return redirect("/payment-verify");
+  return redirect("/dashboard");
 };
 
 export const followUser = async (id: string): Promise<string[]> => {

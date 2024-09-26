@@ -8,7 +8,6 @@ export interface ProfileType {
   gender: "male" | "female" | "";
   school: string;
   phoneNumber: string;
-  paymentImage: string | undefined;
   status: string;
   isAccept: boolean | undefined;
   source: string | undefined;
@@ -21,7 +20,6 @@ const MoreInfo = () => {
     gender: user?.gender || "",
     school: user?.school || "",
     phoneNumber: user?.phoneNumber || "",
-    paymentImage: user?.paymentImage || "",
     status: user?.status || "",
     isAccept: false,
     source: "",

@@ -1,5 +1,5 @@
 import { pricing, sources, paymentInfo as payment } from "@/data/landing";
-import { FaMoneyCheck } from "react-icons/fa";
+import { FaMoneyCheck, FaUser } from "react-icons/fa";
 import { BsCloudUpload } from "react-icons/bs";
 import {
   Accordion,
@@ -34,10 +34,12 @@ import { Oval } from "react-loader-spinner";
 import { ImSpinner8 } from "react-icons/im";
 
 type PaymentErrorType = {
-  paymentImage: string;
+  // paymentImage: string;
   source: string;
   isAccept: string;
 };
+
+// first i want to ask payment but layter i want to make it free for unkown days
 
 const Payment = ({
   profile,
@@ -51,28 +53,28 @@ const Payment = ({
   const [canValidate, setcanValidate] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<PaymentErrorType>({
-    paymentImage: "",
+    // paymentImage: "",
     source: "",
     isAccept: "",
   });
 
-  let { progress, url, uploadImage } = useUploadImage();
+  // let { progress, url, uploadImage } = useUploadImage();
   const auth = useAuthContext();
 
   const validateForm = () => {
     let hasError = false;
-    if (!profile.paymentImage) {
-      setError((prev) => ({
-        ...prev,
-        paymentImage: "Please upload your Payment confirmation screenshot",
-      }));
-      hasError = true;
-    } else {
-      setError((prev) => ({
-        ...prev,
-        paymentImage: "",
-      }));
-    }
+    // if (!profile.paymentImage) {
+    //   setError((prev) => ({
+    //     ...prev,
+    //     paymentImage: "Please upload your Payment confirmation screenshot",
+    //   }));
+    //   hasError = true;
+    // } else {
+    //   setError((prev) => ({
+    //     ...prev,
+    //     paymentImage: "",
+    //   }));
+    // }
     if (!profile.source || profile.source == "") {
       setError((prev) => ({
         ...prev,
@@ -100,19 +102,20 @@ const Payment = ({
     return hasError;
   };
 
-  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    e.target.disabled = true;
-    const image = e.target.files[0];
-    if (!image) return;
-    uploadImage(image, "payment");
-    e.target.disabled = false;
-  };
-  useEffect(() => {
-    if (url) {
-      setProfile((prev) => ({ ...prev, paymentImage: url || "" }));
-    }
-  }, [url]);
+  // const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (!e.target.files) return;
+  //   e.target.disabled = true;
+  //   const image = e.target.files[0];
+  //   if (!image) return;
+  //   uploadImage(image, "payment");
+  //   e.target.disabled = false;
+  // };
+  // useEffect(() => {
+  //   if (url) {
+  //     setProfile((prev) => ({ ...prev, paymentImage: url || "" }));
+  //   }
+  // }, [url]);
+
   useEffect(() => {
     if (canValidate) {
       validateForm();
@@ -122,13 +125,13 @@ const Payment = ({
   const finishPayment = async () => {
     try {
       setcanValidate(true);
-      if (progress)
-        return toast.info("Please give a time to complete the upload.", {
-          action: {
-            label: <IoClose className="size-5" />,
-            onClick: () => null,
-          },
-        });
+      // if (progress)
+      //   return toast.info("Please give a time to complete the upload.", {
+      //     action: {
+      //       label: <IoClose className="size-5" />,
+      //       onClick: () => null,
+      //     },
+      //   });
       const hasError = validateForm();
       if (hasError) {
         toast.error("Please enter a valid information", {
@@ -150,27 +153,27 @@ const Payment = ({
       setLoading(false);
     }
   };
-  const imageRemover = () => {
-    setProfile((prev) => ({ ...prev, paymentImage: "" }));
-    url = "";
-  };
+  // const imageRemover = () => {
+  //   setProfile((prev) => ({ ...prev, paymentImage: "" }));
+  //   url = "";
+  // };
 
   return (
-    <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-5xl py-20 max-md:py-10 my-20 bg-slate-200/20 relative">
+    <div className="w-full p-3 md:p-6 dark:bg-slate-500/5 rounded-2xl border max-w-xl py-20 max-md:py-10 my-20 bg-slate-200/20 relative">
       <div className="absolute top-3 right-4">
         <AccountSwitcher />
       </div>
       <div className="flex items-center gap-5 mb-8">
         <div className=" p-3 box-content bg-green-300/10 rounded-full ">
-          <FaMoneyCheck className="size-8 max-sm:size-5 text-green-500" />
+          <FaUser className="size-8 max-sm:size-5 text-green-500" />
         </div>
         <h1 className="text-2xl md:text-3xl max-md:text-center max-sm:text-lg">
-          <span className="text-green-400 ">Complete</span> Your Payment
+          <span className="text-green-400 ">Complete</span> Your account
         </h1>
       </div>
       <div className="flex flex-col w-full md:flex-row max-md:flex-col-reverse">
-        <div className="md:w-2/5 md:p-4 w-full">
-          <div>
+        <div className="p-3 md:p-4 px-0 md:px-0 w-full">
+          {/* <div>
             <h4 className="text-lg font-semibold max-sm:text-sm text-green-400 mb-2">
               Upload Your Payment Confirmation
             </h4>
@@ -218,7 +221,7 @@ const Payment = ({
               className="disable:opacity-40"
               hidden
             />
-          </div>
+          </div> */}
           <div className="my-6">
             <h3
               className={`text-sm mb-1 ${!!error.source ? "text-red-600" : ""}`}
@@ -246,7 +249,7 @@ const Payment = ({
           </div>
         </div>
 
-        <div className="md:w-3/5 w-full md:p-4">
+        {/* <div className="md:w-3/5 w-full md:p-4">
           <h2 className="text-lg font-semibold mb-1">Payment Options</h2>
           <p className="text-sm mb-4 dark:text-slate-200 text-slate-800">
             You can pay using either Mobile Banking or by visiting the actual
@@ -352,7 +355,7 @@ const Payment = ({
               </AccordionItem>
             </Accordion>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex space-x-3">
         <Checkbox
@@ -384,13 +387,13 @@ const Payment = ({
         <Button
           variant="secondary"
           onClick={() => {
-            if (progress)
-              return toast.info("Please give a time to complete the upload.", {
-                action: {
-                  label: <IoClose className="size-5" />,
-                  onClick: () => null,
-                },
-              });
+            // if (progress)
+            //   return toast.info("Please give a time to complete the upload.", {
+            //     action: {
+            //       label: <IoClose className="size-5" />,
+            //       onClick: () => null,
+            //     },
+            //   });
             setSection("profile");
           }}
         >
@@ -420,9 +423,9 @@ function UploadTemplate({
   return (
     <label
       htmlFor="screenshot"
-      className={`flex justify-center items-center flex-col p-4 border-dashed border rounded-sm bg-green-500/5 text-green-400 aspect-video gap-4 relative ${
-        !!error.paymentImage ? "border-red-500/60" : "border-green-500/60"
-      }`}
+      // className={`flex justify-center items-center flex-col p-4 border-dashed border rounded-sm bg-green-500/5 text-green-400 aspect-video gap-4 relative ${
+      //   !!error.paymentImage ? "border-red-500/60" : "border-green-500/60"
+      // }`}
     >
       {progress ? (
         <>

@@ -46,11 +46,11 @@ export const futures = [
     desc: "Access a curated library of books, articles, and other study resources.",
     icon: <ImBook />,
   },
-  {
-    title: "Schedule Management",
-    desc: " Plan and manage your study schedule with integrated calendar features and reminders.",
-    icon: <RiCalendarScheduleFill />,
-  },
+  // {
+  //   title: "Schedule Management",
+  //   desc: " Plan and manage your study schedule with integrated calendar features and reminders.",
+  //   icon: <RiCalendarScheduleFill />,
+  // },
 ];
 
 export const whyChooseUs = [
@@ -59,8 +59,8 @@ export const whyChooseUs = [
     desc: "Unit Wise Ethiopia is the first web app of its kind in Ethiopia, specifically designed to address the needs of students preparing for entrance exams.",
   },
   {
-    title: "Student-Centric",
-    desc: "Created by a student for students, our platform understands and addresses the real challenges you face during your exam preparation.",
+    title: "Free to use",
+    desc: "free to use this app all resourse.",
   },
   {
     title: "User-Friendly Design",
@@ -85,8 +85,8 @@ export const pricingAccess = [
   "Free updates and new features",
 ];
 export const pricing = {
-  price: 200,
-  discount: 101,
+  price: 0,
+  discount: 0,
 };
 
 export const testimonials = [
@@ -101,12 +101,6 @@ export const testimonials = [
 ];
 
 export const faqs = [
-  {
-    id: 1,
-    title: "How does the lifetime access work?",
-    answer:
-      "Once you make a one-time payment, you gain lifetime access to all features, resources, and future updates on Unit Wise Ethiopia. There are no recurring fees or hidden costs.",
-  },
   {
     id: 2,
     title: "What study materials are included?",

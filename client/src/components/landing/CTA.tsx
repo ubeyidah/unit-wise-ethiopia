@@ -6,7 +6,7 @@ const CTA = () => {
       <div className=" bg-gradient-to-b from-slate-700/60 to-transparent h-full">
         <div className="container px-4 flex items-center justify-center flex-col gap-8 h-full">
           <h2 className="text-3xl  font-bold text-white text-center">
-            Take Control of Your Exam Preparation – Sign Up Today!
+            Take Control of Your Exam Preparation – Sign Up Today For Free!
           </h2>
           <Link to="/signin">
             <button className="group relative inline-flex h-[calc(40px+8px)] items-center justify-center rounded-full max-sm:text-sm bg-green-600 py-1 pl-6 pr-14 font-medium text-neutral-50">

@@ -74,7 +74,7 @@ const userSchema = new mongoose.Schema(
     price: {
       type: Number,
       trim: true,
-      default: "",
+      default: 0,
     },
     isPaid: {
       type: Boolean,

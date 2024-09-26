@@ -7,6 +7,8 @@ import {
   subjectReplieSchema,
   subjectsCommentSchema,
 } from "../schemas/subject.schema.js";
+import { enrollSubjects } from "../utils/enrollSubjects.js";
+import { sendWelcomeEmail } from "../utils/sendWelcomeEmail.js";
 
 export const takeInfo = async (req, res) => {
   try {
@@ -16,7 +18,7 @@ export const takeInfo = async (req, res) => {
       school,
       phoneNumber,
       status,
-      paymentImage,
+      // paymentImage,
       source,
       isAccept,
     } = req.body;
@@ -26,7 +28,7 @@ export const takeInfo = async (req, res) => {
       school,
       phoneNumber,
       status,
-      paymentImage,
+      // paymentImage,
       source,
       isAccept,
     });
@@ -38,21 +40,29 @@ export const takeInfo = async (req, res) => {
         .json({ message: "Unauthorized. You must be logged in first." });
     const userId = req.user._id;
 
-    Promise.all([
-      await User.findByIdAndUpdate(userId, {
+    await Promise.all([
+      User.findByIdAndUpdate(userId, {
         studyType,
         gender,
         school,
         phoneNumber,
         status,
-        paymentImage,
+        isPaid: true,
       }),
-      await Source({ userId, source }).save(),
+      Source({ userId, source }).save(),
     ]);
 
     const userToSend = await User.findById(userId);
-    if (!userToSend) return res.status(404).json({ message: "user not found" });
-    res.status(200).json({ user: userToSend });
+
+    await Promise.all([
+      sendWelcomeEmail({
+        email: userToSend.email,
+        res,
+        name: userToSend.fullName,
+      }),
+      enrollSubjects(userToSend.studyType, userToSend._id, res),
+    ]);
+    return res.status(200).json({ message: "welcome" });
   } catch (error) {
     console.log("Error: take info: =>", error.message);
     return res.status(error.status || 500).json({ message: error.message });

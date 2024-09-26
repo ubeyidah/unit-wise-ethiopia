@@ -13,7 +13,7 @@ export const takeInfoSchema = Joi.object({
   school: Joi.string().required(),
   phoneNumber: Joi.string().min(10).max(14),
   status: Joi.string().valid("student", "teacher").required(),
-  paymentImage: Joi.string().uri().required(),
+  // paymentImage: Joi.string().uri().required(),
   source: Joi.string().required(),
   isAccept: Joi.boolean().valid(true).required().messages({
     "any.only": "You must accept the terms and conditions to proceed.",

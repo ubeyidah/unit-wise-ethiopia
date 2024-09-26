@@ -24,7 +24,7 @@ export const requireSignInRoute = (user: User | null | undefined) => {
     (!user.studyType ||
       !user.phoneNumber ||
       !user.gender ||
-      !user.paymentImage ||
+      // !user.paymentImage ||
       !user.status)
   ) {
     throw redirect("/take-info");
@@ -45,7 +45,7 @@ export const requireAuth = (user: User | null | undefined) => {
     !user.studyType ||
     !user.phoneNumber ||
     !user.gender ||
-    !user.paymentImage ||
+    // !user.paymentImage ||
     !user.status
   ) {
     throw redirect("/signin?message=You must sign in first");
@@ -73,7 +73,7 @@ export const requireTakeMoreInfo = (user: User | null | undefined) => {
     !user?.studyType ||
     !user.phoneNumber ||
     !user.gender ||
-    !user.paymentImage ||
+    // !user.paymentImage ||
     !user.status
   ) {
     return null;

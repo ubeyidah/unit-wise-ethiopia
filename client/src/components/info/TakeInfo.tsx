@@ -90,8 +90,8 @@ const TakeInfo = ({
         <AccountSwitcher />
       </div>
       <h1 className="text-md mt-1 md:text-xl mb-8 max-md:text-center max-sm:mt-7">
-        Let us finish setting up your{" "}
-        <span className="text-green-600">account {auth?.user?.userName}</span>
+        Welcome <span className="text-green-400">{auth?.user?.userName}</span>{" "}
+        setup your account
       </h1>
       <div className="flex flex-col w-full md:flex-row">
         <div className="w-full p-4">
