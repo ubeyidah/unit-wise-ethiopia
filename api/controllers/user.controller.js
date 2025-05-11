@@ -55,11 +55,11 @@ export const takeInfo = async (req, res) => {
     const userToSend = await User.findById(userId);
 
     await Promise.all([
-      sendWelcomeEmail({
-        email: userToSend.email,
-        res,
-        name: userToSend.fullName,
-      }),
+//      sendWelcomeEmail({
+//        email: userToSend.email,
+//        res,
+//       name: userToSend.fullName,
+//      }),
       enrollSubjects(userToSend.studyType, userToSend._id, res),
     ]);
     return res.status(200).json({ message: "welcome" });
